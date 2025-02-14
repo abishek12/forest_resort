@@ -16,9 +16,24 @@ const blogSchema = new mongoose.Schema(
       minlength: [3, "Title must be at least 3 characters"],
       maxlength: [255, "Title cannot exceed 100 characters"],
     },
-    category: {},
-    tags: [],
-    user: {},
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "category",
+    },
+    tags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "tag",
+      },
+    ],
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
+    featured_image: {
+      type: String,
+      required: true,
+    },
     content: {
       type: String,
       required: false,

@@ -1,6 +1,6 @@
-import { User } from "../../users/model/UserModel.js";
+import { Blog } from "../model/BlogModel.js";
 
-export const listAllUsers = async (req, res) => {
+export const listBlogs = async (req, res) => {
   try {
     // Pagination parameters
     let limit = Math.max(Number(req.query.limit) || 10, 1);
@@ -12,10 +12,10 @@ export const listAllUsers = async (req, res) => {
 
     // Offset calculation
     let offset = (page - 1) * limit;
-    
-    let totalRecords = await User.countDocuments();
 
-    const items = await User.find({}, { _id: 0, __v:0, token: 0, password:0 })
+    let totalRecords = await Blog.countDocuments();
+
+    const items = await Blog.find({}, { _id: 0, __v: 0 })
       .sort(sort)
       .skip(offset)
       .limit(limit);
@@ -33,6 +33,27 @@ export const listAllUsers = async (req, res) => {
         hasNextPage: page < totalPages,
         hasPreviousPage: page > 1,
       },
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+};
+
+export const listSingleBlog = async (req, res) => {
+  try {
+    let post_id = req.params.id;
+
+    if (!post_id) {
+      return res.statu(400).json({
+        message: "Blog Details is Required",
+      });
+    }
+
+    let item = await Blog.findById(post_id);
+
+    return res.status(200).json({
+      message: "success",
+      item,
     });
   } catch (error) {
     return res.status(500).json({ message: error });

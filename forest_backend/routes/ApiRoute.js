@@ -4,6 +4,9 @@ import express from "express";
 // instance for route of express
 const router = express.Router();
 
+import blogRoute from "../components/blogs/router/BlogRoute.js";
+router.use("/blog", blogRoute);
+
 import categoryRoute from "../components/category/router/CategoryRoute.js";
 router.use("/category", categoryRoute);
 
