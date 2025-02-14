@@ -15,6 +15,9 @@ export const getAllBooking = async (req, res) => {
     let sort = req.query.sort || "asc";
     sort = { name: sort === "asc" ? 1 : -1 };
 
+    // searching
+    let user = req.query.user;
+
     // Offset calculation
     let offset = (page - 1) * limit;
 
@@ -26,10 +29,15 @@ export const getAllBooking = async (req, res) => {
       }
     }
 
+    // Filter by user if provided
+    if (req.query.user) {
+      filter.user = req.query.user;
+    }
+
     let totalRecords = await Booking.countDocuments();
 
-    const items = await Booking.find(filter, { _id: 0, __v: 0 })
-      .populate("user service", "fullname phone_no name price")
+    const items = await Booking.find(filter, { __v: 0 })
+      .populate("user service", "fullname phone_no name price -_id")
       .sort(sort)
       .skip(offset)
       .limit(limit);

@@ -3,6 +3,11 @@ import slug from "slug";
 import { Blog } from "../model/BlogModel.js";
 import { blogValidator } from "../helper/BlogHelper.js";
 
+/**
+ * @desc    Create blogs by
+ * @route   POST /api/blog/
+ * @access  Private
+ */
 export const createBlog = async (req, res) => {
   try {
     let { error, value } = blogValidator(req.body);
