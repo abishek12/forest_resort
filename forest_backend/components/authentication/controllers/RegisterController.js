@@ -18,6 +18,7 @@ export const registerUser = async (req, res) => {
       });
     }
 
+    // checking user exist or not 
     let checkUserExistance = await User.findOne({ email: value.email });
     if (checkUserExistance) {
       return res.status(400).json({
