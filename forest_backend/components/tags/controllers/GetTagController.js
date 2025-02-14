@@ -16,8 +16,8 @@ export const getTagController = async (req, res) => {
     // Fetch total record count
     let totalRecords = await Tag.countDocuments();
 
-    let items = await Tag.find({}, { _id: 0, __v: 0 })
-      .populate("author", "fullname")
+    let items = await Tag.find({}, { __v: 0 })
+      .populate("author", "fullname -_id")
       .sort(sort)
       .skip(offset)
       .limit(limit);

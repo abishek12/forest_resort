@@ -1,6 +1,6 @@
-import { Category } from "../model/CategoryModel.js";
+import { ContactUs } from "../model/ContactUsModel.js";
 
-export const getCategoryController = async (req, res) => {
+export const listContactUs = async (req, res) => {
   try {
     // Pagination parameters
     let limit = Math.max(Number(req.query.limit) || 10, 1);
@@ -13,11 +13,18 @@ export const getCategoryController = async (req, res) => {
     // Offset calculation
     let offset = (page - 1) * limit;
 
-    // Fetch total record count
-    let totalRecords = await Category.countDocuments();
+    let filter = {};
+    if (req.query.status) {
+      const allowedStatuses = ["pending", "reviewed"];
+      if (allowedStatuses.includes(req.query.status)) {
+        filter.status = req.query.status;
+      }
+    }
 
-    let items = await Category.find({}, { __v: 0 })
-      .populate("author", "fullname -_id")
+    // Fetch total record count
+    let totalRecords = await ContactUs.countDocuments();
+
+    let items = await ContactUs.find(filter, { __v: 0 })
       .sort(sort)
       .skip(offset)
       .limit(limit);

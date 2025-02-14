@@ -15,7 +15,8 @@ export const listBlogs = async (req, res) => {
 
     let totalRecords = await Blog.countDocuments();
 
-    const items = await Blog.find({}, { _id: 0, __v: 0 })
+    const items = await Blog.find({}, { __v: 0 })
+      .populate("user category tags", "fullname -_id title")
       .sort(sort)
       .skip(offset)
       .limit(limit);

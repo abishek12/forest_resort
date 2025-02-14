@@ -25,4 +25,7 @@ router.use("/users", userRoute);
 import authRoute from "../components/authentication/router/AuthRoute.js";
 router.use("/auth", authRoute);
 
+import contactRoute from "../components/contactUs/router/ContactRoute.js";
+router.use("/contact-us", contactRoute);
+
 export default router;
