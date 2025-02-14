@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "icon": "fas fa-angle-left",
+        "pageLink": "#",
+        "number": "",
+        "activate": ""
+    },
+    {
+        "id": 2,
+        "icon": "",
+        "pageLink": "#",
+        "number": 1,
+        "activate": "active"
+    },
+    {
+        "id": 3,
+        "icon": "",
+        "pageLink": "#",
+        "number": 2,
+        "activate": ""
+    },
+    {
+        "id": 4,
+        "icon": "",
+        "pageLink": "#",
+        "number": 3,
+        "activate": ""
+    },
+    {
+        "id": 5,
+        "icon": "fas fa-angle-right",
+        "pageLink": "#",
+        "number": "",
+        "activate": ""
+    }
+]

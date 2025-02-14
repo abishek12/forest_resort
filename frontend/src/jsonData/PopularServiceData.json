@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "icon": "flaticon-layers",
+        "serviceName": "Friendly Interface",
+        "serviceLink": "services-details",
+        "serviceText": "These cases are perfectly simple and easy to distinguish. In a free hour, when our power."
+    },
+    {
+        "id": 2,
+        "icon": "flaticon-secure-1",
+        "serviceName": "Strong Encryption",
+        "serviceLink": "services-details",
+        "serviceText": "These cases are perfectly simple and easy to distinguish. In a free hour, when our power."
+    }
+]

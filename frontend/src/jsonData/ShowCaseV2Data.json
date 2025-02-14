@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "thumb": "7.jpg",
+        "title": "Finance Restructuring",
+        "text": "Targeting consultation discover apartments. ndulgence off under folly death wrote cause her way spite. Plan upon yet way get cold spot its week. Almost do am or limits hearts. Resolve parties but why she shewing. She sang know now always remembering to the point at dimension per technical issue.",
+        "btnLink": "project-details",
+        "btnText": "View Project",
+        "shape": "banner-3.webp"
+    },
+    {
+        "id": 2,
+        "thumb": "8.jpg",
+        "title": "International Markets",
+        "text": "Targeting consultation discover apartments. ndulgence off under folly death wrote cause her way spite. Plan upon yet way get cold spot its week. Almost do am or limits hearts. Resolve parties but why she shewing. She sang know now always remembering to the point at dimension per technical issue.",
+        "btnLink": "project-details",
+        "btnText": "View Project",
+        "shape": "banner-3.webp"
+    }
+]

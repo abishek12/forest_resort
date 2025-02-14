@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "thumb": "1.jpg",
+        "thumb2": "1.jpg",
+        "author": "Md Sohag",
+        "date": "25 April, 2024",
+        "title": "Miscovery incommode earnestly is commanded",
+        "icon": "fa-solid fa-arrow-right",
+        "postLink": "blog-single-sidebar",
+        "btnText": "Continue Reading"
+
+    },
+    {
+        "id": 2,
+        "thumb": "2.jpg",
+        "thumb2": "2.jpg",
+        "author": "Md Sohag",
+        "date": "25 May, 2024",
+        "title": "Expression acceptance imprudence in mentions.",
+        "icon": "fa-solid fa-arrow-right",
+        "postLink": "blog-single-sidebar",
+        "btnText": "Continue Reading"
+
+    },
+    {
+        "id": 3,
+        "thumb": "3.jpg",
+        "thumb2": "3.jpg",
+        "author": "Md Sohag",
+        "date": "25 June, 2024",
+        "title": "Considered imprudence of technical friendship.",
+        "icon": "fa-solid fa-arrow-right",
+        "postLink": "blog-single-sidebar",
+        "btnText": "Continue Reading"
+
+    },
+    {
+        "id": 4,
+        "thumb": "4.jpg",
+        "thumb2": "4.jpg",
+        "author": "Md Sohag",
+        "date": "25 July, 2024",
+        "title": "Miscovery incommode earnestly is commanded",
+        "icon": "fa-solid fa-arrow-right",
+        "postLink": "blog-single-sidebar",
+        "btnText": "Continue Reading"
+
+    },
+    {
+        "id": 5,
+        "thumb": "4.jpg",
+        "thumb2": "5.jpg",
+        "author": "Md Sohag",
+        "date": "25 August, 2024",
+        "title": "Expression acceptance imprudence in mentions.",
+        "icon": "fa-solid fa-arrow-right",
+        "postLink": "blog-single-sidebar",
+        "btnText": "Continue Reading"
+
+    },
+    {
+        "id": 6,
+        "thumb": "4.jpg",
+        "thumb2": "6.jpg",
+        "author": "Md Sohag",
+        "date": "25 September, 2024",
+        "title": "Considered imprudence of technical friendship.",
+        "icon": "fa-solid fa-arrow-right",
+        "postLink": "blog-single-sidebar",
+        "btnText": "Continue Reading"
+
+    }
+]

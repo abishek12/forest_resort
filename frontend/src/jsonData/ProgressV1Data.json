@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "width": 12,
+        "value": 58,
+        "title": "Company Growth"
+    },
+    {
+        "id": 2,
+        "width": 12,
+        "value": 87,
+        "title": "Satisfied Clients"
+    }
+]

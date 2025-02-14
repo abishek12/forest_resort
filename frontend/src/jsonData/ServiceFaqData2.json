@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingOne",
+    "collapsedClass": "",
+    "dataTarget": "#collapseOne",
+    "ariaExpanded": "true",
+    "ariaControls": "collapseOne",
+    "title": " What are the futsal court booking hours?",
+    "text": " Our futsal court is available for booking from 6:00 AM to 9:00 PM, Sunday through Saturday. You can book the court by the hour based on availability.",
+    "collapseShow": "show"
+  },
+  {
+    "id": 2,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingTwo",
+    "collapsedClass": "collapsed",
+    "dataTarget": "#collapseTwo",
+    "ariaExpanded": "false",
+    "ariaControls": "collapseTwo",
+    "title": "What are the hourly booking rates for the futsal court?",
+    "text": " The hourly booking rate for the futsal court is ₹1200 from Sunday to Friday. On Saturdays, the rate is ₹1500 per hour.",
+    "collapseShow": ""
+  },
+  {
+    "id": 3,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingThree",
+    "collapsedClass": "collapsed",
+    "dataTarget": "#collapseThree",
+    "ariaExpanded": "false",
+    "ariaControls": "collapseThree",
+    "title": " How can I book the futsal court?",
+    "text": "You can book the futsal court by visiting our center, calling us, or using our online booking system. We recommend booking in advance to secure your preferred time slot, especially on weekends.",
+    "collapseShow": ""
+  },
+  {
+    "id": 4,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingFour",
+    "collapsedClass": "collapsed",
+    "dataTarget": "#collapseFour",
+    "ariaExpanded": "false",
+    "ariaControls": "collapseFour",
+    "title": "Do you provide futsal training for kids?",
+    "text": "Yes, we offer futsal training for kids up to 15 years of age. Our training program is designed to develop skills, fitness, and teamwork in a fun and engaging environment. Our experienced coaches ensure that each child receives personalized attention to improve their game.",
+    "collapseShow": ""
+  },
+  {
+    "id": 5,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingFive",
+    "collapsedClass": "collapsed",
+    "dataTarget": "#collapseFive",
+    "ariaExpanded": "false",
+    "ariaControls": "collapseFive",
+    "title": "What is included in the futsal training program for kids?",
+    "text": "Our training program for kids is priced at ₹10,000 per month. This fee includes professional coaching, a pair of futsal boots, and a set of jerseys. The program is designed to improve skills, tactics, and overall fitness in a safe and structured environment.",
+    "collapseShow": ""
+  },
+  {
+    "id": 6,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingSix",
+    "collapsedClass": "collapsed",
+    "dataTarget": "#collapseSix",
+    "ariaExpanded": "false",
+    "ariaControls": "collapseSix",
+    "title": "What is the schedule for kids' futsal training sessions?",
+    "text": "Training sessions are scheduled multiple times throughout the week to accommodate different age groups and skill levels. Please contact us for the specific training schedule that fits your child's age and skill category.",
+    "collapseShow": ""
+  }
+]

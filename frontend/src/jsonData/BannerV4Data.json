@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "thumb": "8.jpg",
+        "subTitle": "Meet Consulting",
+        "title": "Financial Analysis Developing Meeting.",
+        "text": "We create relationship of trust with our customer by helping your company grow.",
+        "btnText": "Apply Now",
+        "btnLink": "contact-us",
+        "shape": "banner-shape.png"
+    },
+    {
+        "id": 2,
+        "thumb": "6.jpg",
+        "subTitle": "Coaching & Consulting",
+        "title": "Strategies for Enduring Success",
+        "text": "We create relationship of trust with our customer by helping your company grow.",
+        "btnText": "Apply Now",
+        "btnLink": "contact-us",
+        "shape": "banner-shape.png"
+    }
+]

@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "listTitle": "Speed Optimization",
+        "listText": "Surrounded sir motionless she end literature. Gay direction neglected but supported yet tech.",
+        "listLink": "services-details",
+        "listIcon": "fas fa-long-arrow-right",
+        "listAnimation": "fadeInLeft",
+        "animationDelay": "0ms"
+    },
+    {
+        "id": 2,
+        "listTitle": "Keyword Research",
+        "listText": "Surrounded sir motionless she end literature. Gay direction neglected but supported yet tech.",
+        "listLink": "services-details",
+        "listIcon": "fas fa-long-arrow-right",
+        "listAnimation": "fadeInLeft",
+        "animationDelay": "500ms"
+    },
+    {
+        "id": 3,
+        "listTitle": "Social Media Marketing",
+        "listText": "Surrounded sir motionless she end literature. Gay direction neglected but supported yet tech.",
+        "listLink": "services-details",
+        "listIcon": "fas fa-long-arrow-right",
+        "listAnimation": "fadeInLeft",
+        "animationDelay": "900ms"
+    }
+]

@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "thumb": "7.jpg",
+        "title": "Effective Solutions",
+        "titleLink": "project-details",
+        "list1": "Digital",
+        "list2": "Business",
+        "btnLink": "project-details",
+        "btnIcon": "fa-solid fa-long-arrow-right"
+    },
+    {
+        "id": 2,
+        "thumb": "8.jpg",
+        "title": "Marketing Management",
+        "titleLink": "project-details",
+        "list1": "Advertising",
+        "list2": "Grow",
+        "btnLink": "project-details",
+        "btnIcon": "fa-solid fa-long-arrow-right"
+    },
+    {
+        "id": 3,
+        "thumb": "9.jpg",
+        "title": "Effective Solutions",
+        "titleLink": "project-details",
+        "list1": "Agency",
+        "list2": "Company",
+        "btnLink": "project-details",
+        "btnIcon": "fa-solid fa-long-arrow-right"
+    },
+    {
+        "id": 4,
+        "thumb": "10.jpg",
+        "title": "Effective Solutions",
+        "titleLink": "project-details",
+        "list1": "Digital",
+        "list2": "Business",
+        "btnLink": "project-details",
+        "btnIcon": "fa-solid fa-long-arrow-right"
+    },
+    {
+        "id": 5,
+        "thumb": "11.jpg",
+        "title": "Marketing Management",
+        "titleLink": "project-details",
+        "list1": "Advertising",
+        "list2": "Grow",
+        "btnLink": "project-details",
+        "btnIcon": "fa-solid fa-long-arrow-right"
+    },
+    {
+        "id": 6,
+        "thumb": "12.jpg",
+        "title": "Effective Solutions",
+        "titleLink": "project-details",
+        "list1": "Agency",
+        "list2": "Company",
+        "btnLink": "project-details",
+        "btnIcon": "fa-solid fa-long-arrow-right"
+    }
+]
