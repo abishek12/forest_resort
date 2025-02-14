@@ -20,7 +20,7 @@ export const getAllServices = async (req, res) => {
 
     let totalRecords = await Service.countDocuments();
 
-    const items = await Service.find({}, { _id: 0, __v: 0 })
+    const items = await Service.find({}, { __v: 0 })
       .sort(sort)
       .skip(offset)
       .limit(limit);

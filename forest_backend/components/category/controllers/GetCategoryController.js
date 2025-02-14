@@ -16,13 +16,13 @@ export const getCategoryController = async (req, res) => {
     // Fetch total record count
     let totalRecords = await Category.countDocuments();
 
-    let items = await Category.find()
-      .populate("author", "firstName lastName")
+    let items = await Category.find({}, { __v: 0 })
+      .populate("author", "fullname -_id")
       .sort(sort)
       .skip(offset)
       .limit(limit);
 
-    // Calculate total pages
+    // Calculate towtal pages
     let totalPages = Math.ceil(totalRecords / limit);
 
     return res.status(200).json({
