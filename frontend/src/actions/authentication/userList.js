@@ -1,9 +1,8 @@
 import axios from "axios";
 import{
     USER_LIST_REQUEST,
-    USER_LIST_SUCCESS,
     USER_LIST_SUCCESS
-} from "../constants/userConstants";
+} from "../../constants/userConstants";
 import { logout } from "./userLogout";
 import { USER_LIST_FAIL } from "../../constants/userConstants";
 

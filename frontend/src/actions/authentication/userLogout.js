@@ -1,7 +1,7 @@
 // import axios from "axios";
 import{
     USER_LOGOUT
-} from "../constants/userConstants";
+} from "../../constants/userConstants";
 
 import { USER_DETAILS_RESET,
      USER_LIST_RESET } from "../../constants/userConstants";

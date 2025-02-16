@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 // import FormContainer from "../components/FormContainer";
-import { loginUser } from "../../actions/userActions";
+import { loginUser } from "../../actions/authentication/userLogin";
 import "./styles.css";
 import { MdCheckBox, MdCheckBoxOutlineBlank } from "react-icons/md";
 import HeaderV1 from "../../components/header/HeaderV1";
@@ -54,37 +54,6 @@ const LoginScreen = ({ location }) => {
         <div className="tw-bg-[#b1f0b4] tw-px-12 tw-w-[350px] md:tw-w-[500px] tw-rounded-md">
           <div className="row">
             <div className="" style={{ marginBottom: "1.6em" }}>
-              {/* <Form onSubmit={submitHandler} style={{ marginTop: 20 }}>
-              <Form.Group controlId="email">
-              <Form.Label>Email Address</Form.Label>
-                <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={handleEmail}
-                ref={emailRef}
-                ></Form.Control>
-                </Form.Group>
-                
-                <Form.Group controlId="password">
-                <Form.Label>Password</Form.Label>
-                <div className="input-group">
-                <Form.Control
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                />
-                <button type="button" onClick={togglePasswordVisibility}>
-                {showPassword ? <MdVisibility /> : <MdVisibilityOff />}
-                </button>
-                </div>
-                </Form.Group>
-                
-                <Button type="submit" className="cs_btn cs_style_1 mt-3" style={{ marginBottom: 50 }}>
-                <span>Sign In</span>
-                </Button>
-              </Form> */}
               <Form onSubmit={submitHandler} className="form-login" style={{ marginTop: "2em" }}>
                 <div>
                   <h3 className="tw-font-bold tw-text-4xl tw-w-full tw-text-center">Sign In</h3>

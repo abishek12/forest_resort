@@ -22,7 +22,7 @@ import {
   APPOINTMENT_TOP_SUCCESS,
   APPOINTMENT_TOP_FAIL,
 } from "../constants/appointmentConstants";
-import { logout } from "./userActions";
+import { logout } from "./authentication/userLogout";
 
 export const listAppointments =
   (keyword = "", pageNumber = "") =>

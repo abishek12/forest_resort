@@ -22,7 +22,7 @@ import {
   CONTACT_TOP_SUCCESS,
   CONTACT_TOP_FAIL,
 } from "../constants/contactConstants";
-import { logout } from "./userActions";
+import { logout } from "./authentication/userLogout";
 
 export const listContacts =
   (keyword = "", pageNumber = "") =>

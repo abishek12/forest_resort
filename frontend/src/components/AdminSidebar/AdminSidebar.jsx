@@ -24,7 +24,7 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
 import { SidebarContext } from "../../context/SidebarContext";
-import { logout } from "../../actions/userActions";
+import { logout } from "../../actions/authentication/userLogout";
 import { useDispatch } from "react-redux";
 
 const AdminSidebar = ({ isOpen }) => {

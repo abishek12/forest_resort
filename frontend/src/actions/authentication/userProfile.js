@@ -3,7 +3,7 @@ import{
     USER_UPDATE_PROFILE_REQUEST,
     USER_UPDATE_PROFILE_SUCCESS,
     USER_UPDATE_PROFILE_FAIL
-} from "../constants/userConstants";
+} from "../../constants/userConstants";
 import { USER_LOGIN_SUCCESS } from "../../constants/userConstants";
 import { logout } from "./userLogout";
 

@@ -4,7 +4,9 @@ import { Table, Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../../../../components/Message";
 import Loader from "../../../../components/Loader";
-import { getUserDetails, updateUserProfile } from "../../../../actions/userActions";
+import { getUserDetails } from "../../../../actions/authentication/userDetails";
+import { updateUserProfile } from "../../../../actions/authentication/userProfile";
+
 // import { listMyOrders } from "../actions/orderActions";
 import { Container } from "react-bootstrap";
 import { USER_UPDATE_PROFILE_RESET } from "../../../../constants/userConstants";
