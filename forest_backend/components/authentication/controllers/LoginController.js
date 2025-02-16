@@ -2,13 +2,14 @@ import jwt from "jsonwebtoken";
 
 import { User } from "../../users/model/UserModel.js";
 import { loginHelper } from "../helper/AuthHelper.js";
+import { tokenGenerator } from "../helper/TokenGenerator.js";
 
 /**
- * 
- * @param {email, password} req 
+ *
+ * @param {email, password} req
  * @route POST /api/auth/login
  * @access Public
- * @returns 
+ * @returns
  */
 export const loginUser = async (req, res) => {
   try {
@@ -35,16 +36,23 @@ export const loginUser = async (req, res) => {
     }
 
     // generate token
-    const token = jwt.sign(
-      { userId: userData._id, email: userData.email, roles: userData.roles },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+    const accessToken = await tokenGenerator(userData);
+
+    const refreshToken = await jwt.sign(
+      {
+        id: userData._id,
+      },
+      process.env.JWT_REFRESH,
+      {
+        expiresIn: "7d",
+      }
     );
 
-    userData.token = token;
+    userData.token = refreshToken;
+
     await userData.save();
 
-    return res.status(200).json({ message: "Login successful" });
+    return res.status(200).json({ message: "Login successful", accessToken });
   } catch (error) {
     console.error(`Error: ${error}`);
     return res.status(500).json({
