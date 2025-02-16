@@ -52,6 +52,7 @@ import AppointmentViewScreen from "./pages/screens/Admin/Appointment/Appointment
 import Service from "./pages/screens/Admin/Services/Service";
 import Booking from "./pages/screens/Admin/Bookings/Booking";
 import BookingTime from "./components/booking/BookingTime";
+import RegisterScreen from "./pages/screens/Register";
 
 const Routers = () => {
   return (
@@ -116,6 +117,7 @@ const Routers = () => {
         ></Route>
 
         <Route path="/login" element={<LoginScreen />} />
+        <Route path="/register" element={<RegisterScreen />} />
         <Route element={<BaseLayout />}>
           <Route path="/admin/dashboard" element={<AdminBlog />} />
           <Route path="/admin/profile" element={<ProfileScreen />} />

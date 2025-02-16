@@ -38,9 +38,9 @@ const AdminBlog = () => {
   useEffect(() => {
     dispatch({ type: BLOG_CREATE_RESET });
 
-    if (!userInfo || !userInfo.isAdmin) {
-      navigate("/login");
-    }
+    // if (!userInfo || !userInfo.isAdmin) {
+    //   navigate("/login");
+    // }
 
     if (successCreate) {
       navigate(`/admin/blogs`);

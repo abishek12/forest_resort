@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Form, } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../../components/Message";
@@ -85,12 +85,12 @@ const LoginScreen = ({ location }) => {
                         <label className="tw-text-base show"> Show Password</label>
                       </div> 
                     <div>
-                      <div />
                       <div className="tw-w-full tw-pt-10">
                       <button type="submit" className="login">
                         <span>Login</span>
                       </button>
                       </div>
+                      <p>Don't have an Account <span> <Link to="/register">Create Account</Link> </span> </p>
                     </div>
                   </div>
                         <div>
