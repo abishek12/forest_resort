@@ -6,7 +6,7 @@ export const listBlogs = async (keyword = "", pageNumber = "") => {
     const { data } = await axios.get(
       `http://localhost:8888/api/blog`
     );
-    return data;
+    return data.items;
   } catch (error) {
     throw new Error(
       error.response && error.response.data.message

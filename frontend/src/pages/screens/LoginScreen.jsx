@@ -88,7 +88,7 @@ const LoginScreen = ({ location }) => {
                             <span>Login</span>
                           </button>
                         </div>
-                        <p>Don't have an Account? <span> <Link to="/register">Create Account</Link> </span> </p>
+                        <p className="text-center my-2">Don't have an Account? <span> <Link to="/register">Create Account</Link> </span> </p>
                       </div>
                     </div>
                     {error && <Message variant="danger">{error}</Message>}
