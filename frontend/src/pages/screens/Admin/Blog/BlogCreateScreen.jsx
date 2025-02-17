@@ -1,102 +1,28 @@
 import axios from "axios";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import ReactQuill from "react-quill";
+import { toast } from "react-toastify";
+
 import Loader from "../../../../components/Loader";
 import FormContainer from "../../../../components/FormContainer";
 import { createBlog } from "../../../../actions/blogActions";
 import "./BlogCreateScreen.scss";
-import ReactQuill from "react-quill";
-import { toast } from "react-toastify";
 
 const BlogCreateScreen = () => {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  // const [authorbio, setAuthorBio] = useState("");
-  const [images, setImages] = useState([]);
+  const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
+  const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
-
-  const dispatch = useDispatch();
-
-  const uploadFileHandler = async (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 5) {
-      toast.error("You can upload a maximum of 5 images.");
-      setImages([]);
-      return;
-    }
-    const data = new FormData();
-    files.forEach((file) => data.append("images", file));
-
-    const previewUrls = files.map((file) => URL.createObjectURL(file));
-
-    setUploading(true);
-
-    try {
-      const { data: uploadedUrls } = await axios.post(
-        "http://localhost:5000/api/upload",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      setImages((prevImages) => [...prevImages, ...uploadedUrls]);
-      console.log("Images state after upload:", [...prevImages, ...data]);
-      setUploading(false);
-    } catch (error) {
-      if (error.response) {
-        toast.error(
-          `${error.response.data.message || "Error uploading images"}`
-        );
-      }
-    } finally {
-      setUploading(false);
-    }
-  };
+  const [error, setError] = useState(null);
 
   const quillRef = useRef(null);
-
-  const handleImageUpload = useCallback(() => {
-    const input = document.createElement("input");
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
-    input.click();
-
-    input.onchange = async () => {
-      if (input !== null && input.files !== null) {
-        const file = input.files[0];
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "forest_arena");
-
-        try {
-          const response = await axios.post(
-            "https://api.cloudinary.com/v1_1/dykya5ncm/upload",
-            formData
-          );
-
-          const imageUrl = response.data.secure_url;
-
-          const quill = quillRef.current?.getEditor();
-          if (quill) {
-            const range = quill.getSelection();
-            quill.insertEmbed(range.index, "image", imageUrl);
-          } else {
-            toast.error("Failed to insert the image into the editor.");
-          }
-        } catch (error) {
-          toast.error("Image upload failed. Please try again.");
-        }
-      }
-    };
-  }, []);
 
   const modules = {
     toolbar: {
@@ -107,30 +33,27 @@ const BlogCreateScreen = () => {
         [{ list: "ordered" }, { list: "bullet" }],
         ["link", "image"],
       ],
-      handlers: {
-        image: handleImageUpload,
-      },
     },
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      dispatch(
-        createBlog({
-          title,
-          author,
-          // authorbio,
-          images,
-          category,
-          description,
-        })
-      );
+      const blogData = {
+        title,
+        user: author,
+        featured_image: "https://placehold.co/600x400",
+        category: "67a9bdf32d115c71f365990c",
+        tags: ["67a9cf787d42844e1bd5240d", "67a9cd6c218df1e01a505291"],
+        content,
+        description,
+      };
+      await createBlog(blogData);
       toast.success("Blog created successfully");
       navigate("/admin/blogs");
     } catch (error) {
-      toast.error("Error while creating blog.");
-      console.log("Error: ", error);
+      toast.error(error.message || "Error creating blog");
+      setError(error.message || "Error creating blog");
     }
   };
 
@@ -164,26 +87,9 @@ const BlogCreateScreen = () => {
             />
           </Form.Group>
 
-          {/* <Form.Group controlId="authorbio">
-            <Form.Label className="form-item">Author Bio</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Author Bio"
-              value={authorbio}
-              onChange={(e) => setAuthorBio(e.target.value)}
-              required
-            />
-          </Form.Group> */}
-
           <Form.Group controlId="images">
             <Form.Label className="form-item">Images</Form.Label>
-            <Form.Control
-              type="file"
-              label="Choose File"
-              onChange={uploadFileHandler}
-              multiple
-              required
-            />
+            <Form.Control type="file" label="Choose File" multiple />
             {uploading ? (
               <Loader />
             ) : (
@@ -216,6 +122,16 @@ const BlogCreateScreen = () => {
               <option value="event">Event</option>
               <option value="other">Other</option>
             </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="content">
+            <Form.Label className="form-item">Content</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Short Content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
           </Form.Group>
 
           <Form.Group controlId="description">

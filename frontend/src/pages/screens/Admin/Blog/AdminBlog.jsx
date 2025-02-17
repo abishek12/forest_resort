@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { v4 as uuid } from "uuid";
+import { FaEye, FaEdit } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
+import { IoIosAdd } from "react-icons/io";
 
 import { listBlogs, removeBlog } from "../../../../actions/blogActions";
 import Loader from "../../../../components/Loader";
 import Message from "../../../../components/Message";
+import { dateTimeFormat } from "../../../../utils/date-time";
 
 const TABLE_HEADS = ["S.N", "Title", "Author", "Date", "Status", "Actions"];
 
@@ -14,9 +18,6 @@ const AdminBlog = () => {
   const [error, setError] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
 
-  console.log(blogs);
-
-  // Fetch all blogs on mount
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
@@ -33,7 +34,6 @@ const AdminBlog = () => {
     fetchBlogs();
   }, []);
 
-  // Handle blog deletion
   const handleRemoveBlog = async (id) => {
     if (window.confirm("Are you sure you want to delete this blog?")) {
       try {
@@ -51,11 +51,9 @@ const AdminBlog = () => {
       {loading && <Loader />}
       {error && <Message variant="danger">{error}</Message>}
 
-      <div className="data-table-info">
-        <h4 className="data-table-title">Blog Responses</h4>
-      </div>
+      <Link to="/admin/blog/create" className="btn">Add Blogs</Link>
       <div className="data-table-diagram">
-        <table>
+        <table className="table table-striped table-bordered">
           <thead>
             <tr>
               {TABLE_HEADS?.map((th, index) => (
@@ -68,13 +66,24 @@ const AdminBlog = () => {
               <tr key={uuid()}>
                 <td>{index + 1}</td>
                 <td>{blog.title}</td>
-                {/* You can add more data columns as needed */}
-                <td>{blog.author}</td>
-                <td>{blog.date}</td>
+                <td>{blog.user.fullname}</td>
+                <td>{dateTimeFormat(blog.createdAt)}</td>
                 <td>{blog.status}</td>
                 <td className="dt-cell-action">
-                  <Link to={`/admin/blogs/${blog._id}/view`}>View</Link>
-                  <Link onClick={() => handleRemoveBlog(blog._id)}>Delete</Link>
+                  <div className="d-flex align-items-center">
+                    <Link to={`/admin/blogs/${blog._id}/view`} className="me-2">
+                      <FaEye />
+                    </Link>
+                    <Link
+                      onClick={() => handleRemoveBlog(blog._id)}
+                      className="me-2"
+                    >
+                      <MdDeleteOutline />
+                    </Link>
+                    <Link to="#" className="">
+                      <FaEdit />
+                    </Link>
+                  </div>
                 </td>
               </tr>
             ))}

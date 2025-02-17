@@ -3,9 +3,7 @@ import { logout } from "./authentication/userLogout";
 
 export const listBlogs = async (keyword = "", pageNumber = "") => {
   try {
-    const { data } = await axios.get(
-      `http://localhost:8888/api/blog`
-    );
+    const { data } = await axios.get(`http://localhost:8888/api/blog`);
     return data.items;
   } catch (error) {
     throw new Error(
@@ -49,17 +47,17 @@ export const removeBlog = async (id, userInfo) => {
   }
 };
 
-export const createBlog = async (blogData, userInfo) => {
+export const createBlog = async (blogData) => {
   try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+    // pass userInfo in params in function
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${userInfo.token}`,
+    //   },
+    // };
     const { data } = await axios.post(
-      `http://localhost:8888/api/blogs`,
-      blogData,
-      config
+      `http://localhost:8888/api/blog`,
+      blogData
     );
     return data;
   } catch (error) {
