@@ -34,6 +34,13 @@ const bookingSchema = new mongoose.Schema(
         default: "pending",
       },
     },
+    persons: {
+      type: Object,
+      default: {
+        children: 0,
+        adults: 1,
+      },
+    },
   },
   { timestamps: true }
 );

@@ -1,4 +1,6 @@
 import { Service } from "../model/ServiceModel.js";
+import { Booking } from "../../bookings/model/BookingModel.js";
+import { generateTimeSlots } from "../helper/TimeSlotHelper.js";
 
 /**
  * @desc    Get all services
@@ -63,5 +65,39 @@ export const getService = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: error });
+  }
+};
+
+export const getServiceTimeSlots = async (req, res) => {
+  try {
+    const { date, start, end } = req.query;
+    if (!date || !start || !end)
+      return res
+        .status(400)
+        .json({ error: "Date, start, and end times are required" });
+
+    const service = await Service.findById(req.params.id);
+    if (!service) return res.status(404).json({ error: "Service not found" });
+
+    const allSlots = generateTimeSlots(start, end);
+
+    // Check existing bookings for this service and date
+    const bookings = await Booking.find({ service: service._id, date });
+
+    const bookedSlots = bookings.map(
+      (booking) => `${booking.timeSlot.start}-${booking.timeSlot.end}`
+    );
+
+    // Filter out booked slots
+    const availableSlots = allSlots.filter(
+      (slot) => !bookedSlots.includes(`${slot.start}-${slot.end}`)
+    );
+
+    return res
+      .status(200)
+      .json({ service: service.name, date, availableSlots });
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
