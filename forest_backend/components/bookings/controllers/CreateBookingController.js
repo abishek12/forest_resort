@@ -15,18 +15,27 @@ export const createBooking = async (req, res) => {
 
     const service = await Service.findById(value.service);
     if (!service) {
+      console.log("Service not found");
       return res.status(404).json({ message: "Service not found" });
     }
 
     // Check if the time slot is already booked
-    const isBooked = await Booking.findOne({
+    let isBooked = await Booking.findOne({
       service: value.service,
       date: value.date,
-      "timeSlot.start": value.timeSlot.start,
-      "timeSlot.end": value.timeSlot.end,
+      $or: [
+        {
+          "timeSlot.start": { $lt: value.timeSlot.end },
+          "timeSlot.end": { $gt: value.timeSlot.start },
+        },
+      ],
     });
 
     if (isBooked) {
+      console.log(
+        `Booking created for service ${value.service} by user ${value.user}`
+      );
+
       return res.status(400).json({ message: "Time slot already booked" });
     }
 
@@ -36,8 +45,10 @@ export const createBooking = async (req, res) => {
 
     return res.status(201).json({
       message: "success",
+      booking_id: booking._id,
     });
   } catch (error) {
-    res.status(500).json({ message: error });
+    console.log(`Server Error: ${error}`);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };

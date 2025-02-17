@@ -13,7 +13,7 @@ const bookingSchema = new mongoose.Schema(
       required: true,
     },
     date: {
-      type: String, // Format: "YYYY-MM-DD"
+      type: Date, // Format: "YYYY-MM-DD"
       required: true,
     },
     timeSlot: {
@@ -22,7 +22,7 @@ const bookingSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "confirmed", "cancelled"],
+      enum: ["pending", "confirmed", "cancelled", "completed"],
       default: "pending",
     },
     payment: {
@@ -30,12 +30,20 @@ const bookingSchema = new mongoose.Schema(
       amount: { type: Number },
       status: {
         type: String,
-        enum: ["pending", "paid", "failed"],
+        enum: ["pending", "paid", "failed", "refunded"],
         default: "pending",
       },
     },
   },
   { timestamps: true }
 );
+
+bookingSchema.pre("save", function (next) {
+  if (this.timeSlot.start >= this.timeSlot.end) {
+    next(new Error("Start time must be before end time"));
+  } else {
+    next();
+  }
+});
 
 export const Booking = mongoose.model("booking", bookingSchema);
