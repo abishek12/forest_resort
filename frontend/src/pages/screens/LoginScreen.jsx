@@ -25,7 +25,7 @@ const LoginScreen = ({ location }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
 
-  const redirect = "/admin/dashboard";
+ const redirect = "/admin/dashboard";
 
   useEffect(() => {
     if (userInfo) {
@@ -90,7 +90,7 @@ const LoginScreen = ({ location }) => {
                         <span>Login</span>
                       </button>
                       </div>
-                      <p>Don't have an Account <span> <Link to="/register">Create Account</Link> </span> </p>
+                      <p>Don't have an Account? <span> <Link to="/register">Create Account</Link> </span> </p>
                     </div>
                   </div>
                         <div>
