@@ -35,15 +35,15 @@ const AdminBlog = () => {
 
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    dispatch({ type: BLOG_CREATE_RESET });
+  // useEffect(() => {
+  //   dispatch({ type: BLOG_CREATE_RESET });
 
-    if (successCreate) {
-      navigate(`/admin/blogs`);
-    } else {
-      dispatch(listBlogs());
-    }
-  }, [dispatch, navigate, userInfo, successDelete, successCreate, createdBlog]);
+  //   if (successCreate) {
+  //     navigate(`/admin/blogs`);
+  //   } else {
+  //     dispatch(listBlogs());
+  //   }
+  // }, [dispatch, navigate, userInfo, successDelete, successCreate, createdBlog]);
 
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure")) {
@@ -108,7 +108,7 @@ const AdminBlog = () => {
                     >
                       <MdOutlineDelete style={{ color: "red" }} />
                     </Link>
-                  
+
                   </td>
                 </tr>
               )
@@ -123,3 +123,5 @@ const AdminBlog = () => {
 };
 
 export default AdminBlog;
+
+

@@ -22,21 +22,10 @@ const BaseLayout = () => {
   };
 
   useEffect(() => {
-    if (!userInfo || !userInfo.isAdmin) {
+    if (!userInfo) {
       navigate("/login");
     }
   }, [userInfo, navigate]);
-
-  // const { theme, toggleTheme } = useContext(ThemeContext);
-
-  // adding dark-mode class if the dark mode is set on to the body tag
-  // useEffect(() => {
-  //   if (theme === DARK_THEME) {
-  //     document.body.classList.add("dark-mode");
-  //   } else {
-  //     document.body.classList.remove("dark-mode");
-  //   }
-  // }, [theme]);
 
   return (
     <>

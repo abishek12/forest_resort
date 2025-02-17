@@ -31,7 +31,7 @@ export const listBlogs =
       dispatch({ type: BLOG_LIST_REQUEST });
 
       const { data } = await axios.get(
-        `http://localhost:5000/api/blogs`
+        `http://localhost:8888/api/blog`
         // `http://localhost:5000/api/blogs?keyword=${keyword}&pageNumber=${pageNumber}`
       );
 
@@ -56,7 +56,7 @@ export const listBlogInfo = (id) => async (dispatch) => {
   try {
     dispatch({ type: BLOG_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`http://localhost:5000/api/blogs/${id}`);
+    const { data } = await axios.get(`http://localhost:8888/api/blogs/${id}`);
 
     dispatch({
       type: BLOG_DETAILS_SUCCESS,
@@ -89,7 +89,7 @@ export const removeBlog = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`http://localhost:5000/api/blogs/${id}`, config);
+    await axios.delete(`http://localhost:8888/api/blogs/${id}`, config);
 
     dispatch({
       type: BLOG_DELETE_SUCCESS,
@@ -126,7 +126,7 @@ export const createBlog = (blogData) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.post(
-      `http://localhost:5000/api/blogs`,
+      `http://localhost:8888/api/blogs`,
       blogData,
       config
     );
@@ -168,7 +168,7 @@ export const updateBlog = (blog) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `http://localhost:5000/api/blogs/${blog._id}`,
+      `http://localhost:8888/api/blogs/${blog._id}`,
       blog,
       config
     );
@@ -212,7 +212,7 @@ export const createBlogReview =
       };
 
       await axios.post(
-        `http://localhost:5000/api/blogs/${blogId}/reviews`,
+        `http://localhost:8888/api/blogs/${blogId}/reviews`,
         review,
         config
       );
