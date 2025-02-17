@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import "./User.scss";
 
 import { useDispatch, useSelector } from "react-redux";
-import { listUsers, deleteUser } from "../../../../actions/userActions";
+import { usersList } from "../../../../actions/authentication/userList";
+import {usersDelete} from "../../../../actions/authentication/userDelete"
 import { Link, useNavigate } from 'react-router-dom';
 // import { HiDotsHorizontal } from "react-icons/hi";
 import {
@@ -19,62 +20,7 @@ const TABLE_HEADS = [
   "Actions",
 ];
 
-// const TABLE_DATA = [
-//   {
-//     id: 100,
-//     name: "Iphone 13 Pro",
-//     order_id: 11232,
-//     date: "Jun 29,2022",
-//     customer: "Afaq Karim",
-//     status: "delivered",
-//     amount: 400,
-//   },
-//   {
-//     id: 101,
-//     name: "Macbook Pro",
-//     order_id: 11232,
-//     date: "Jun 29,2022",
-//     customer: "Afaq Karim",
-//     status: "pending",
-//     amount: 288,
-//   },
-//   {
-//     id: 102,
-//     name: "Apple Watch",
-//     order_id: 11232,
-//     date: "Jun 29,2022",
-//     customer: "Afaq Karim",
-//     status: "canceled",
-//     amount: 500,
-//   },
-//   {
-//     id: 103,
-//     name: "Microsoft Book",
-//     order_id: 11232,
-//     date: "Jun 29,2022",
-//     customer: "Afaq Karim",
-//     status: "delivered",
-//     amount: 100,
-//   },
-//   {
-//     id: 104,
-//     name: "Apple Pen",
-//     order_id: 11232,
-//     date: "Jun 29,2022",
-//     customer: "Afaq Karim",
-//     status: "delivered",
-//     amount: 60,
-//   },
-//   {
-//     id: 105,
-//     name: "Airpods",
-//     order_id: 11232,
-//     date: "Jun 29,2022",
-//     customer: "Afaq Karim",
-//     status: "delivered",
-//     amount: 80,
-//   },
-// ];
+
 
 const User = () => {
 
@@ -92,7 +38,7 @@ const User = () => {
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      dispatch(listUsers());
+      dispatch(usersList());
     } else {
       navigate("/login");
     }
@@ -120,7 +66,7 @@ const User = () => {
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure")) {
-      dispatch(deleteUser(id));
+      dispatch(usersDelete(id));
       navigate("/admin/dashboard");
     }
   };

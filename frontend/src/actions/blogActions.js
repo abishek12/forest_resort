@@ -22,7 +22,7 @@ import {
   BLOG_TOP_SUCCESS,
   BLOG_TOP_FAIL,
 } from "../constants/blogConstants";
-import { logout } from "./userActions";
+import { logout } from "./authentication/userLogout";
 
 export const listBlogs =
   (keyword = "", pageNumber = "") =>

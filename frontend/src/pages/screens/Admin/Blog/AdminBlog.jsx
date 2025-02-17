@@ -38,10 +38,6 @@ const AdminBlog = () => {
   useEffect(() => {
     dispatch({ type: BLOG_CREATE_RESET });
 
-    if (!userInfo || !userInfo.isAdmin) {
-      navigate("/login");
-    }
-
     if (successCreate) {
       navigate(`/admin/blogs`);
     } else {
@@ -67,35 +63,6 @@ const AdminBlog = () => {
     // dispatch(createBlog());
   };
 
-  // const [showDropdown, setShowDropdown] = useState(false);
-  // const handleDropdown = () => {
-  //   setShowDropdown(!showDropdown);
-  // };
-
-  // const dropdownRef = useRef(null);
-
-  // const handleClickOutside = (event) => {
-  //   if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-  //     setShowDropdown(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.addEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
-
-  // const userDelete = useSelector((state) => state.userDelete);
-  // const { success: successDelete } = userDelete;
-
-  // const deleteHandler = (id) => {
-  //   if (window.confirm("Are you sure")) {
-  //     dispatch(deleteUser(id));
-  //   }
-  // };
-
   const sortedBlogs = blogs
     ?.slice()
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -112,10 +79,6 @@ const AdminBlog = () => {
           disabled={loading}
         >
           <span>Add Blog</span>
-          {/* <i>
-            <img loading="lazy"  src="/images/icons/arrow_white.svg" alt="Icon" />
-            <img loading="lazy"  src="/images/icons/arrow_white.svg" alt="Icon" />
-          </i> */}
         </button>
       </div>
       <div className="data-table-diagram">
@@ -145,30 +108,7 @@ const AdminBlog = () => {
                     >
                       <MdOutlineDelete style={{ color: "red" }} />
                     </Link>
-                    {/* <button
-                    type="button"
-                    className="action-dropdown-btn"
-                    onClick={handleDropdown}
-                  >
-                    <HiDotsHorizontal size={18} />
-                    {showDropdown && (
-                      <div className="action-dropdown-menu" ref={dropdownRef}>
-                        <ul className="dropdown-menu-list" style={{ listStyle: 'none' }}>
-                          <li className="dropdown-menu-item">
-                            <Link to={`/admin/blog/${blog._id}/edit`} className="dropdown-menu-link">
-                              Edit
-                            </Link>
-                          </li>
-                          <li className="dropdown-menu-item">
-                            <Link className="dropdown-menu-link" onClick={() => deleteHandler(blog._id)}>
-                              Delete
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    )}
-                  </button> */}
-                    {/* <UserAction id={blog._id} /> */}
+                  
                   </td>
                 </tr>
               )
