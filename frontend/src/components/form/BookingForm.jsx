@@ -24,25 +24,16 @@ const BookingForm = () => {
 
   const dispatch = useDispatch();
 
-  // const handleDateChange = (date) => {
-  //   // Adjust the date to local timezone if necessary
-  //   // const adjustedDate = new Date(date.getTime() + date.getTimezoneOffset() * 20700);
-  //   // const adjustedDate = new Date(startDate.getTime() + date.getTimezoneOffset() * 567)
-  //   // const adjustedDate = new Date(date.getTime());
-  //   setStartDate(adjustedDate);
-  // };
-
   const handleDateChange = (selectedDate) => {
-    // Remove the time part of the date
-    // const newDate = new Date(selectedDate);
-    // newDate.setHours(0, 0, 0, 0);
-    // setDate(newDate);
     setDate(selectedDate);
   };
 
-  const handleTimeChange = (e) => {
+  const handleTimeChange = (e, type) => {
     const { name, value } = e.target;
-    setTime((prevTime) => ({ ...prevTime, [name]: value }));
+    setTimeSlot((prevTimeSlot) => ({
+      ...prevTimeSlot,
+      [type]: { ...prevTimeSlot[type], [name]: value },
+    }));
   };
 
   // Convert time to 24-hour format
@@ -103,39 +94,36 @@ const BookingForm = () => {
   const handleForm = async (event) => {
     event.preventDefault();
 
-    const { hour, minute } = get24HourTime();
+    const { hour, minute, period } = time;
     const bookingDateTime = new Date(date);
-    bookingDateTime.setHours(hour, minute, 0, 0);
+    const { hour: adjustedHour, minute: adjustedMinute } = get24HourTime();
+
+    bookingDateTime.setHours(adjustedHour, adjustedMinute, 0, 0);
     console.log("Booking Date and Time:", bookingDateTime);
-    // console.log("Booking Date and Time ok:", bookingDateTime.Date);
-    // const nepaliOffset = 5.75 * 60; // 5 hours 45 minutes in minutes
-    // const localDate = new Date(startDate.getTime() + date.getTimezoneOffset() * 60000);
-    // const nepaliDate = new Date(localDate.getTime() + nepaliOffset * 60000);
-    // console.log("data", name)
-    // console.log("data", email)
-    // console.log("data", phone)
-    // console.log("data", message)
-    // console.log("data", service)
-    // console.log("data", adults)
-    // console.log("data", children)
-    // console.log("data", startDate)
+
+    const startTime = `${String(adjustedHour).padStart(2, "0")}:${String(
+      adjustedMinute
+    ).padStart(2, "0")}`;
+    const endTime = `${String(adjustedHour + 1).padStart(2, "0")}:${String(
+      adjustedMinute
+    ).padStart(2, "0")}`; // Assuming 1-hour time slots
 
     console.log("TIME:", time);
 
-    await dispatch(
-      createAppointment({
-        name,
-        phone,
-        email,
-        message,
-        service,
-        adults,
-        children,
-        startDate: bookingDateTime.toString(),
-      })
-    );
+    const bookingData = {
+      name,
+      phone,
+      email,
+      message,
+      service,
+      adults,
+      children,
+      date: bookingDateTime,
+      timeSlot: { start: startTime, end: endTime },
+    };
 
-    // event.target.reset();
+    await dispatch(createAppointment(bookingData));
+
     toast.success("Thanks For Your Message");
   };
 
@@ -210,23 +198,7 @@ const BookingForm = () => {
                     new Date(new Date().setDate(new Date().getDate() + 30))
                   }
                 />
-                {/* <DatePicker
-                  className="tw-z-50"
-                  selected={startDate}
-                  // onChange={(date) => setStartDate(date)}
-                  onChange={handleDateChange}
-                  minDate={new Date()}
-                  maxDate={
-                    new Date(new Date().setDate(new Date().getDate() + 30))
-                  }
-                  showTimeSelect
-                  timeFormat="hh:mm aa"
-                  timeCaption="Time"
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                  minTime={minTime}
-                  maxTime={maxTime}
-                /> */}
-                {/* <p>Selected Date and Time: {startDate.toLocaleString()}</p> */}
+
                 <span className="alert-error"></span>
               </div>
               <div className="form-group">
