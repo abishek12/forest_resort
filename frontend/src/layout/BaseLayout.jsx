@@ -1,26 +1,17 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
-import AdminSidebar from "../components/AdminSidebar/AdminSidebar";
-import "./Baselayout.scss";
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 
+import AdminSidebar from "../components/AdminSidebar/AdminSidebar";
+import "./Baselayout.scss";
+
 const BaseLayout = () => {
-  const navigate = useNavigate();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
-  useEffect(() => {
-    if (!userInfo) {
-      navigate("/login");
-    }
-  }, [userInfo, navigate]);
 
   return (
     <>

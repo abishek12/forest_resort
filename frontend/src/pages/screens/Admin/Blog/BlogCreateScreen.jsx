@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import ReactQuill from "react-quill";
@@ -16,11 +16,15 @@ const BlogCreateScreen = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(""); // Category (single)
   const [description, setDescription] = useState("");
+  const [tags, setTags] = useState([]); // Tags (multiple)
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [categories, setCategories] = useState([]); // For Categories
+  const [allTags, setAllTags] = useState([]); // For Tags
 
   const quillRef = useRef(null);
 
@@ -36,6 +40,25 @@ const BlogCreateScreen = () => {
     },
   };
 
+  // Fetch categories and tags
+  useEffect(() => {
+    const fetchCategoriesAndTags = async () => {
+      try {
+        // Fetch categories (replace with your API endpoint)
+        const categoryResponse = await axios.get("http://localhost:8888/api/category");
+        setCategories(categoryResponse.data.items);
+
+        // Fetch tags (replace with your API endpoint)
+        const tagResponse = await axios.get("http://localhost:8888/api/tag");
+        setAllTags(tagResponse.data.items);
+      } catch (error) {
+        setError("Failed to fetch categories or tags.");
+      }
+    };
+
+    fetchCategoriesAndTags();
+  }, []);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -43,8 +66,8 @@ const BlogCreateScreen = () => {
         title,
         user: author,
         featured_image: "https://placehold.co/600x400",
-        category: "67a9bdf32d115c71f365990c",
-        tags: ["67a9cf787d42844e1bd5240d", "67a9cd6c218df1e01a505291"],
+        category,
+        tags, 
         content,
         description,
       };
@@ -87,25 +110,6 @@ const BlogCreateScreen = () => {
             />
           </Form.Group>
 
-          <Form.Group controlId="images">
-            <Form.Label className="form-item">Images</Form.Label>
-            <Form.Control type="file" label="Choose File" multiple />
-            {uploading ? (
-              <Loader />
-            ) : (
-              <div className="image-preview">
-                {images.map((img, index) => (
-                  <img
-                    key={index}
-                    src={img}
-                    alt={`Preview ${index}`}
-                    className="image-preview-item"
-                  />
-                ))}
-              </div>
-            )}
-          </Form.Group>
-
           <Form.Group controlId="category">
             <Form.Label className="form-item">Category</Form.Label>
             <Form.Control
@@ -115,12 +119,27 @@ const BlogCreateScreen = () => {
               required
             >
               <option value="">Select Category</option>
-              <option value="swimming">Swimming</option>
-              <option value="futsal">Futsal</option>
-              <option value="news">News</option>
-              <option value="offer">Offer</option>
-              <option value="event">Event</option>
-              <option value="other">Other</option>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.title}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="tags">
+            <Form.Label className="form-item">Tags</Form.Label>
+            <Form.Control
+              as="select"
+              multiple
+              value={tags}
+              onChange={(e) => setTags(Array.from(e.target.selectedOptions, option => option.value))}
+            >
+              {allTags.map((tag) => (
+                <option key={tag._id} value={tag._id}>
+                  {tag.title}
+                </option>
+              ))}
             </Form.Control>
           </Form.Group>
 

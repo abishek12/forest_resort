@@ -1,5 +1,7 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import PrivateRoute from "./PrivateRouters";
+
 import Home1 from "./pages/homePages/Home1";
 import Home2 from "./pages/homePages/Home2";
 import Home3 from "./pages/homePages/Home3";
@@ -117,11 +119,32 @@ const Routers = () => {
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
         <Route element={<BaseLayout />}>
-          <Route path="/admin/dashboard" element={<AdminBlog />} />
-          <Route path="/admin/profile" element={<ProfileScreen />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <PrivateRoute>
+                <AdminBlog />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/profile"
+            element={
+              <PrivateRoute>
+                <ProfileScreen />
+              </PrivateRoute>
+            }
+          />
           <Route path="/admin/blogs" element={<AdminBlog />} exact />
           {/* <Route path="/admin/blogs/:pageNumber" element={<BlogListScreen />} exact /> */}
-          <Route path="/admin/blog/create" element={<BlogCreateScreen />} />
+          <Route
+            path="/admin/blog/create"
+            element={
+              <PrivateRoute>
+                <BlogCreateScreen />
+              </PrivateRoute>
+            }
+          />
           <Route path="/admin/blog/:id/edit" element={<BlogEditScreen />} />
           <Route path="/admin/contacts" element={<AdminContact />} exact />
 

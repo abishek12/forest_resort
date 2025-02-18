@@ -12,6 +12,7 @@ import { dateTimeFormat } from "../../../../utils/date-time";
 const TABLE_HEADS = ["S.N", "Title", "Author", "Date", "Status", "Actions"];
 
 const AdminBlog = () => {
+
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -50,7 +51,9 @@ const AdminBlog = () => {
       {loading && <Loader />}
       {error && <Message variant="danger">{error}</Message>}
 
-      <Link to="/admin/blog/create" className="btn">Add Blogs</Link>
+      <Link to="/admin/blog/create" className="btn">
+        Add Blogs
+      </Link>
       <div className="data-table-diagram">
         <table className="table table-striped table-bordered">
           <thead>
