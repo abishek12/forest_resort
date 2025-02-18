@@ -5,7 +5,8 @@ export const listContacts = async (
   keyword = "",
   page = 1,
   limit = 10,
-  sort = "desc"
+  sort = "desc",
+  status
 ) => {
   try {
     const { data } = await axios.get(`http://localhost:8888/api/contact-us`, {
@@ -13,6 +14,7 @@ export const listContacts = async (
         page,
         limit,
         sort,
+        status,
       },
     });
     return data;
@@ -45,7 +47,7 @@ export const removeContact = async (id, userInfo) => {
   }
 };
 
-export const createContact = async (blogData) => {
+export const createContact = async (contactData) => {
   try {
     // pass userInfo in params in function
     // const config = {
@@ -54,8 +56,8 @@ export const createContact = async (blogData) => {
     //   },
     // };
     const { data } = await axios.post(
-      `http://localhost:8888/api/blog`,
-      blogData
+      `http://localhost:8888/api/contact-us`,
+      contactData
     );
     return data;
   } catch (error) {

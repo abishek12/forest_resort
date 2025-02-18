@@ -18,12 +18,13 @@ const Contact = () => {
   const [successUpdate, setSuccessUpdate] = useState(false);
   const [successDelete, setSuccessDelete] = useState(false);
   const [selectedContact, setSelectedContact] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("");
 
   // Fetch contacts
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const data = await listContacts("", 1, 10, "desc");
+        const data = await listContacts("", 1, 10, "desc", statusFilter);
 
         setItems(data.items);
       } catch (error) {
@@ -32,7 +33,7 @@ const Contact = () => {
     };
 
     fetchContacts();
-  }, [successDelete, successUpdate]);
+  }, [successDelete, successUpdate, statusFilter]);
 
   const reviewHandler = async (id, status) => {
     try {
@@ -63,11 +64,29 @@ const Contact = () => {
     setSelectedContact(contact);
   };
 
+  // handle status filter
+  const handleStatusFilter = (status) => {
+    setStatusFilter(status);
+  };
+
   return (
     <section className="content-area-table">
       <div className="data-table-info">
         <h4 className="data-table-title">Contact Responses</h4>
       </div>
+
+      <div className="filter-container col-3 mb-4">
+        <label htmlFor="" className="form-label">Status</label>
+        <select
+          className="form-select"
+          onChange={(e) => handleStatusFilter(e.target.value)}
+        >
+          <option value="">All</option>
+          <option value="pending">Pending</option>
+          <option value="reviewed">Reviewed</option>
+        </select>
+      </div>
+
       <div className="data-table-diagram">
         <table className="table table-striped table-bordered">
           <thead>
