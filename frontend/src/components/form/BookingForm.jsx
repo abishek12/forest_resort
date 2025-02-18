@@ -149,29 +149,32 @@ const BookingForm = ({ setIsQrVisible }) => {
     event.preventDefault();
     setLoading(true);
     try {
-      setLoading(true);
-      const response = await axios.post("http://localhost:8888/api/booking", 
-         {
-          service: "67a8af10655fb70f058f0f54",
-          user: "67a890ae259d39cf93d0fc3b",
-          date: "2025-02-23",
-          timeSlot: {
-            start: "11:00",
-            end: "12:00",
-          },
-          payment: {
-            reference: "PLLLKAS@12",
-            amount: 200,
-            status: "pending",
-          },
-        
-      });
+      const bookingData = {
+        service: "67a8af10655fb70f058f0f54",
+        user: "67a890ae259d39cf93d0fc3b",
+        date,
+        timeSlot: {
+          start,
+          end,
+        },
+        payment: {
+          reference,
+          amount,
+          status: "pending",
+        },
+      };
 
-      console.log(response);
+      console.log("My Data: ", bookingData)
 
-      if (response.status === 201) {
-        toast.success("Booking Successful!");
-      }
+      // const response = await axios.post("http://localhost:8888/api/booking", bookingData);
+
+      // console.log(response);
+
+      // if (response.status === 201) {
+      //   toast.success("Booking Successful!");
+      // }
+      
+     
     } catch (error) {
       console.error("Booking failed:", error);
       alert("Booking failed!");
