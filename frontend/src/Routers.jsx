@@ -42,8 +42,6 @@ import BlogEditScreen from "./pages/screens/Admin/Blog/BlogEditScreen";
 import Dashboard from "./pages/screens/Admin/Dashboard";
 import AdminBlog from "./pages/screens/Admin/Blog/AdminBlog";
 import AdminContact from "./pages/screens/Admin/Contact/Contact";
-import ContactViewed from "./pages/screens/Admin/Contact/ContactViewed";
-import ContactViewScreen from "./pages/screens/Admin/Contact/ContactViewScreen";
 import Offer from "./components/offer/Offer";
 
 import AdminAppointment from "./pages/screens/Admin/Appointment/Appointment";
@@ -126,15 +124,7 @@ const Routers = () => {
           <Route path="/admin/blog/create" element={<BlogCreateScreen />} />
           <Route path="/admin/blog/:id/edit" element={<BlogEditScreen />} />
           <Route path="/admin/contacts" element={<AdminContact />} exact />
-          <Route
-            path="/admin/contactsviewed"
-            element={<ContactViewed />}
-            exact
-          />
-          <Route
-            path="/admin/contact/:id/view"
-            element={<ContactViewScreen />}
-          />
+
           <Route
             path="/admin/appointments"
             element={<AdminAppointment />}

@@ -23,7 +23,7 @@ export const usersUpdate = (user) => async(dispatch, getState) => {
             "content-type": "applications/json"
         },
     };
-    const {data} = await axios.put(`http://localhost:5000/api/users/${user._id}`,
+    const {data} = await axios.put(`http://localhost:8888/api/users/${user._id}`,
         user,
         config
     )

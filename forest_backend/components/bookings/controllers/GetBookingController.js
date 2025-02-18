@@ -37,7 +37,7 @@ export const getAllBooking = async (req, res) => {
     let totalRecords = await Booking.countDocuments();
 
     const items = await Booking.find(filter, { __v: 0 })
-      .populate("user service", "fullname phone_no name price -_id")
+      .populate("user service", "fullname phone_no email name price -_id")
       .sort(sort)
       .skip(offset)
       .limit(limit);
@@ -68,7 +68,10 @@ export const getAllBooking = async (req, res) => {
  */
 export const getBooking = async (req, res) => {
   try {
-    let item = await Booking.findById(req.params.slugs);
+    let item = await Booking.findById(req.params.slugs).populate(
+      "user",
+      "fullname phone_no email -_id"
+    );
 
     if (!item) {
       return res.status(404).json({ message: "Booking not found" });

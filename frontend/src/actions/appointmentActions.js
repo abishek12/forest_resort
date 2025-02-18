@@ -1,289 +1,146 @@
 import axios from "axios";
-import {
-  APPOINTMENT_LIST_REQUEST,
-  APPOINTMENT_LIST_SUCCESS,
-  APPOINTMENT_LIST_FAIL,
-  APPOINTMENT_DETAILS_REQUEST,
-  APPOINTMENT_DETAILS_SUCCESS,
-  APPOINTMENT_DETAILS_FAIL,
-  APPOINTMENT_DELETE_SUCCESS,
-  APPOINTMENT_DELETE_REQUEST,
-  APPOINTMENT_DELETE_FAIL,
-  APPOINTMENT_CREATE_REQUEST,
-  APPOINTMENT_CREATE_SUCCESS,
-  APPOINTMENT_CREATE_FAIL,
-  APPOINTMENT_UPDATE_REQUEST,
-  APPOINTMENT_UPDATE_SUCCESS,
-  APPOINTMENT_UPDATE_FAIL,
-  APPOINTMENT_CREATE_REVIEW_REQUEST,
-  APPOINTMENT_CREATE_REVIEW_SUCCESS,
-  APPOINTMENT_CREATE_REVIEW_FAIL,
-  APPOINTMENT_TOP_REQUEST,
-  APPOINTMENT_TOP_SUCCESS,
-  APPOINTMENT_TOP_FAIL,
-} from "../constants/appointmentConstants";
-import { logout } from "./authentication/userLogout";
 
-export const listAppointments =
-  (keyword = "", pageNumber = "") =>
-    async (dispatch) => {
-      try {
-        dispatch({ type: APPOINTMENT_LIST_REQUEST });
-
-        const { data } = await axios.get(
-          `http://localhost:5000/api/appointments`
-          // `http://localhost:5000/api/appointments?keyword=${keyword}&pageNumber=${pageNumber}`
-        );
-
-        // console.log("YOYO: ", data)
-
-        dispatch({
-          type: APPOINTMENT_LIST_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: APPOINTMENT_LIST_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
-
-export const listAppointmentInfo = (id) => async (dispatch) => {
+// Get list of appointments
+export const listAppointments = async (keyword = "", pageNumber = 1, limit = 10) => {
   try {
-    dispatch({ type: APPOINTMENT_DETAILS_REQUEST });
-
-    const { data } = await axios.get(`http://localhost:5000/api/appointments/${id}`);
-
-    dispatch({
-      type: APPOINTMENT_DETAILS_SUCCESS,
-      payload: data,
+    const { data } = await axios.get(`http://localhost:8888/api/booking`, {
+      params: { page: pageNumber, limit: limit, keyword }
     });
+    return data;
   } catch (error) {
-    dispatch({
-      type: APPOINTMENT_DETAILS_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
+    console.error(
+      "Error fetching appointments:",
+      error.response ? error.response.data.message : error.message
+    );
   }
 };
 
-export const removeAppointment = (id) => async (dispatch, getState) => {
+
+// Get appointment details by ID
+export const listAppointmentInfo = async (id) => {
   try {
-    dispatch({
-      type: APPOINTMENT_DELETE_REQUEST,
-    });
+    const { data } = await axios.get(`http://localhost:8888/api/booking/${id}`);
+    return data;
+  } catch (error) {
+    console.error(
+      "Error fetching appointment details:",
+      error.response ? error.response.data.message : error.message
+    );
+  }
+};
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
+// Remove an appointment
+export const removeAppointment = async (id, token) => {
+  try {
     const config = {
       headers: {
-        Authorization: `Bearer ${userInfo.token}`,
+        Authorization: `Bearer ${token}`,
       },
     };
-
     await axios.delete(`http://localhost:5000/api/appointments/${id}`, config);
-
-    dispatch({
-      type: APPOINTMENT_DELETE_SUCCESS,
-    });
   } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    if (message === "Not authorized, token failed") {
-      dispatch(logout());
-    }
-    dispatch({
-      type: APPOINTMENT_DELETE_FAIL,
-      payload: message,
-    });
+    console.error(
+      "Error deleting appointment:",
+      error.response ? error.response.data.message : error.message
+    );
   }
 };
 
-export const createAppointment = (appointmentData) => async (dispatch, getState) => {
+// Create a new appointment
+export const createAppointment = async (appointmentData) => {
   try {
-    dispatch({
-      type: APPOINTMENT_CREATE_REQUEST,
-    });
-
-    // const {
-    //   userLogin: { userInfo },
-    // } = getState();
-
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${userInfo.token}`,
-    //   },
-    // };
-
-    const { data } = await axios.post(`http://localhost:5000/api/appointments`, appointmentData);
-
-    dispatch({
-      type: APPOINTMENT_CREATE_SUCCESS,
-      payload: data,
-    });
+    const { data } = await axios.post(
+      `http://localhost:5000/api/appointments`,
+      appointmentData
+    );
+    return data;
   } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    if (message === "Not authorized, token failed") {
-      dispatch(logout());
-    }
-    dispatch({
-      type: APPOINTMENT_CREATE_FAIL,
-      payload: message,
-    });
+    console.error(
+      "Error creating appointment:",
+      error.response ? error.response.data.message : error.message
+    );
   }
 };
 
-export const updateAppointment = (appointment) => async (dispatch, getState) => {
+// Update an appointment
+export const updateAppointment = async (appointment, token) => {
   try {
-    dispatch({
-      type: APPOINTMENT_UPDATE_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
+        Authorization: `Bearer ${token}`,
       },
     };
-
     const { data } = await axios.put(
       `http://localhost:5000/api/appointments/${appointment._id}`,
       appointment,
       config
     );
-
-    dispatch({
-      type: APPOINTMENT_UPDATE_SUCCESS,
-      payload: data,
-    });
-    dispatch({ type: APPOINTMENT_DETAILS_SUCCESS, payload: data });
+    return data;
   } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    if (message === "Not authorized, token failed") {
-      dispatch(logout());
-    }
-    dispatch({
-      type: APPOINTMENT_UPDATE_FAIL,
-      payload: message,
-    });
+    console.error(
+      "Error updating appointment:",
+      error.response ? error.response.data.message : error.message
+    );
   }
 };
 
-export const updateAppointmentViewedStatus = (id, viewed) => async (dispatch, getState) => {
+// Update appointment viewed status
+export const updateAppointmentViewedStatus = async (id, viewed, token) => {
   try {
-    dispatch({
-      type: APPOINTMENT_UPDATE_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
+        Authorization: `Bearer ${token}`,
       },
     };
-
     const { data } = await axios.put(
       `http://localhost:5000/api/appointments/${id}/viewed`,
       { viewed },
       config
     );
-
-    dispatch({
-      type: APPOINTMENT_UPDATE_SUCCESS,
-      payload: data,
-    });
+    return data;
   } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    dispatch({
-      type: APPOINTMENT_UPDATE_FAIL,
-      payload: message,
-    });
+    console.error(
+      "Error updating appointment viewed status:",
+      error.response ? error.response.data.message : error.message
+    );
   }
 };
 
-
-export const createAppointmentReview =
-  (appointmentId, review) => async (dispatch, getState) => {
-    try {
-      dispatch({
-        type: APPOINTMENT_CREATE_REVIEW_REQUEST,
-      });
-
-      const {
-        userLogin: { userInfo },
-      } = getState();
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-
-      await axios.post(`http://localhost:5000/api/appointments/${appointmentId}/reviews`, review, config);
-
-      dispatch({
-        type: APPOINTMENT_CREATE_REVIEW_SUCCESS,
-      });
-    } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      if (message === "Not authorized, token failed") {
-        dispatch(logout());
-      }
-      dispatch({
-        type: APPOINTMENT_CREATE_REVIEW_FAIL,
-        payload: message,
-      });
-    }
-  };
-
-export const listTopAppointments = () => async (dispatch) => {
+// Create a review for an appointment
+export const createAppointmentReview = async (appointmentId, review, token) => {
   try {
-    dispatch({ type: APPOINTMENT_TOP_REQUEST });
-
-    const { data } = await axios.get(`http://localhost:5000/api/appointments/top`);
-
-    dispatch({
-      type: APPOINTMENT_TOP_SUCCESS,
-      payload: data,
-    });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    await axios.post(
+      `http://localhost:5000/api/appointments/${appointmentId}/reviews`,
+      review,
+      config
+    );
   } catch (error) {
-    dispatch({
-      type: APPOINTMENT_TOP_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
+    console.error(
+      "Error creating review:",
+      error.response ? error.response.data.message : error.message
+    );
+  }
+};
+
+// Get top appointments
+export const listTopAppointments = async () => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:5000/api/appointments/top`
+    );
+    return data;
+  } catch (error) {
+    console.error(
+      "Error fetching top appointments:",
+      error.response ? error.response.data.message : error.message
+    );
   }
 };

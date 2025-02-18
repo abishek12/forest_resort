@@ -8,7 +8,7 @@ export const listBlogs = async (req, res) => {
 
     // Sorting
     let sort = req.query.sort || "asc";
-    sort = { name: sort === "asc" ? 1 : -1 };
+    sort = { createdAt: sort === "asc" ? 1 : -1 };
 
     // Offset calculation
     let offset = (page - 1) * limit;
