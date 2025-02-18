@@ -8,7 +8,7 @@ export const listContactUs = async (req, res) => {
 
     // Sorting
     let sort = req.query.sort || "asc";
-    sort = { firstName: sort === "asc" ? 1 : -1 };
+    sort = { createdAt: sort === "asc" ? 1 : -1 };
 
     // Offset calculation
     let offset = (page - 1) * limit;
