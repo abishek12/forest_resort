@@ -1,9 +1,20 @@
 import axios from "axios";
 import { logout } from "./authentication/userLogout";
 
-export const listBlogs = async (keyword = "", pageNumber = "") => {
+export const listBlogs = async (
+  keyword = "",
+  page = 1,
+  limit = 10,
+  sort = "desc"
+) => {
   try {
-    const { data } = await axios.get(`http://localhost:8888/api/blog`);
+    const { data } = await axios.get(`http://localhost:8888/api/blog`, {
+      params: {
+        page,
+        limit,
+        sort,
+      },
+    });
     return data.items;
   } catch (error) {
     throw new Error(

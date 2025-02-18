@@ -106,17 +106,6 @@ const AdminSidebar = ({ isOpen }) => {
                 </span>
                 <span className="menu-link-text">All Responses</span>
               </NavLink>
-              <NavLink
-                to="/admin/contactsviewed"
-                className={({ isActive }) =>
-                  isActive ? "menu-link active" : "menu-link"
-                }
-              >
-                <span className="menu-link-icon">
-                  <MdPreview size={20} />
-                </span>
-                <span className="menu-link-text">Viewed</span>
-              </NavLink>
             </li>
             <div style={{ marginTop: 20 }}>
               <span className="menu-link-text">Booking</span>

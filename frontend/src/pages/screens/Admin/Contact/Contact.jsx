@@ -1,131 +1,67 @@
 import React, { useEffect, useState } from "react";
-import "./Contact.scss";
+import { MdPreview, MdOutlineDelete } from "react-icons/md";
+import { FaCheckDouble } from "react-icons/fa";
+import { FaDeleteLeft } from "react-icons/fa6";
 
-import { useDispatch, useSelector } from "react-redux";
+import "./Contact.scss";
 import {
   listContacts,
   removeContact,
-  createContact,
-  updateContactViewedStatus
+  updateContact,
 } from "../../../../actions/contactActions";
-import { CONTACT_CREATE_RESET } from "../../../../constants/contactConstants";
-import { Link, useNavigate } from 'react-router-dom';
-import {
-  MdEditSquare,
-  MdOutlineDelete,
-  MdOutlinePanoramaFishEye,
-  MdPreview
-} from "react-icons/md";
-import { HiThumbUp } from 'react-icons/hi';
+import { toast } from "react-toastify";
 
-const TABLE_HEADS = [
-  "Name",
-  "Email",
-  "Phone",
-  "Message",
-  "Actions",
-];
+const TABLE_HEADS = ["S.N", "Name", "Email", "Status", "Actions"];
 
 const Contact = () => {
-  const [localContacts, setLocalContacts] = useState([]);
+  const [items, setItems] = useState([]);
+  const [successUpdate, setSuccessUpdate] = useState(false);
+  const [successDelete, setSuccessDelete] = useState(false);
+  const [selectedContact, setSelectedContact] = useState(null);
 
-
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const contactList = useSelector((state) => state.contactList);
-  const { contacts } = contactList;
-
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-
-  const contactCreate = useSelector((state) => state.contactCreate);
-  const {
-    success: successCreate,
-    contact: createdContact,
-  } = contactCreate;
-
-  const contactDelete = useSelector((state) => state.contactDelete);
-  const {
-    success: successDelete,
-  } = contactDelete;
-
+  // Fetch contacts
   useEffect(() => {
-    if (contacts) {
-      setLocalContacts(contacts.filter(contact => contact.viewed === "No"));
+    const fetchContacts = async () => {
+      try {
+        const data = await listContacts("", 1, 10, "desc");
+
+        setItems(data.items);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      }
+    };
+
+    fetchContacts();
+  }, [successDelete, successUpdate]);
+
+  const reviewHandler = async (id, status) => {
+    try {
+      let data = await updateContact(id, status);
+      if (data) {
+        toast("Status Updated");
+        setSuccessUpdate(true);
+      }
+    } catch (error) {
+      console.error("Error updating contact:", error);
     }
-  }, [contacts]);
+  };
 
-  useEffect(() => {
-    dispatch({ type: CONTACT_CREATE_RESET });
-
-    if (!userInfo || !userInfo.isAdmin) {
-      navigate("/login");
-    }
-
-    if (successCreate) {
-      navigate(`/admin/contact/${createdContact._id}/create`);
-    } else {
-      dispatch(listContacts());
-    }
-  }, [
-    dispatch,
-    navigate,
-    userInfo,
-    successDelete,
-    successCreate,
-    createdContact,
-  ]);
-
-  const deleteHandler = (id) => {
+  // Delete handler
+  const deleteHandler = async (id) => {
     if (window.confirm("Are you sure")) {
-      dispatch(removeContact(id));
+      try {
+        await removeContact(id, "");
+        setSuccessDelete(true);
+      } catch (error) {
+        console.error("Error deleting contact:", error);
+      }
     }
   };
 
-  const createContactHandler = () => {
-    dispatch(createContact());
+  // Modal open handler
+  const openModal = (contact) => {
+    setSelectedContact(contact);
   };
-
-  // const [showDropdown, setShowDropdown] = useState(false);
-  // const handleDropdown = () => {
-  //   setShowDropdown(!showDropdown);
-  // };
-
-  // const dropdownRef = useRef(null);
-
-  // const handleClickOutside = (event) => {
-  //   if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-  //     setShowDropdown(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.addEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
-
-  // const userDelete = useSelector((state) => state.userDelete);
-  // const { success: successDelete } = userDelete;
-
-  // const deleteHandler = (id) => {
-  //   if (window.confirm("Are you sure")) {
-  //     dispatch(deleteUser(id));
-  //   }
-  // };
-
-  const viewedHandler = (id) => {
-    dispatch(updateContactViewedStatus(id, "Yes"));
-
-    // Immediately update the local state
-    setLocalContacts(localContacts.filter(contact => contact._id !== id));
-  };
-
-  const filteredContacts = contacts?.filter(contact => contact.viewed === "No");
-
 
   return (
     <section className="content-area-table">
@@ -133,7 +69,7 @@ const Contact = () => {
         <h4 className="data-table-title">Contact Responses</h4>
       </div>
       <div className="data-table-diagram">
-        <table>
+        <table className="table table-striped table-bordered">
           <thead>
             <tr>
               {TABLE_HEADS?.map((th, index) => (
@@ -142,32 +78,126 @@ const Contact = () => {
             </tr>
           </thead>
           <tbody>
-            {localContacts?.map((contact) => (
-              // return (
+            {items?.map((contact, index) => (
               <tr key={contact._id}>
-                {/* <td>{contact._id}</td> */}
-                <td>{contact.name}</td>
+                <td>{index + 1}</td>
+                <td>{contact.fullname}</td>
                 <td>{contact.email}</td>
-                <td>{contact.phone}</td>
-                <td>{contact.message}</td>
+                <td>
+                  <span
+                    className={`badge ${
+                      contact.status === "pending"
+                        ? "text-bg-warning"
+                        : "text-bg-success"
+                    }`}
+                  >
+                    {contact.status}
+                  </span>
+                </td>
                 <td className="dt-cell-action">
-                  <Link to={`/admin/contact/${contact._id}/view`}>
+                  <button
+                    className="btn mx-2"
+                    onClick={() => openModal(contact)}
+                  >
                     <MdPreview />
-                  </Link>
-                  <Link onClick={() => viewedHandler(contact._id)}>
-                    <HiThumbUp />
-                  </Link>
-                  {/* <Link onClick={() => deleteHandler(contact._id)}>
+                  </button>
+                  <button
+                    className="btn mx-2"
+                    onClick={() =>
+                      reviewHandler(
+                        contact._id,
+                        contact.status === "pending" ? "reviewed" : "pending"
+                      )
+                    }
+                  >
+                    {contact.status === "pending" ? (
+                      <FaCheckDouble />
+                    ) : (
+                      <FaDeleteLeft />
+                    )}
+                  </button>
+                  <button
+                    className="btn"
+                    onClick={() => deleteHandler(contact._id)}
+                  >
                     <MdOutlineDelete />
-                  </Link> */}
+                  </button>
                 </td>
               </tr>
-            )
-              // }
-            )}
+            ))}
           </tbody>
         </table>
       </div>
+
+      {/* Bootstrap Modal to view full contact details */}
+      {selectedContact && (
+        <>
+          <div className="modal-backdrop fade show"></div>{" "}
+          {/* Background blur */}
+          <div
+            className="modal fade show"
+            id="contactModal"
+            tabIndex="-1"
+            role="dialog"
+            style={{ display: "block" }}
+            aria-labelledby="contactModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h3 className="modal-title" id="contactModalLabel">
+                    Contact Details
+                  </h3>
+                  <button
+                    type="button"
+                    className="close text-danger"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    onClick={() => setSelectedContact(null)}
+                    style={{
+                      fontSize: "1.5rem",
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                    }} // Position close icon to top-right
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <p>
+                    <strong>Name:</strong> {selectedContact.fullname}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {selectedContact.email}
+                  </p>
+                  <p>
+                    <strong>Subject:</strong> {selectedContact.subject}
+                  </p>
+                  <p>
+                    <strong>Message:</strong> {selectedContact.message}
+                  </p>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    {selectedContact.status.toUpperCase()}
+                  </p>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-dismiss="modal"
+                    onClick={() => setSelectedContact(null)}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </section>
   );
 };

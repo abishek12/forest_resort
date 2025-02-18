@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { FaEye, FaEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
-import { IoIosAdd } from "react-icons/io";
 
 import { listBlogs, removeBlog } from "../../../../actions/blogActions";
 import Loader from "../../../../components/Loader";
@@ -22,7 +21,7 @@ const AdminBlog = () => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-        const data = await listBlogs();
+        const data = await listBlogs("", 1, 10, "desc");
         setBlogs(data);
         setLoading(false);
       } catch (err) {
