@@ -1,88 +1,58 @@
-import React, { useEffect, useRef, useState } from "react";
-// import UserAction from "./UserAction";
-import "./Blog.scss";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { v4 as uuid } from "uuid";
+import { FaEye, FaEdit } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
 
-import { useDispatch, useSelector } from "react-redux";
-import {
-  listBlogs,
-  removeBlog,
-  createBlog,
-} from "../../../../actions/blogActions";
-import { BLOG_CREATE_RESET } from "../../../../constants/blogConstants";
-import { Link, useNavigate } from "react-router-dom";
-import { HiDotsHorizontal } from "react-icons/hi";
-import { Button } from "react-bootstrap";
-import { MdEditSquare, MdOutlineDelete } from "react-icons/md";
+import { listBlogs, removeBlog } from "../../../../actions/blogActions";
+import Loader from "../../../../components/Loader";
+import Message from "../../../../components/Message";
 import { dateTimeFormat } from "../../../../utils/date-time";
 
-const TABLE_HEADS = ["Published Date", "Title", "Author", "Actions"];
+const TABLE_HEADS = ["S.N", "Title", "Author", "Date", "Status", "Actions"];
 
 const AdminBlog = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const blogList = useSelector((state) => state.blogList);
-  const { blogs } = blogList;
-
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-
-  const blogCreate = useSelector((state) => state.blogCreate);
-  const { success: successCreate, blog: createdBlog } = blogCreate;
-
-  const blogDelete = useSelector((state) => state.blogDelete);
-  const { success: successDelete } = blogDelete;
-
+  const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
 
-  // useEffect(() => {
-  //   dispatch({ type: BLOG_CREATE_RESET });
-
-  //   if (successCreate) {
-  //     navigate(`/admin/blogs`);
-  //   } else {
-  //     dispatch(listBlogs());
-  //   }
-  // }, [dispatch, navigate, userInfo, successDelete, successCreate, createdBlog]);
-
-  const deleteHandler = async (id) => {
-    if (window.confirm("Are you sure")) {
-      setLoading(true);
+  useEffect(() => {
+    const fetchBlogs = async () => {
       try {
-        await dispatch(removeBlog(id));
+        setLoading(true);
+        const data = await listBlogs("", 1, 10, "desc");
+        setBlogs(data);
         setLoading(false);
-      } catch (error) {
+      } catch (err) {
+        setError(err.message);
         setLoading(false);
-        alert("Error deleting blog. Please try again.");
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  const handleRemoveBlog = async (id) => {
+    if (window.confirm("Are you sure you want to delete this blog?")) {
+      try {
+        await removeBlog(id, userInfo);
+        setBlogs(blogs.filter((blog) => blog._id !== id));
+      } catch (err) {
+        setError(err.message);
       }
     }
   };
 
-  const createBlogHandler = () => {
-    navigate("/admin/blog/create");
-    // dispatch(createBlog());
-  };
-
-  const sortedBlogs = blogs
-    ?.slice()
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
   return (
-    <section className="content-area-table">
-      <div className="data-table-info">
-        <h4 className="data-table-title">Blogs</h4>
-      </div>
-      <div className="button-container">
-        <button
-          className="cs_btn cs_style_1"
-          onClick={createBlogHandler}
-          disabled={loading}
-        >
-          <span>Add Blog</span>
-        </button>
-      </div>
+    <div className="blog-list">
+      <h1>Blogs</h1>
+      {loading && <Loader />}
+      {error && <Message variant="danger">{error}</Message>}
+
+      <Link to="/admin/blog/create" className="btn">Add Blogs</Link>
       <div className="data-table-diagram">
-        <table>
+        <table className="table table-striped table-bordered">
           <thead>
             <tr>
               {TABLE_HEADS?.map((th, index) => (
@@ -91,37 +61,36 @@ const AdminBlog = () => {
             </tr>
           </thead>
           <tbody>
-            {sortedBlogs?.map(
-              (blog) => (
-                // return (
-                <tr key={blog._id}>
-                  <td>{dateTimeFormat(blog.createdAt)}</td>
-                  <td>{blog.title}</td>
-                  <td>{blog.author}</td>
-                  <td className="dt-cell-action">
-                    <Link to={`/admin/blog/${blog._id}/edit`}>
-                      <MdEditSquare style={{ color: "gray" }} />
+            {blogs?.map((blog, index) => (
+              <tr key={uuid()}>
+                <td>{index + 1}</td>
+                <td>{blog.title}</td>
+                <td>{blog.user.fullname}</td>
+                <td>{dateTimeFormat(blog.createdAt)}</td>
+                <td>{blog.status}</td>
+                <td className="dt-cell-action">
+                  <div className="d-flex align-items-center">
+                    <Link to={`/admin/blogs/${blog._id}/view`} className="me-2">
+                      <FaEye />
                     </Link>
                     <Link
-                      onClick={() => deleteHandler(blog._id)}
-                      disabled={loading}
+                      onClick={() => handleRemoveBlog(blog._id)}
+                      className="me-2"
                     >
-                      <MdOutlineDelete style={{ color: "red" }} />
+                      <MdDeleteOutline />
                     </Link>
-
-                  </td>
-                </tr>
-              )
-              // }
-            )}
+                    <Link to="#" className="">
+                      <FaEdit />
+                    </Link>
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
-      {loading && <div className="loading-overlay">Deleting...</div>}
-    </section>
+    </div>
   );
 };
 
 export default AdminBlog;
-
-

@@ -1,13 +1,8 @@
-import { useContext, useEffect, useState } from "react";
-// import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import AdminSidebar from "../components/AdminSidebar/AdminSidebar";
 import "./Baselayout.scss";
-// import MoonIcon from "../assets/icons/moon.svg";
-// import SunIcon from "../assets/icons/sun.svg";
-// import { ThemeContext } from "../context/ThemeContext";
-// import { DARK_THEME, LIGHT_THEME } from "../constants/themeConstants";
 import { FaBars } from "react-icons/fa";
 
 const BaseLayout = () => {
@@ -32,7 +27,6 @@ const BaseLayout = () => {
       <main className="page-wrapper">
         <button
           onClick={toggleSidebar}
-          // style={{ marginLeft: 10, marginTop: 10, color: '#333', zIndex: 1000, backgroundColor: '#FFF' }}
           className="sidebar-toggle-btn"
         >
           <FaBars size={24} />
@@ -46,17 +40,6 @@ const BaseLayout = () => {
           <Outlet />
         </div>
       </main>
-      {/* <button
-        type="button"
-        className="theme-toggle-btn"
-        onClick={toggleTheme}
-      >
-        <img loading="lazy" 
-          className="theme-icon"
-          src={theme === LIGHT_THEME ? SunIcon : MoonIcon}
-          alt="icon"
-        />
-      </button> */}
     </>
   );
 };

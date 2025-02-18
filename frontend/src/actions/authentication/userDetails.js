@@ -20,7 +20,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
             Authorization: `Bearer ${userInfo.token}`
         },
     };
-    const {data} = await axios.get(`http://localhost:5000/api/users/${id}`,
+    const {data} = await axios.get(`http://localhost:8888/api/users/${id}`,
         config
     );
     dispatch({

@@ -1,12 +1,21 @@
 import axios from "axios";
 import { logout } from "./authentication/userLogout";
 
-export const listBlogs = async (keyword = "", pageNumber = "") => {
+export const listBlogs = async (
+  keyword = "",
+  page = 1,
+  limit = 10,
+  sort = "desc"
+) => {
   try {
-    const { data } = await axios.get(
-      `http://localhost:8888/api/blog`
-    );
-    return data;
+    const { data } = await axios.get(`http://localhost:8888/api/blog`, {
+      params: {
+        page,
+        limit,
+        sort,
+      },
+    });
+    return data.items;
   } catch (error) {
     throw new Error(
       error.response && error.response.data.message
@@ -49,17 +58,17 @@ export const removeBlog = async (id, userInfo) => {
   }
 };
 
-export const createBlog = async (blogData, userInfo) => {
+export const createBlog = async (blogData) => {
   try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+    // pass userInfo in params in function
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${userInfo.token}`,
+    //   },
+    // };
     const { data } = await axios.post(
-      `http://localhost:8888/api/blogs`,
-      blogData,
-      config
+      `http://localhost:8888/api/blog`,
+      blogData
     );
     return data;
   } catch (error) {

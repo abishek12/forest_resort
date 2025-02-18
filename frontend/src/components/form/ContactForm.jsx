@@ -1,33 +1,32 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import BoxReveal from "../ui/magic_ui/box-reveal";
-import FormContainer from "../FormContainer";
 import { Button, Form } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+
 import { createContact } from "../../actions/contactActions";
 
 const ContactForm = () => {
-  const [name, setName] = useState("");
+  const [fullname, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [subject, setSubject] = useState("");
 
-  const dispatch = useDispatch();
-
-  const handleForm = (event) => {
+  const handleForm = async (event) => {
     event.preventDefault();
-    dispatch(
-      createContact({
-        name,
-        email,
-        phone,
-        message,
-      })
-    );
-    console.log("DATA:::", name);
-    console.log("DATA2:::", email);
-    // event.target.reset();
-    toast.success("Thanks For Your Message");
+
+    try {
+      let response = await createContact({ fullname, email, subject, message });
+      if (response.status === 201) {
+        toast.success("Thanks For Your Message");
+        setName("");
+        setEmail("");
+        setSubject("");
+        setMessage("");
+      }
+    } catch (error) {
+      toast.error(error);
+      console.log(`Error: ${error}`);
+    }
   };
 
   return (
@@ -57,38 +56,32 @@ const ContactForm = () => {
               </div>
             </div>
           </Form.Group>
-          <Form.Group className="row">
-            <div className="col-lg-6">
-              <div className="form-group">
-                <Form.Control
-                  className="form-control"
-                  id="email"
-                  name="email"
-                  placeholder="Email*"
-                  type="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  autoComplete="off"
-                  required
-                />
-                <span className="alert-error"></span>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="form-group">
-                <Form.Control
-                  className="form-control no-arrows"
-                  id="phone"
-                  name="phone"
-                  placeholder="Phone"
-                  type="number"
-                  onChange={(e) => setPhone(e.target.value)}
-                  autoComplete="off"
-                  required
-                />
-                <span className="alert-error"></span>
-              </div>
-            </div>
-          </Form.Group>
+          <div className="form-group">
+            <Form.Control
+              className="form-control"
+              id="email"
+              name="email"
+              placeholder="Email*"
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="off"
+              required
+            />
+            <span className="alert-error"></span>
+          </div>
+          <div className="form-group">
+            <Form.Control
+              className="form-control"
+              id="subject"
+              name="subject"
+              placeholder="Subject*"
+              type="text"
+              onChange={(e) => setSubject(e.target.value)}
+              autoComplete="off"
+              required
+            />
+            <span className="alert-error"></span>
+          </div>
           <Form.Group className="row">
             <div className="col-lg-12">
               <div className="form-group comments">

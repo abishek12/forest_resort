@@ -21,7 +21,7 @@ try {
     },
   };
 
- const {data} = await axios.get(`http://localhost:5000/api/users`,
+ const {data} = await axios.get(`http://localhost:8888/api/users`,
  config);
  dispatch({
     type: USER_LIST_SUCCESS,

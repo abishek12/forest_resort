@@ -64,10 +64,6 @@ const AdminSidebar = ({ isOpen }) => {
       ref={navbarRef}
     >
       <div className="sidebar-top">
-        {/* <div className="sidebar-brand">
-          <img loading="lazy"  src={theme === LIGHT_THEME ? LogoBlue : LogoWhite} alt="" />
-          <span className="sidebar-brand-text">tabernam.</span>
-        </div> */}
         <button className="sidebar-close-btn" onClick={closeSidebar}>
           <MdOutlineClose size={24} />
         </button>
@@ -109,17 +105,6 @@ const AdminSidebar = ({ isOpen }) => {
                   <MdDescription size={20} />
                 </span>
                 <span className="menu-link-text">All Responses</span>
-              </NavLink>
-              <NavLink
-                to="/admin/contactsviewed"
-                className={({ isActive }) =>
-                  isActive ? "menu-link active" : "menu-link"
-                }
-              >
-                <span className="menu-link-icon">
-                  <MdPreview size={20} />
-                </span>
-                <span className="menu-link-text">Viewed</span>
               </NavLink>
             </li>
             <div style={{ marginTop: 20 }}>
@@ -169,46 +154,6 @@ const AdminSidebar = ({ isOpen }) => {
                 <span className="menu-link-text">Manage Services</span>
               </NavLink>
             </li>
-            {/* <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <MdOutlineAttachMoney size={20} />
-                </span>
-                <span className="menu-link-text">Payment</span>
-              </Link>
-            </li>
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <MdOutlineCurrencyExchange size={18} />
-                </span>
-                <span className="menu-link-text">Transactions</span>
-              </Link>
-            </li>
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <MdOutlineShoppingBag size={20} />
-                </span>
-                <span className="menu-link-text">Products</span>
-              </Link>
-            </li>
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <MdOutlinePeople size={20} />
-                </span>
-                <span className="menu-link-text">Customer</span>
-              </Link>
-            </li>
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <MdOutlineMessage size={18} />
-                </span>
-                <span className="menu-link-text">Messages</span>
-              </Link>
-            </li> */}
           </ul>
         </div>
         <div className="sidebar-menu sidebar-menu2">

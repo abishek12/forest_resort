@@ -4,7 +4,7 @@ import express from "express";
 import { listContactUs } from "../controllers/ListContactUs.js";
 import { addContact } from "../controllers/AddContact.js";
 import { deleteContact } from "../controllers/DeleteContact.js";
-// import { updateCategoryController } from "../controllers/UpdateCategoryController.js";
+import { updateContactStatus } from "../controllers/UpdateContact.js";
 
 // authorized middleware
 // import { authenticateToken } from "../../../middleware/authenticateToken.js";
@@ -20,7 +20,17 @@ route
     // authorizeRole(["super-admin", "admin", "editor"]),
     addContact
   )
-  .delete("/:id", deleteContact);
-// .put("/:catId", updateCategoryController);
+  .delete(
+    "/:id",
+    // authenticateToken,
+    // authorizeRole(["super-admin", "admin", "editor"]),
+    deleteContact
+  )
+  .put(
+    "/:id",
+    // authenticateToken,
+    // authorizeRole(["super-admin", "admin", "editor"])
+    updateContactStatus
+  );
 
 export default route;
