@@ -11,7 +11,7 @@ const BookingTime = () => {
 
   const fetchServices = () => {
     axios
-      .get("http://localhost:5000/api/booking")
+      .get("http://localhost:8888/api/booking")
       .then((response) => {
         if (Array.isArray(response.data)) {
           setServices(response.data);
