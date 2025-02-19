@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "i": "^0.3.7",
-    "lodash.debounce": "^4.0.8",
-    "npm": "^11.1.0"
-  }
-}
