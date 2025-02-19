@@ -19,6 +19,15 @@ const BookingForm = ({ setIsQrVisible }) => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [service, setService] = useState("");
+
+  const [transactionId, setTransactionId] = useState("");
+  const [paidAmount, setPaidAmount] = useState("");
+
+  const [showImage, setShowImage] = useState(false);
+  const [showBookingBtn, setShowBookingBtn] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
   const [startTime, setStartTime] = useState({
     hour: "09",
     minute: "00",
@@ -29,14 +38,6 @@ const BookingForm = ({ setIsQrVisible }) => {
     minute: "00",
     period: "AM",
   });
-  const [transactionId, setTransactionId] = useState("");
-  const [paidAmount, setPaidAmount] = useState("");
-
-  const [showImage, setShowImage] = useState(false);
-  const [showBookingBtn, setShowBookingBtn] = useState(false);
-
-  const [loading, setLoading] = useState(false);
-
   const handleDateChange = (selectedDate) => {
     setDate(selectedDate);
   };
@@ -110,41 +111,6 @@ const BookingForm = ({ setIsQrVisible }) => {
     }
   };
 
-  // useEffect(() => {
-  //   const bookService = async () => {
-  //     let data = {
-  //       service: "67a8af10655fb70f058f0f54",
-  //       user: "67a890ae259d39cf93d0fc3b",
-  //       date: "2025-02-22",
-  //       timeSlot: {
-  //         start: "11:00",
-  //         end: "12:00",
-  //       },
-  //       payment: {
-  //         reference: "PAY12345XYZ",
-  //         amount: 300,
-  //         status: "pending",
-  //       },
-  //     };
-  //     try {
-  //       const response = await axios.post("http://localhost:8888/api/booking",
-  //         data,
-  //       );
-
-  //       console.log(response);
-
-  //       if (response.status === 201) {
-  //         toast.success("Booking Successful!");
-  //       }
-  //     } catch (error) {
-  //       console.error("Booking failed:", error);
-  //       toast.error("Booking failed!");
-  //     }
-  //   };
-
-  //   bookService();
-  // }, []);
-
   const handleForm = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -154,31 +120,33 @@ const BookingForm = ({ setIsQrVisible }) => {
         user: "67a890ae259d39cf93d0fc3b",
         date,
         timeSlot: {
-          start,
-          end,
+          startTime,
+          endTime,
         },
         payment: {
-          reference,
-          amount,
+          reference: transactionId,
+          amount: paidAmount,
           status: "pending",
         },
+        
       };
 
       console.log("My Data: ", bookingData)
 
-      // const response = await axios.post("http://localhost:8888/api/booking", bookingData);
+      const response = await axios.post("http://localhost:8888/api/booking", bookingData);
 
-      // console.log(response);
-
-      // if (response.status === 201) {
-      //   toast.success("Booking Successful!");
-      // }
-      
+      if (response.status === 201) {
+        toast.success("Booking Successful!");
+        console.log("Booking Details: ", response.data);
+    } else {
+        console.error("Unexpected response status:", response.status);
+    }    
      
     } catch (error) {
-      console.error("Booking failed:", error);
-      alert("Booking failed!");
-    } finally {
+      console.error("Booking failed:", error.response || error);
+      alert("Booking failed! " + (error.response?.data?.message || error.message));
+    }
+    finally{
       setLoading(false);
     }
 
@@ -217,8 +185,9 @@ const BookingForm = ({ setIsQrVisible }) => {
                 placeholder="Full Name"
                 type="text"
                 autoComplete="off"
+                value="Ram Prasad Subedi"
                 required
-                onChange={(e) => setName(e.target.value)}
+                readOnly
               />
             </div>
           </div>
