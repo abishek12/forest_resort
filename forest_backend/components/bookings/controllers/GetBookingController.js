@@ -10,6 +10,7 @@ export const getAllBooking = async (req, res) => {
     // Pagination parameters
     let limit = Math.max(Number(req.query.limit) || 10, 1);
     let page = Math.max(Number(req.query.page) || 1, 1);
+    let search = req.query.q || "";
 
     // Sorting
     let sort = req.query.sort || "desc";
@@ -23,7 +24,12 @@ export const getAllBooking = async (req, res) => {
 
     let filter = {};
     if (req.query.status) {
-      const allowedStatuses = ["pending", "confirmed", "cancelled", "completed"];
+      const allowedStatuses = [
+        "pending",
+        "confirmed",
+        "cancelled",
+        "completed",
+      ];
       if (allowedStatuses.includes(req.query.status)) {
         filter.status = req.query.status;
       }
@@ -34,7 +40,12 @@ export const getAllBooking = async (req, res) => {
       filter.user = req.query.user;
     }
 
-    let totalRecords = await Booking.countDocuments();
+    // filter by title
+    if (search) {
+      filter.title = { $regex: search, $options: "i" };
+    }
+
+    let totalRecords = await Booking.countDocuments(filter);
 
     const items = await Booking.find(filter, { __v: 0 })
       .populate("user service", "fullname phone_no email name price -_id")

@@ -1,46 +1,44 @@
 import React, { useEffect, useState } from "react";
-import BlogWithSidebarData from "../../jsonData/BlogWithSidebarData.json";
 import SingleBlogSideBar from "./SingleBlogSideBar";
 import Pagination from "../others/Pagination";
 import SearchWidget from "../widgets/SearchWidget";
 import RecentPostWidget from "../widgets/RecentPostWidget";
 import CategoryDataListWidget from "../widgets/CategoryDataListWidget";
-import GalleryWidget from "../widgets/GalleryWidget";
-import ArchivesWidget from "../widgets/ArchivesWidget";
 import SocialWidget from "../widgets/SocialWidget";
-import TagsWidget from "../widgets/TagsWidget";
-import { useDispatch, useSelector } from "react-redux";
 import { listBlogs } from "../../actions/blogActions";
 import { motion } from "framer-motion";
 import { fadeInAnimationVariantsContent } from "../../utils/fadeInAnimation";
 
 const BlogWithSideBarContent = () => {
-  const dispatch = useDispatch();
-
-  const blogList = useSelector((state) => state.blogList);
-  const { blogs } = blogList;
-
-  const [search, setSearch] = useState("");
+  const [blogs, setBlogs] = useState([]);
+  const [currentBlogs, setCurrentBlogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const blogsPerPage = 4;
+  const [blogsPerPage] = useState(10); 
+  const [search, setSearch] = useState("");
+  const [filteredBlogs, setFilteredBlogs] = useState([]);
 
   useEffect(() => {
-    dispatch(listBlogs());
-  }, [dispatch]);
+    const fetchBlogs = async () => {
+      try {
+        const fetchedBlogs = await listBlogs(search, currentPage, blogsPerPage);
+        setBlogs(fetchedBlogs);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
 
-  const sortedBlogs = [...blogs].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
-
-  const filteredBlogs = sortedBlogs.filter((blog) =>
-    blog.title.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const indexOfLastBlog = currentPage * blogsPerPage;
-  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-  const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
+    fetchBlogs();
+  }, [search, currentPage, blogsPerPage]);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  useEffect(() => {
+    const filtered = blogs.filter((blog) => 
+      blog.title.toLowerCase().includes(search.toLowerCase()) 
+    );
+    setFilteredBlogs(filtered);
+    setCurrentBlogs(filtered.slice(0, blogsPerPage));
+  }, [blogs, search, blogsPerPage]);
 
   return (
     <>
@@ -55,12 +53,9 @@ const BlogWithSideBarContent = () => {
                       variants={fadeInAnimationVariantsContent}
                       initial="initial"
                       whileInView="animate"
+                      key={blog.id} 
                     >
-                      <SingleBlogSideBar
-                        search={search}
-                        blog={blog}
-                        key={blog.id}
-                      />
+                      <SingleBlogSideBar blog={blog} />
                     </motion.div>
                   ))}
                   {(!currentBlogs || currentBlogs.length === 0) && (
@@ -80,12 +75,9 @@ const BlogWithSideBarContent = () => {
               <div className="sidebar col-xl-4 col-lg-5 col-md-12 mt-md-50 mt-xs-50">
                 <aside>
                   <SearchWidget setSearch={setSearch} />
-                  <RecentPostWidget blogs={blogs} />
+                  {/* <RecentPostWidget blogs={blogs} /> */}
                   <CategoryDataListWidget />
-                  {/* <GalleryWidget /> */}
-                  {/* <ArchivesWidget /> */}
                   <SocialWidget />
-                  {/* <TagsWidget /> */}
                 </aside>
               </div>
             </div>
