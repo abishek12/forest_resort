@@ -96,7 +96,21 @@ const Appointment = () => {
                     {appointment.timeSlot.start} - {appointment.timeSlot.end}
                   </td>
                   <td>
-                    <Badge bg="secondary">{appointment.status}</Badge>
+                    <Badge
+                      bg={
+                        appointment.status === "pending"
+                          ? "warning" // Yellow for pending
+                          : appointment.status === "confirmed"
+                          ? "success" // Green for confirmed
+                          : appointment.status === "cancelled"
+                          ? "danger" // Red for cancelled
+                          : appointment.status === "completed"
+                          ? "primary" // Blue for completed
+                          : "secondary" // Default color
+                      }
+                    >
+                      {appointment.status}
+                    </Badge>
                   </td>
                   <td className="dt-cell-action">
                     <Link to={`/admin/appointment/${appointment._id}/view`}>
@@ -116,7 +130,7 @@ const Appointment = () => {
             </tbody>
           </table>
         </div>
-        
+
         {/* Pagination Component */}
         <PaginationControls
           currentPage={pagination.currentPage}

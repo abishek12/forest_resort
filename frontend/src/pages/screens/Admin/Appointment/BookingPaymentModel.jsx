@@ -14,7 +14,7 @@ const PaymentModal = ({ show, onHide, paymentData }) => {
               <strong>Reference:</strong> {paymentData.reference}
             </p>
             <p>
-              <strong>Amount:</strong> ${paymentData.amount}
+              <strong>Amount:</strong> Rs.{paymentData.amount}
             </p>
             <p>
               <strong>Status:</strong> {paymentData.status}
