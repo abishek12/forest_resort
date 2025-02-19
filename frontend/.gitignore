@@ -1,21 +1,39 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
-
-# dependencies
+# Node.js dependencies
 /node_modules
 
-# testing
+# Build output
+/build
+/dist
+
+# Testing
 /coverage
 
-# production
-/build
+# Production environment variables
+.env.production.local
 
-# misc
-.DS_Store
+# Development environment variables
 .env.local
 .env.development.local
 .env.test.local
-.env.production.local
 
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# System files
+.DS_Store
+
+# IDE/editor specific
+.vscode/
+.idea/
+
+# Optional: Yarn 2 (if you're using it)
+/.yarn/
+.yarnrc.yml
+
+# Optional: Vite cache (if you want to ignore it)
+.vite/
+
+# Optional: TypeScript (if you're using it)
+/tsconfig.tsbuildinfo
