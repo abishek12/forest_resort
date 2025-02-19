@@ -7,7 +7,7 @@ export const listAllUsers = async (req, res) => {
     let page = Math.max(Number(req.query.page) || 1, 1);
 
     // Sorting
-    let sort = req.query.sort || "asc";
+    let sort = req.query.sort || "desc";
     sort = { name: sort === "asc" ? 1 : -1 };
 
     // Offset calculation

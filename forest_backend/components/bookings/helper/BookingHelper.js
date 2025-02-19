@@ -35,6 +35,10 @@ export const bookingHelper = (data) => {
         .valid("pending", "paid", "failed", "refunded")
         .required(),
     }).required(),
+    persons: Joi.object({
+      children: Joi.number().required(),
+      adult: Joi.number().positive().required(),
+    }).required(),
   });
 
   return bookingSchema.validate(data);

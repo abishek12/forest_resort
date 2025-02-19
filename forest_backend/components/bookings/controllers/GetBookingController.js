@@ -23,7 +23,7 @@ export const getAllBooking = async (req, res) => {
 
     let filter = {};
     if (req.query.status) {
-      const allowedStatuses = ["pending", "confirmed", "cancelled"];
+      const allowedStatuses = ["pending", "confirmed", "cancelled", "completed"];
       if (allowedStatuses.includes(req.query.status)) {
         filter.status = req.query.status;
       }
