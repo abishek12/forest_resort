@@ -11,6 +11,7 @@ const SingleBlogSideBar = ({ blog }) => {
     user,
     category,
     createdAt,
+    content,
     description,
   } = blog;
 
@@ -40,7 +41,7 @@ const SingleBlogSideBar = ({ blog }) => {
             </h2>
             <p
               dangerouslySetInnerHTML={{
-                __html: description.replace(/<img[^>]*>/g, " "),
+                __html: content.replace(/<img[^>]*>/g, " "),
               }}
               className="tw-line-clamp-4"
             />

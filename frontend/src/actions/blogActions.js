@@ -27,7 +27,7 @@ export const listBlogs = async (
 
 export const listBlogInfo = async (id) => {
   try {
-    const { data } = await axios.get(`http://localhost:8888/api/blogs/${id}`);
+    const { data } = await axios.get(`http://localhost:8888/api/blog/${id}`);
     return data;
   } catch (error) {
     throw new Error(

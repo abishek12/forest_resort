@@ -73,7 +73,7 @@ const AdminBlog = () => {
                 <td>{blog.status}</td>
                 <td className="dt-cell-action">
                   <div className="d-flex align-items-center">
-                    <Link to={`/admin/blogs/${blog._id}/view`} className="me-2">
+                    <Link to={`/blog-single/${blog._id}`} className="me-2">
                       <FaEye />
                     </Link>
                     <Link

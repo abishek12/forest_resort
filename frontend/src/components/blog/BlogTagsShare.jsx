@@ -12,7 +12,7 @@ const BlogTagsShare = ({ blogInfo }) => {
       <div className="post-tags share">
         <div className="tags">
           <h4>Tag: </h4>
-          <Link to={"/blogs"}>{category}</Link>
+          <Link to={"/blogs"}>{category.title}</Link>
         </div>
         <div className="social">
           <h4>Share:</h4>

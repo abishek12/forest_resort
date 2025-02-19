@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, NavLink } from "react-router-dom";
 
+import { dateTimeFormat } from "../../../../utils/date-time";
 import Message from "../../../../components/Message";
 import Loader from "../../../../components/Loader";
 import { listAppointmentInfo } from "../../../../actions/appointmentActions";
@@ -41,33 +42,99 @@ const AppointmentViewScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <div style={{ marginBottom: "20px", marginTop: "40px" }}>
-          <h4>Name:</h4>
-          <p>{appointment.user.fullname}</p>
-          <hr />
+          <div className="card">
+            <div className="card-body">
+              <h3 className="card-title">Personal Info</h3>
+              <hr className="border border-secondary border-1 opacity-80 my-3" />
+              <div className="row row-cols-2 row-cols-lg-3 g-2 g-lg-3">
+                <div className="col">
+                  <h4>Name:</h4>
+                  <p>{appointment.user.fullname}</p>
+                </div>
+                <div className="col">
+                  <h4>Contact Number:</h4>
+                  <p>{appointment.user.phone_no}</p>
+                </div>
+                <div className="col">
+                  <h4>Email Address:</h4>
+                  <p>{appointment.user.email}</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <h4 style={{ marginTop: "10px" }}>Phone:</h4>
-          <p>{appointment.user.phone_no}</p>
-          <hr />
+          {/* Person Details Number */}
+          <div className="card mt-4">
+            <div className="card-body">
+              <h3 className="card-title">Others</h3>
+              <hr className="border border-secondary border-1 opacity-80 my-3" />
+              <div className="row row-cols-2 row-cols-lg-4 g-2 g-lg-3">
+                <div className="col">
+                  <h4>Time Slot:</h4>
+                  <p>
+                    {appointment.timeSlot.start} - {appointment.timeSlot.end}
+                  </p>
+                </div>
+                <div className="col">
+                  <h4>Match Date:</h4>
+                  <p> {dateTimeFormat(appointment.date)}</p>
+                </div>
+                <div className="col">
+                  <h4>Adult:</h4>
+                  <p>{appointment.persons.adult}</p>
+                </div>
+                <div className="col">
+                  <h4>Children:</h4>
+                  <p>{appointment.persons.children}</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              Count: {appointment.persons.children + appointment.persons.adult}
+            </div>
+          </div>
 
-          <h4 style={{ marginTop: "10px" }}>Email:</h4>
-          <p>{appointment.user.email}</p>
-          <hr />
-
-          <h4 style={{ marginTop: "10px" }}>Service:</h4>
-          <p>jasdakjd ajd asd</p>
-          <hr />
-
-          <h4 style={{ marginTop: "10px" }}>Children:</h4>
-          <p>jasdajdajsd</p>
-          <hr />
-
-          <h4 style={{ marginTop: "10px" }}>Adults:</h4>
-          <p>ada dajdajd</p>
-          <hr />
-
-          <h4 style={{ marginTop: "10px" }}>Message:</h4>
-          <p>jasdjadasjd</p>
-          <hr />
+          {/* services and payment */}
+          <div className="row row-cols-1 row-cols-lg-2 g-2 g-lg-3 mt-4">
+            <div className="col-lg-4 col-xl-5 col-md-12 col-sm-12 col-xs-12">
+              <div className="card">
+                <div className="card-body">
+                  <h3 className="card-title">Services</h3>
+                  <hr className="border border-secondary border-1 opacity-80 my-3" />
+                  <h4>Package:</h4>
+                  <p>{appointment.service.name}</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-8 col-xl-7 col-md-12 col-sm-12 col-xs-12">
+              <div className="card">
+                <div className="card-body">
+                  <h3 className="card-title">Payment Status</h3>
+                  <hr className="border border-secondary border-1 opacity-80 my-3" />
+                  <div className="row row-cols-2 row-cols-lg-4 g-2 g-lg-3">
+                    <div className="col">
+                      <h4>Transaction ID:</h4>
+                      <p>{appointment.payment.reference}</p>
+                    </div>
+                    <div className="col">
+                      <h4>Paid Amount:</h4>
+                      <p>Rs. {appointment.payment.amount}</p>
+                    </div>
+                    <div className="col">
+                      <h4>Due Amount:</h4>
+                      <p>Rs. 700</p>
+                    </div>
+                    <div className="col">
+                      <h4>Status</h4>
+                      <p className="badge text-bg-secondary">
+                        {appointment.payment.status}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </>

@@ -50,7 +50,7 @@ export const listSingleBlog = async (req, res) => {
       });
     }
 
-    let item = await Blog.findById(post_id);
+    let item = await Blog.findById(post_id).populate("user category tags", "fullname title -_id");
 
     return res.status(200).json({
       message: "success",

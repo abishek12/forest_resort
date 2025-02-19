@@ -80,8 +80,8 @@ export const getAllBooking = async (req, res) => {
 export const getBooking = async (req, res) => {
   try {
     let item = await Booking.findById(req.params.slugs).populate(
-      "user",
-      "fullname phone_no email -_id"
+      "user service",
+      "fullname phone_no email name -_id"
     );
 
     if (!item) {
