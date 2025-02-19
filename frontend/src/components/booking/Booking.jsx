@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import ContactInfo from "../contact/ContactInfo";
 import BookingForm from "../form/BookingForm";
 import BookingTime from "./BookingTime";
 

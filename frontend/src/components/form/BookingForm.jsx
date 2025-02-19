@@ -38,6 +38,7 @@ const BookingForm = ({ setIsQrVisible }) => {
     minute: "00",
     period: "AM",
   });
+
   const handleDateChange = (selectedDate) => {
     setDate(selectedDate);
   };
@@ -61,7 +62,7 @@ const BookingForm = ({ setIsQrVisible }) => {
 
   const get24HourTime = (time) => {
     let hour = parseInt(time.hour, 10);
-    const minute = parseInt(time.minute, 10);
+    const minute = time.minute;
     const period = time.period;
 
     let adjustedHour = hour;
@@ -114,37 +115,68 @@ const BookingForm = ({ setIsQrVisible }) => {
   const handleForm = async (event) => {
     event.preventDefault();
     setLoading(true);
+
+    if (!service) {
+      toast.error("Please select a service.");
+      setLoading(false);
+      return;
+  }
+
+  if (!startTime.hour || !startTime.minute || !startTime.period) {
+      toast.error("Please select a start time.");
+      setLoading(false);
+      return;
+  }
+
+  if (!endTime.hour || !endTime.minute || !endTime.period) {
+      toast.error("Please select an end time.");
+      setLoading(false);
+      return;
+  }
+
+  if (!transactionId || !paidAmount) {
+      toast.error("Please enter transaction details.");
+      setLoading(false);
+      return;
+  }
     try {
+      const startTimeFormatted = `${startTime.hour}:${startTime.minute}`;
+      const endTimeFormatted = `${endTime.hour}:${endTime.minute}`;
       const bookingData = {
         service: "67a8af10655fb70f058f0f54",
         user: "67a890ae259d39cf93d0fc3b",
         date,
         timeSlot: {
-          startTime,
-          endTime,
+        start: startTimeFormatted,
+        end: endTimeFormatted
         },
         payment: {
           reference: transactionId,
           amount: paidAmount,
           status: "pending",
         },
-        
       };
 
-      console.log("My Data: ", bookingData)
+      console.log(startTime);
+      console.log(endTime);
 
-      const response = await axios.post("http://localhost:8888/api/booking", bookingData);
+       const response = await axios.post("http://localhost:8888/api/booking", bookingData, {
+        headers: {
+          "Content-Type": "application/json"
+        },
+       });
+       console.log(response.data);
 
       if (response.status === 201) {
         toast.success("Booking Successful!");
-        console.log("Booking Details: ", response.data);
-    } else {
-        console.error("Unexpected response status:", response.status);
+    } 
+    else {
+    toast.error("Unexpected response status:", response.status);
     }    
      
     } catch (error) {
       console.error("Booking failed:", error.response || error);
-      alert("Booking failed! " + (error.response?.data?.message || error.message));
+      toast.error("Booking failed! " + (error.response?.data?.message || error.message))
     }
     finally{
       setLoading(false);
