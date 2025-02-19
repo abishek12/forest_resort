@@ -5,11 +5,18 @@ export const listAppointments = async (
   keyword = "",
   pageNumber = 1,
   limit = 10,
-  sort=""
+  sort = "",
+  statusFilter = ""
 ) => {
   try {
     const { data } = await axios.get(`http://localhost:8888/api/booking`, {
-      params: { page: pageNumber, limit: limit, keyword, sort},
+      params: {
+        page: pageNumber,
+        limit: limit,
+        keyword,
+        sort,
+        status: statusFilter,
+      },
     });
     return data;
   } catch (error) {

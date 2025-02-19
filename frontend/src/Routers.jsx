@@ -53,6 +53,7 @@ import Service from "./pages/screens/Admin/Services/Service";
 import Booking from "./pages/screens/Admin/Bookings/Booking";
 import BookingTime from "./components/booking/BookingTime";
 import RegisterScreen from "./pages/screens/Register";
+import User from "./pages/screens/Admin/User/User";
 
 const Routers = () => {
   return (
@@ -124,6 +125,14 @@ const Routers = () => {
             element={
               <PrivateRoute>
                 <AdminBlog />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <PrivateRoute>
+                <User />
               </PrivateRoute>
             }
           />

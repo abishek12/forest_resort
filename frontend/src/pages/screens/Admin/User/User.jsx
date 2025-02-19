@@ -1,92 +1,71 @@
-import React, { useEffect, useRef, useState } from "react";
-// import UserAction from "./UserAction";
-import "./User.scss";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { v4 as uuid } from "uuid";
+import { FaEye, FaEdit } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
 
-import { useDispatch, useSelector } from "react-redux";
-import { usersList } from "../../../../actions/authentication/userList";
-import {usersDelete} from "../../../../actions/authentication/userDelete"
-import { Link, useNavigate } from 'react-router-dom';
-// import { HiDotsHorizontal } from "react-icons/hi";
-import {
-  MdEditSquare,
-  MdOutlineDelete
-} from "react-icons/md";
+import { listUsers } from "../../../../actions/authentication/userList";
+import Loader from "../../../../components/Loader";
+import Message from "../../../../components/Message";
+import { dateTimeFormat } from "../../../../utils/date-time";
 
 const TABLE_HEADS = [
-  "ID",
-  "Name",
+  "S.N",
+  "Fullname",
   "Email",
-  "Admin",
+  "Contact No.",
+  "Joined Date",
   "Actions",
 ];
 
-
-
 const User = () => {
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const userList = useSelector((state) => state.userList);
-  const { loading, error, users } = userList;
-
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-
-  const userDelete = useSelector((state) => state.userDelete);
-  const { success: successDelete } = userDelete;
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(usersList());
-    } else {
-      navigate("/login");
-    }
-  }, [dispatch, navigate, successDelete, userInfo]);
+    const fetchBlogs = async () => {
+      try {
+        setLoading(true);
+        const data = await listUsers("", 1, 10, "desc");
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setUsers(data);
+        }
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
 
-  // const [showDropdown, setShowDropdown] = useState(false);
-  // const handleDropdown = () => {
-  //   setShowDropdown(!showDropdown);
-  // };
+    fetchBlogs();
+  }, []);
 
-  // const dropdownRef = useRef(null);
+  users.map((index) => {
+    console.log(index.roles);
+  });
 
-  // const handleClickOutside = (event) => {
-  //   if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-  //     setShowDropdown(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.addEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
-
-  const deleteHandler = (id) => {
-    if (window.confirm("Are you sure")) {
-      dispatch(usersDelete(id));
-      navigate("/admin/dashboard");
-    }
-  };
-
-  // const userDelete = useSelector((state) => state.userDelete);
-  // const { success: successDelete } = userDelete;
-
-  // const deleteHandler = (id) => {
-  //   if (window.confirm("Are you sure")) {
-  //     dispatch(deleteUser(id));
+  // const handleRemoveBlog = async (id) => {
+  //   if (window.confirm("Are you sure you want to delete this blog?")) {
+  //     try {
+  //       await removeBlog(id, userInfo);
+  //       setBlogs(blogs.filter((blog) => blog._id !== id));
+  //     } catch (err) {
+  //       setError(err.message);
+  //     }
   //   }
   // };
 
   return (
-    <section className="content-area-table">
-      <div className="data-table-info">
-        <h4 className="data-table-title">Users</h4>
-      </div>
+    <div className="blog-list">
+      <h1>Users</h1>
+      {loading && <Loader />}
+      {error && <Message variant="danger">{error}</Message>}
+
       <div className="data-table-diagram">
-        <table>
+        <table className="table table-striped table-bordered">
           <thead>
             <tr>
               {TABLE_HEADS?.map((th, index) => (
@@ -95,68 +74,27 @@ const User = () => {
             </tr>
           </thead>
           <tbody>
-            {users?.map((user) => (
-              // return (
-              <tr key={user._id}>
-                <td>{user._id}</td>
-                <td>{user.name}</td>
-                <td><a href={`mailto:${user.email}`}>{user.email}</a></td>
-                {/* <td>{user.customer}</td> */}
-                <td>
-                  {user.isAdmin ? (
-                    <span>Admin</span>
-                  ) : (
-                    <span>User</span>
-                  )}
-                  {/* <div className="dt-status">
-                      <span
-                        className={`dt-status-dot dot-${user.status}`}
-                      ></span>
-                      <span className="dt-status-text">{user.status}</span>
-                    </div> */}
-                </td>
-                {/* <td>${user.amount.toFixed(2)}</td> */}
-                <td className="dt-cell-action">
-                  <Link to={`/admin/user/${user._id}/edit`}>
-                    <MdEditSquare />
-                  </Link>
-                  <Link onClick={() => deleteHandler(user._id)}>
-                    <MdOutlineDelete />
-                  </Link>
+            {users?.map((user, index) => (
+              <tr key={uuid()}>
+                <td>{index + 1}</td>
+                <td>{user.fullname}</td>
+                <td>{user.email}</td>
 
-                  {/* <button
-                    type="button"
-                    className="action-dropdown-btn"
-                    onClick={handleDropdown}
+                <td>{user.phone_no}</td>
+                <td>{dateTimeFormat(user.createdAt)}</td>
+                <td>
+                  <Link
+                  //onClick={() => handleRemoveBlog(blog._id)}
                   >
-                    <HiDotsHorizontal size={18} />
-                    {showDropdown && (
-                      <div className="action-dropdown-menu" ref={dropdownRef}>
-                        <ul className="dropdown-menu-list" style={{ listStyle: 'none' }}>
-                          <li className="dropdown-menu-item">
-                            <Link to={`/admin/user/${user._id}/edit`} className="dropdown-menu-link">
-                              Edit
-                            </Link>
-                          </li>
-                          <li className="dropdown-menu-item">
-                            <Link className="dropdown-menu-link" onClick={() => deleteHandler(user._id)}>
-                              Delete
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    )}
-                  </button> */}
-                  {/* <UserAction id={user._id} /> */}
+                    <MdDeleteOutline />
+                  </Link>
                 </td>
               </tr>
-            )
-              // }
-            )}
+            ))}
           </tbody>
         </table>
       </div>
-    </section>
+    </div>
   );
 };
 

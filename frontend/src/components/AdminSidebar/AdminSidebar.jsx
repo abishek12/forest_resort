@@ -14,10 +14,6 @@ import {
   MdOutlinePeople,
   MdPageview,
   MdOutlineSettings,
-  MdMedication,
-  MdOutlineShoppingBag,
-  MdDynamicForm,
-  MdOutlineDynamicForm,
   MdDescription,
   MdPreview,
 } from "react-icons/md";
@@ -82,6 +78,17 @@ const AdminSidebar = ({ isOpen }) => {
                   <MdDocumentScanner size={20} />
                 </span>
                 <span className="menu-link-text">Blogs</span>
+              </NavLink>
+              <NavLink
+                to="/admin/users"
+                className={({ isActive }) =>
+                  isActive ? "menu-link active" : "menu-link"
+                }
+              >
+                <span className="menu-link-icon">
+                  <MdOutlinePeople size={20} />
+                </span>
+                <span className="menu-link-text">Users</span>
               </NavLink>
             </li>
             <div style={{ marginTop: 20 }}>
