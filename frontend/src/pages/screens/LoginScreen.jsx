@@ -2,18 +2,20 @@ import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { MdCheckBox, MdCheckBoxOutlineBlank } from "react-icons/md";
+
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import { loginUser } from "../../actions/authentication/userLogin";
 import "./styles.css";
-import { MdCheckBox, MdCheckBoxOutlineBlank } from "react-icons/md";
 import HeaderV1 from "../../components/header/HeaderV1";
 import FooterV1 from "../../components/footer/FooterV1";
+
 
 const LoginScreen = ({ location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [showPassword, setShowPassword] = useState(false);
 
   const emailRef = useRef(null);
 
@@ -30,7 +32,7 @@ const LoginScreen = ({ location }) => {
     if (userInfo) {
       navigate(redirect);
     }
-  }, [navigate, userInfo]);  // This ensures the effect runs when userInfo changes
+  }, [navigate, userInfo]); 
 
   const submitHandler = (e) => {
     e.preventDefault();

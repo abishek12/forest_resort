@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
-import BoxReveal from "../ui/magic_ui/box-reveal";
+import { Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
+
+import BoxReveal from "../ui/magic_ui/box-reveal";
 import { IoMdArrowDropdown } from "react-icons/io";
 import "react-datepicker/dist/react-datepicker.css";
-import { createAppointment } from "../../actions/appointmentActions";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { Button } from "react-bootstrap";
 
-const BookingForm = () => {
-  const [startDate, setStartDate] = useState(new Date());
+const BookingForm = ({ setIsQrVisible }) => {
+  // const [startDate, setStartDate] = useState(new Date());
   const [date, setDate] = useState(new Date());
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -20,25 +19,48 @@ const BookingForm = () => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [service, setService] = useState("");
-  const [time, setTime] = useState({ hour: "09", minute: "00", period: "AM" });
 
-  const dispatch = useDispatch();
+  const [transactionId, setTransactionId] = useState("");
+  const [paidAmount, setPaidAmount] = useState("");
 
+  const [showImage, setShowImage] = useState(false);
+  const [showBookingBtn, setShowBookingBtn] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  const [startTime, setStartTime] = useState({
+    hour: "09",
+    minute: "00",
+    period: "AM",
+  });
+  const [endTime, setEndTime] = useState({
+    hour: "10",
+    minute: "00",
+    period: "AM",
+  });
   const handleDateChange = (selectedDate) => {
     setDate(selectedDate);
   };
 
-  const handleTimeChange = (e, type) => {
-    const { name, value } = e.target;
-    setTimeSlot((prevTimeSlot) => ({
-      ...prevTimeSlot,
-      [type]: { ...prevTimeSlot[type], [name]: value },
-    }));
+  const handlePaymentClick = () => {
+    setIsQrVisible(true);
+    setShowImage(true);
+    setTimeout(() => {
+      setShowBookingBtn(true);
+    }, 1000);
   };
 
-  // Convert time to 24-hour format
-  const get24HourTime = () => {
-    const hour = parseInt(time.hour, 10);
+  const handleTimeChange = (e, type) => {
+    const { name, value } = e.target;
+    if (type === "start") {
+      setStartTime((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setEndTime((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const get24HourTime = (time) => {
+    let hour = parseInt(time.hour, 10);
     const minute = parseInt(time.minute, 10);
     const period = time.period;
 
@@ -89,125 +111,142 @@ const BookingForm = () => {
     }
   };
 
-  // const adjustedDate = new Date(startDate.getTime() + date.getTimezoneOffset() * 20700);
-
   const handleForm = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    try {
+      const bookingData = {
+        service: "67a8af10655fb70f058f0f54",
+        user: "67a890ae259d39cf93d0fc3b",
+        date,
+        timeSlot: {
+          startTime,
+          endTime,
+        },
+        payment: {
+          reference: transactionId,
+          amount: paidAmount,
+          status: "pending",
+        },
+        
+      };
 
-    const { hour, minute, period } = time;
+      console.log("My Data: ", bookingData)
+
+      const response = await axios.post("http://localhost:8888/api/booking", bookingData);
+
+      if (response.status === 201) {
+        toast.success("Booking Successful!");
+        console.log("Booking Details: ", response.data);
+    } else {
+        console.error("Unexpected response status:", response.status);
+    }    
+     
+    } catch (error) {
+      console.error("Booking failed:", error.response || error);
+      alert("Booking failed! " + (error.response?.data?.message || error.message));
+    }
+    finally{
+      setLoading(false);
+    }
+
     const bookingDateTime = new Date(date);
-    const { hour: adjustedHour, minute: adjustedMinute } = get24HourTime();
+    const { hour: startHour, minute: startMinute } = get24HourTime(startTime);
+    const { hour: endHour, minute: endMinute } = get24HourTime(endTime);
 
-    bookingDateTime.setHours(adjustedHour, adjustedMinute, 0, 0);
-    console.log("Booking Date and Time:", bookingDateTime);
-
-    const startTime = `${String(adjustedHour).padStart(2, "0")}:${String(
-      adjustedMinute
+    bookingDateTime.setHours(startHour, startMinute, 0, 0);
+    const startTimeFormatted = `${String(startHour).padStart(2, "0")}:${String(
+      startMinute
     ).padStart(2, "0")}`;
-    const endTime = `${String(adjustedHour + 1).padStart(2, "0")}:${String(
-      adjustedMinute
-    ).padStart(2, "0")}`; // Assuming 1-hour time slots
+    const endTimeFormatted = `${String(endHour).padStart(2, "0")}:${String(
+      endMinute
+    ).padStart(2, "0")}`;
 
-    console.log("TIME:", time);
-
-    const bookingData = {
-      name,
-      phone,
-      email,
-      message,
-      service,
-      adults,
-      children,
-      date: bookingDateTime,
-      timeSlot: { start: startTime, end: endTime },
-    };
-
-    await dispatch(createAppointment(bookingData));
-
-    toast.success("Thanks For Your Message");
+    setShowImage(false);
+    setShowBookingBtn(false);
   };
 
   return (
-    <>
-      <div className="contact-form-style-one" id="Reserve">
-        <h4 className="sub-title">
-          <BoxReveal>Need relaxation?</BoxReveal>
-        </h4>
-        <h2 className="title">
-          <BoxReveal>Reserve your spot Now</BoxReveal>
-        </h2>
-        <form className="contact-form" onSubmit={handleForm}>
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="form-group">
-                <input
-                  className="form-control"
-                  id="name"
-                  name="name"
-                  placeholder="Full Name"
-                  type="text"
-                  autoComplete="off"
-                  required
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <span className="alert-error"></span>
-              </div>
+    <div className="contact-form-style-one" id="Reserve">
+      <h4 className="sub-title">
+        <BoxReveal>Need relaxation?</BoxReveal>
+      </h4>
+      <h2 className="title">
+        <BoxReveal>Reserve your spot Now</BoxReveal>
+      </h2>
+      <form className="contact-form" onSubmit={handleForm}>
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="form-group">
+              <input
+                className="form-control"
+                id="name"
+                name="name"
+                placeholder="Full Name"
+                type="text"
+                autoComplete="off"
+                value="Ram Prasad Subedi"
+                required
+                readOnly
+              />
             </div>
           </div>
-          <div className="row">
-            <div className="col-lg-6">
-              <div className="form-group">
-                <input
-                  className="form-control"
-                  id="email"
-                  name="email"
-                  placeholder="Email*"
-                  type="email"
-                  autoComplete="off"
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <span className="alert-error"></span>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="form-group">
-                <input
-                  className="form-control no-arrows"
-                  id="phone"
-                  name="phone"
-                  placeholder="Phone*"
-                  type="number"
-                  autoComplete="off"
-                  required
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-                <span className="alert-error"></span>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-lg-6">
-              <div className="form-group">
-                <DatePicker
-                  selected={date}
-                  onChange={handleDateChange}
-                  dateFormat="MMMM d, yyyy"
-                  minDate={new Date()}
-                  maxDate={
-                    new Date(new Date().setDate(new Date().getDate() + 30))
-                  }
-                />
+        </div>
 
-                <span className="alert-error"></span>
-              </div>
-              <div className="form-group">
-                <label>Time</label>
+        <div className="row">
+          <div className="col-lg-6">
+            <div className="form-group">
+              <input
+                className="form-control"
+                id="email"
+                name="email"
+                placeholder="Email*"
+                type="email"
+                autoComplete="off"
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="col-lg-6">
+            <div className="form-group">
+              <input
+                className="form-control no-arrows"
+                id="phone"
+                name="phone"
+                placeholder="Phone*"
+                type="number"
+                autoComplete="off"
+                required
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-lg-6">
+            <div className="form-group">
+              <DatePicker
+                selected={date}
+                onChange={handleDateChange}
+                dateFormat="MMMM d, yyyy"
+                minDate={new Date()}
+                maxDate={
+                  new Date(new Date().setDate(new Date().getDate() + 30))
+                }
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="tw-font-bold">TIME</label>
+              <div className="time-inputs">
+                <label>Start Time:</label>
                 <div className="time-inputs">
                   <select
                     name="hour"
-                    value={time.hour}
-                    onChange={handleTimeChange}
+                    value={startTime.hour}
+                    onChange={(e) => handleTimeChange(e, "start")}
                   >
                     {Array.from({ length: 12 }, (_, i) => {
                       const hour = i + 1;
@@ -224,8 +263,8 @@ const BookingForm = () => {
                   <span>:</span>
                   <select
                     name="minute"
-                    value={time.minute}
-                    onChange={handleTimeChange}
+                    value={startTime.minute}
+                    onChange={(e) => handleTimeChange(e, "start")}
                   >
                     {["00", "15", "30", "45"].map((minute) => (
                       <option key={minute} value={minute}>
@@ -235,8 +274,49 @@ const BookingForm = () => {
                   </select>
                   <select
                     name="period"
-                    value={time.period}
-                    onChange={handleTimeChange}
+                    value={startTime.period}
+                    onChange={(e) => handleTimeChange(e, "start")}
+                  >
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                </div>
+
+                <label>End Time: </label>
+                <div className="time-inputs">
+                  <select
+                    name="hour"
+                    value={endTime.hour}
+                    onChange={(e) => handleTimeChange(e, "end")}
+                  >
+                    {Array.from({ length: 12 }, (_, i) => {
+                      const hour = i + 1;
+                      return (
+                        <option
+                          key={hour}
+                          value={hour.toString().padStart(2, "0")}
+                        >
+                          {hour.toString().padStart(2, "0")}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <span>:</span>
+                  <select
+                    name="minute"
+                    value={endTime.minute}
+                    onChange={(e) => handleTimeChange(e, "end")}
+                  >
+                    {["00", "15", "30", "45"].map((minute) => (
+                      <option key={minute} value={minute}>
+                        {minute}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    name="period"
+                    value={endTime.period}
+                    onChange={(e) => handleTimeChange(e, "end")}
                   >
                     <option value="AM">AM</option>
                     <option value="PM">PM</option>
@@ -244,133 +324,167 @@ const BookingForm = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-6">
-              <div
-                className="form-group tw-py-2 hover:tw-cursor-pointer tw-rounded-sm"
-                style={{
-                  border: "2px solid black",
-                }}
-              >
-                <div onClick={toggleDropdown}>
-                  <IoMdArrowDropdown className="tw-inline-block" size={20} />
-                  {adults} adults, {children} children
-                </div>
-                {isOpen && (
-                  <div className="tw-absolute tw-bg-green-200  tw-rounded-md tw-border tw-border-black tw-p-4 tw-w-[250px] tw-z-50">
-                    <div className="tw-flex tw-items-center tw-justify-between tw-py-2">
-                      <label htmlFor="Adults">Adults</label>
-                      <div className="tw-flex tw-pb-1">
-                        <button
-                          className="reserveBtns"
-                          onClick={(event) => decreaseGuests("adults", event)}
-                        >
-                          -
-                        </button>
-                        <span className="tw-px-4 tw-flex tw-place-items-center">
-                          {adults}
-                        </span>
-                        <button
-                          className="reserveBtns"
-                          onClick={(event) => increaseGuests("adults", event)}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                    <div className="tw-flex tw-place-items-center tw-justify-between tw-py-2 ">
-                      <label htmlFor="Children">Children</label>
-                      <div className="tw-flex tw-pb-1">
-                        <button
-                          className="reserveBtns"
-                          onClick={(event) => decreaseGuests("children", event)}
-                        >
-                          -
-                        </button>
-                        <span className="tw-px-4 tw-flex tw-place-items-center tw-text-center ">
-                          {children}
-                        </span>
-                        <button
-                          className="reserveBtns"
-                          onClick={(event) => increaseGuests("children", event)}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                    <button
-                      onClick={closeDropdown}
-                      className="reserveBtns tw-pt-2 tw-w-full "
-                    >
-                      Done
-                    </button>
-                  </div>
-                )}
-                <span className="alert-error"></span>
+          </div>
+
+          <div className="col-lg-6">
+            <div
+              className="form-group tw-py-2 hover:tw-cursor-pointer tw-rounded-sm"
+              style={{
+                border: "2px solid black",
+              }}
+            >
+              <div onClick={toggleDropdown}>
+                <IoMdArrowDropdown className="tw-inline-block" size={20} />
+                {adults} adults, {children} children
               </div>
+              {isOpen && (
+                <div className="tw-absolute tw-bg-green-200  tw-rounded-md tw-border tw-border-black tw-p-4 tw-w-[250px] tw-z-50">
+                  <div className="tw-flex tw-items-center tw-justify-between tw-py-2">
+                    <label htmlFor="Adults">Adults</label>
+                    <div className="tw-flex tw-pb-1">
+                      <button
+                        className="reserveBtns"
+                        onClick={(event) => decreaseGuests("adults", event)}
+                      >
+                        -
+                      </button>
+                      <span className="tw-px-4 tw-flex tw-place-items-center">
+                        {adults}
+                      </span>
+                      <button
+                        className="reserveBtns"
+                        onClick={(event) => increaseGuests("adults", event)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  <div className="tw-flex tw-place-items-center tw-justify-between tw-py-2 ">
+                    <label htmlFor="Children">Children</label>
+                    <div className="tw-flex tw-pb-1">
+                      <button
+                        className="reserveBtns"
+                        onClick={(event) => decreaseGuests("children", event)}
+                      >
+                        -
+                      </button>
+                      <span className="tw-px-4 tw-flex tw-place-items-center tw-text-center ">
+                        {children}
+                      </span>
+                      <button
+                        className="reserveBtns"
+                        onClick={(event) => increaseGuests("children", event)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  <button
+                    onClick={closeDropdown}
+                    className="reserveBtns tw-pt-2 tw-w-full "
+                  >
+                    Done
+                  </button>
+                </div>
+              )}
+              <span className="alert-error"></span>
             </div>
           </div>
-          <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-gap-8 tw-pb-6">
-            <div className="tw-flex tw-place-items-center tw-gap-2">
-              <input
-                type="radio"
-                name="service"
-                value="swimming"
-                onChange={handleServiceChange}
-              />
-              <label htmlFor="swimming">Swimming Pool</label>
-            </div>
-            <div className="tw-flex tw-place-items-center tw-gap-2">
-              <input
-                type="radio"
-                name="service"
-                value="futsal"
-                onChange={handleServiceChange}
-              />
-              <label htmlFor="futsal">Futsal</label>
-            </div>
-            <div className="tw-flex tw-place-items-center tw-gap-2">
-              <input
-                type="radio"
-                name="service"
-                value="both"
-                onChange={handleServiceChange}
-              />
-              <label htmlFor="both">both</label>
-            </div>
+        </div>
+
+        <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-gap-8 tw-pb-6">
+          <div className="tw-flex tw-place-items-center tw-gap-2">
+            <input
+              type="radio"
+              name="service"
+              value="swimming"
+              onChange={handleServiceChange}
+            />
+            <label htmlFor="swimming">Swimming Pool</label>
           </div>
+
+          <div className="tw-flex tw-place-items-center tw-gap-2">
+            <input
+              type="radio"
+              name="service"
+              value="futsal"
+              onChange={handleServiceChange}
+            />
+            <label htmlFor="futsal">Futsal</label>
+          </div>
+
+          <div className="tw-flex tw-place-items-center tw-gap-2">
+            <input
+              type="radio"
+              name="service"
+              value="both"
+              onChange={handleServiceChange}
+            />
+            <label htmlFor="both">Both</label>
+          </div>
+        </div>
+
+        {showBookingBtn ? (
           <div className="row">
-            <div className="col-lg-12">
-              <div className="form-group comments">
-                <textarea
-                  className="form-control"
-                  id="comments"
-                  name="comments"
-                  placeholder="Your message *"
+            <div className="col-lg-6">
+              <div className="form-group">
+                <input
+                  className="form-control no-arrows"
+                  id="transaction_id"
+                  name="transaction_id"
+                  placeholder="Transaction No.*"
+                  type="text"
                   autoComplete="off"
                   required
-                  onChange={(e) => setMessage(e.target.value)}
-                ></textarea>
+                  onChange={(e) => setTransactionId(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="col-lg-6">
+              <div className="form-group">
+                <input
+                  className="form-control no-arrows"
+                  id="paid_amount"
+                  name="paid_amount"
+                  placeholder="Advance Paid Amount*"
+                  type="number"
+                  autoComplete="off"
+                  required
+                  onChange={(e) => setPaidAmount(e.target.value)}
+                />
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-lg-12 ">
-              <Button
-                type="submit"
-                name="submit"
-                id="submit"
-                // className="reserveBtns"
-              >
-                <i className="fa fa-paper-plane"></i> Reserve
+        ) : (
+          ""
+        )}
+
+        <div className="row">
+          <div className="col-lg-12 tw-py-3">
+            {!showBookingBtn ? (
+              <Button type="button" onClick={handlePaymentClick}>
+                <i className="fa fa-credit-card"></i> Payment
               </Button>
+            ) : (
+              <Button type="submit">
+                <i className="fa fa-paper-plane"></i> Book
+              </Button>
+            )}
+          </div>
+          {showImage && (
+            <div className="QR-image">
+              <h4>Please, Scan QR Code to make Payment!</h4>
+              <img src=" " />
             </div>
-          </div>
-          <div className="col-lg-12 alert-notification">
-            <div id="message" className="alert-msg"></div>
-          </div>
-        </form>
-      </div>
-    </>
+          )}
+        </div>
+
+        <div className="col-lg-12 alert-notification">
+          <div id="message" className="alert-msg"></div>
+        </div>
+      </form>
+    </div>
   );
 };
 

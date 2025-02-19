@@ -12,10 +12,10 @@ export const listAllUsers = async (req, res) => {
 
     // Offset calculation
     let offset = (page - 1) * limit;
-    
+
     let totalRecords = await User.countDocuments();
 
-    const items = await User.find({}, { _id: 0, __v:0, token: 0, password:0 })
+    const items = await User.find({}, { __v: 0, token: 0, password: 0 })
       .sort(sort)
       .skip(offset)
       .limit(limit);
@@ -35,6 +35,23 @@ export const listAllUsers = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log(`Error: ${error}`);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const userProfile = async (req, res) => {
+  try {
+    let { userId } = req.params;
+
+    let item = await User.findById(userId, { __v: 0, token: 0 });
+
+    return res.status(200).json({
+      message: "success",
+      item,
+    });
+  } catch (error) {
+    console.log(`Error: ${error}`);
     return res.status(500).json({ message: error });
   }
 };

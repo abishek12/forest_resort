@@ -24,6 +24,7 @@ const TABLE_HEADS = [
 
 const Appointment = () => {
   const [appointments, setAppointments] = useState([]);
+  const [sort, setSorting] = useState("desc");
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
@@ -73,6 +74,7 @@ const Appointment = () => {
         <div className="data-table-info">
           <h4 className="data-table-title">Appointment Responses</h4>
         </div>
+
         <div className="data-table-diagram">
           <table>
             <thead>

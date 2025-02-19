@@ -1,10 +1,15 @@
 import axios from "axios";
 
 // Get list of appointments
-export const listAppointments = async (keyword = "", pageNumber = 1, limit = 10) => {
+export const listAppointments = async (
+  keyword = "",
+  pageNumber = 1,
+  limit = 10,
+  sort=""
+) => {
   try {
     const { data } = await axios.get(`http://localhost:8888/api/booking`, {
-      params: { page: pageNumber, limit: limit, keyword }
+      params: { page: pageNumber, limit: limit, keyword, sort},
     });
     return data;
   } catch (error) {
@@ -14,7 +19,6 @@ export const listAppointments = async (keyword = "", pageNumber = 1, limit = 10)
     );
   }
 };
-
 
 // Get appointment details by ID
 export const listAppointmentInfo = async (id) => {
