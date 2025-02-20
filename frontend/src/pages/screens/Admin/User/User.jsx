@@ -29,9 +29,6 @@ const User = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  console.log("adada");
-  console.log(userInfo)
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {

@@ -3,13 +3,19 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
+import { useDispatch, useSelector } from "react-redux";
 
 import BoxReveal from "../ui/magic_ui/box-reveal";
 import { IoMdArrowDropdown } from "react-icons/io";
 import "react-datepicker/dist/react-datepicker.css";
 
 const BookingForm = ({ setIsQrVisible }) => {
-  // const [startDate, setStartDate] = useState(new Date());
+  /**
+   * use of redux to retrive user information
+   */
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const [date, setDate] = useState(new Date());
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -120,35 +126,35 @@ const BookingForm = ({ setIsQrVisible }) => {
       toast.error("Please select a service.");
       setLoading(false);
       return;
-  }
+    }
 
-  if (!startTime.hour || !startTime.minute || !startTime.period) {
+    if (!startTime.hour || !startTime.minute || !startTime.period) {
       toast.error("Please select a start time.");
       setLoading(false);
       return;
-  }
+    }
 
-  if (!endTime.hour || !endTime.minute || !endTime.period) {
+    if (!endTime.hour || !endTime.minute || !endTime.period) {
       toast.error("Please select an end time.");
       setLoading(false);
       return;
-  }
+    }
 
-  if (!transactionId || !paidAmount) {
+    if (!transactionId || !paidAmount) {
       toast.error("Please enter transaction details.");
       setLoading(false);
       return;
-  }
+    }
     try {
       const startTimeFormatted = `${startTime.hour}:${startTime.minute}`;
       const endTimeFormatted = `${endTime.hour}:${endTime.minute}`;
       const bookingData = {
         service: "67a8af10655fb70f058f0f54",
-        user: "67a890ae259d39cf93d0fc3b",
+        user: `${userInfo.userId}`,
         date,
         timeSlot: {
-        start: startTimeFormatted,
-        end: endTimeFormatted
+          start: startTimeFormatted,
+          end: endTimeFormatted,
         },
         payment: {
           reference: transactionId,
@@ -160,25 +166,28 @@ const BookingForm = ({ setIsQrVisible }) => {
       console.log(startTime);
       console.log(endTime);
 
-       const response = await axios.post("http://localhost:8888/api/booking", bookingData, {
-        headers: {
-          "Content-Type": "application/json"
-        },
-       });
-       console.log(response.data);
+      const response = await axios.post(
+        "http://localhost:8888/api/booking",
+        bookingData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data);
 
       if (response.status === 201) {
         toast.success("Booking Successful!");
-    } 
-    else {
-    toast.error("Unexpected response status:", response.status);
-    }    
-     
+      } else {
+        toast.error("Unexpected response status:", response.status);
+      }
     } catch (error) {
       console.error("Booking failed:", error.response || error);
-      toast.error("Booking failed! " + (error.response?.data?.message || error.message))
-    }
-    finally{
+      toast.error(
+        "Booking failed! " + (error.response?.data?.message || error.message)
+      );
+    } finally {
       setLoading(false);
     }
 
@@ -217,7 +226,7 @@ const BookingForm = ({ setIsQrVisible }) => {
                 placeholder="Full Name"
                 type="text"
                 autoComplete="off"
-                value="Ram Prasad Subedi"
+                value={userInfo.fullname}
                 required
                 readOnly
               />
@@ -235,8 +244,9 @@ const BookingForm = ({ setIsQrVisible }) => {
                 placeholder="Email*"
                 type="email"
                 autoComplete="off"
+                value={userInfo.email}
                 required
-                onChange={(e) => setEmail(e.target.value)}
+                readOnly
               />
             </div>
           </div>
@@ -250,7 +260,8 @@ const BookingForm = ({ setIsQrVisible }) => {
                 type="number"
                 autoComplete="off"
                 required
-                onChange={(e) => setPhone(e.target.value)}
+                value={userInfo.phone_no}
+                readOnly
               />
             </div>
           </div>
