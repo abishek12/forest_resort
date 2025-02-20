@@ -1,13 +1,21 @@
 import axios from "axios";
+import { useSelector } from "react-redux";
+
 import { logout } from "./userLogout";
 
 export const listUsers = async (
+  token,
   keyword = "",
   page = 1,
   limit = 10,
   sort = "desc"
 ) => {
   try {
+
+    // let config = {
+    //   Authorization: `Bearer ${token}`,
+    // };
+
     const { data } = await axios.get(`http://localhost:8888/api/users`);
 
     return data.items;

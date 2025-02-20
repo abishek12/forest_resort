@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { FaEye, FaEdit } from "react-icons/fa";
@@ -19,12 +20,20 @@ const TABLE_HEADS = [
 ];
 
 const User = () => {
+  const dispatch = useDispatch();
+
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  console.log("adada");
+  console.log(userInfo)
+
   useEffect(() => {
-    const fetchBlogs = async () => {
+    const fetchUsers = async () => {
       try {
         setLoading(true);
         const data = await listUsers("", 1, 10, "desc");
@@ -40,12 +49,8 @@ const User = () => {
       }
     };
 
-    fetchBlogs();
+    fetchUsers();
   }, []);
-
-  users.map((index) => {
-    console.log(index.roles);
-  });
 
   // const handleRemoveBlog = async (id) => {
   //   if (window.confirm("Are you sure you want to delete this blog?")) {

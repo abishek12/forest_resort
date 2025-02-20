@@ -10,8 +10,8 @@ import {
 
 export const loginUser = (email, password) => async (dispatch) => {
   try {
-    dispatch({ 
-      type: USER_LOGIN_REQUEST 
+    dispatch({
+      type: USER_LOGIN_REQUEST,
     });
 
     const config = {
@@ -33,21 +33,16 @@ export const loginUser = (email, password) => async (dispatch) => {
     const userInfo = {
       accessToken: data.accessToken,
       role: decodedToken.roles,
+      fullname: decodedToken.fullname,
+      email: decodedToken.email,
+      phone_no: decodedToken.phone_no,
     };
 
     dispatch({
-       type: USER_LOGIN_SUCCESS,
-       payload: userInfo
-       });
-
-    const userDetails = jwtDecode(data.accessToken);
-
-    dispatch({
-       type: USER_LOGIN_DETAILS, 
-       payload: userDetails 
-      });
-
-    localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      type: USER_LOGIN_SUCCESS,
+      payload: userInfo,
+    });
+    // localStorage.setItem("userInfo", JSON.stringify(userInfo));
   } catch (error) {
     let errorMessage = error.message;
     if (error.response && error.response.data && error.response.data.message) {
