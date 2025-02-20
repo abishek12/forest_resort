@@ -7,7 +7,7 @@ import { authorizeRole } from "../../../middleware/UserRole.js";
 const route = express.Router();
 
 route
-  .get("/", authMiddleware, authorizeRole(["subscriber"]), listAllUsers)
+  .get("/",listAllUsers)
   .get("/:userId", userProfile);
 
 export default route;
