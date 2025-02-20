@@ -1,22 +1,23 @@
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
+  USER_LOGIN_DETAILS,
 } from "../../constants/userConstants";
 
 export const loginUser = (email, password) => async (dispatch) => {
   try {
-    dispatch({
-      type: USER_LOGIN_REQUEST,
+    dispatch({ 
+      type: USER_LOGIN_REQUEST 
     });
+
     const config = {
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
     };
 
     const { data } = await axios.post(
@@ -24,6 +25,8 @@ export const loginUser = (email, password) => async (dispatch) => {
       { email, password },
       config
     );
+
+    console.log("Login response:", data);
 
     const decodedToken = jwtDecode(data.accessToken);
 
@@ -33,19 +36,23 @@ export const loginUser = (email, password) => async (dispatch) => {
     };
 
     dispatch({
-      type: USER_LOGIN_SUCCESS,
-      payload: userInfo,
-    });
+       type: USER_LOGIN_SUCCESS,
+       payload: userInfo
+       });
+
+    const userDetails = jwtDecode(data.accessToken);
+
+    dispatch({
+       type: USER_LOGIN_DETAILS, 
+       payload: userDetails 
+      });
 
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
   } catch (error) {
     let errorMessage = error.message;
-    if (error.res && error.res.data && error.res.data.message) {
-      errorMessage = error.res.data.message;
+    if (error.response && error.response.data && error.response.data.message) {
+      errorMessage = error.response.data.message;
     }
-    dispatch({
-      type: USER_LOGIN_FAIL,
-      payload: errorMessage,
-    });
+    dispatch({ type: USER_LOGIN_FAIL, payload: errorMessage });
   }
 };
