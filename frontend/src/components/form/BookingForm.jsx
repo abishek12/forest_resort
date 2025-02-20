@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BoxReveal from "../ui/magic_ui/box-reveal";
 import { IoMdArrowDropdown } from "react-icons/io";
 import "react-datepicker/dist/react-datepicker.css";
+// import { USER_LOGIN_DETAILS } from "../../constants/userConstants";
 
 const BookingForm = ({ setIsQrVisible }) => {
   /**
@@ -45,6 +46,8 @@ const BookingForm = ({ setIsQrVisible }) => {
     period: "AM",
   });
 
+  const dispatch = useDispatch();
+  
   const handleDateChange = (selectedDate) => {
     setDate(selectedDate);
   };
@@ -161,6 +164,10 @@ const BookingForm = ({ setIsQrVisible }) => {
           amount: paidAmount,
           status: "pending",
         },
+        persons: {
+         adult: adults,
+         children
+        }
       };
 
       console.log(startTime);
@@ -259,6 +266,7 @@ const BookingForm = ({ setIsQrVisible }) => {
                 placeholder="Phone*"
                 type="number"
                 autoComplete="off"
+                //value={user.phone_no}
                 required
                 value={userInfo.phone_no}
                 readOnly
@@ -435,6 +443,8 @@ const BookingForm = ({ setIsQrVisible }) => {
           </div>
         </div>
 
+        
+
         <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-gap-8 tw-pb-6">
           <div className="tw-flex tw-place-items-center tw-gap-2">
             <input
@@ -454,16 +464,6 @@ const BookingForm = ({ setIsQrVisible }) => {
               onChange={handleServiceChange}
             />
             <label htmlFor="futsal">Futsal</label>
-          </div>
-
-          <div className="tw-flex tw-place-items-center tw-gap-2">
-            <input
-              type="radio"
-              name="service"
-              value="both"
-              onChange={handleServiceChange}
-            />
-            <label htmlFor="both">Both</label>
           </div>
         </div>
 
@@ -530,5 +530,6 @@ const BookingForm = ({ setIsQrVisible }) => {
     </div>
   );
 };
+
 
 export default BookingForm;
