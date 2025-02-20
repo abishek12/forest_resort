@@ -63,25 +63,26 @@ const RegisterScreen = () => {
         {loading ? (
           <Loader />
         ) : (
-          <div className="tw-bg-[#b1f0b4]  tw-px-20 tw-pt-5 tw-w-[300px] md:tw-w-[500px] tw-rounded-md">
+          <div className="tw-bg-[#b1f0b4] tw-px-12 tw-w-[350px] md:tw-w-[500px] tw-rounded-md tw-pt-5">
             <Form onSubmit={submitHandler} className="form-register" style={{ marginTop: "2em" }}>
               <h3 className="tw-font-bold tw-text-4xl tw-w-full tw-text-center tw-pt-12">Sign Up</h3>
               {error && <Message variant="danger">{error}</Message>}
+              
               <div className="tw-p-2 tw-leading-2">
-                <label className=" tw- ">Full Name</label> <br></br>
-                <input className="tw-px-2" type="text" placeholder="Full Name" value={fullname} onChange={(e) => setFullname(e.target.value)} required />
+                <label className=" ">Full Name</label> <br></br>
+                <input className="tw-px-2 tw-w-full tw-rounded-lg tw-border-green-500" type="text" placeholder="Full Name" value={fullname} onChange={(e) => setFullname(e.target.value)} required />
               </div>
               <div className="tw-p-2 tw-leading-2 ">
                 <label>Email Address</label> <br></br>
-                <input className="tw-px-2 " type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <input className="tw-px-2 tw-w-full tw-rounded-lg tw-border-green-500" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
               <div className="tw-p-2 tw-leading-2">
                 <label>Phone Number</label> <br></br>
-                <input className="tw-px-2" type="text" placeholder="Phone Number" value={phoneNo} onChange={(e) => setPhoneNo(e.target.value)} required />
+                <input className="tw-px-2 tw-w-full tw-rounded-lg tw-border-green-500" type="text" placeholder="Phone Number" value={phoneNo} onChange={(e) => setPhoneNo(e.target.value)} required />
               </div>
               <div className="tw-p-2 tw-leading-2">
                 <label>Password</label> <br></br>
-                <input className="tw-px-2" type={showPassword ? "text" : "password"} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <input className="tw-px-2 tw-w-full tw-rounded-lg tw-border-green-500" type={showPassword ? "text" : "password"} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <div className="tw-flex tw-gap-2 tw-items-center">
                   <div type="button" className="tw-w-fit" onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <MdCheckBox className="checkbox" /> : <MdCheckBoxOutlineBlank className="checkbox" />}
@@ -97,6 +98,7 @@ const RegisterScreen = () => {
                     <p> Already have an account? <Link to ="/login">Login</Link></p>
                 </div>
               </div>
+              
             </Form>
           </div>
         )}

@@ -43,7 +43,7 @@ export const loginUser = (email, password) => async (dispatch) => {
       type: USER_LOGIN_SUCCESS,
       payload: userInfo,
     });
-    // localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
   } catch (error) {
     let errorMessage = error.message;
     if (error.response && error.response.data && error.response.data.message) {
