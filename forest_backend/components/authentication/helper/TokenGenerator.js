@@ -9,7 +9,7 @@ export const tokenGenerator = async (data) => {
       roles: data.roles,
     },
     process.env.JWT_TOKEN,
-    { expiresIn: "1h" }
+    { expiresIn: "12h" }
   );
 
   return token;

@@ -1,13 +1,13 @@
 import express from "express";
 
 import { listAllUsers, userProfile } from "../controllers/GetUserController.js";
-// import { createBooking } from "../controllers/CreateBookingController.js";
-// import { cancelBooking } from "../controllers/CancelBookingController.js";
+import { authMiddleware } from "../../../middleware/UserToken.js";
+import { authorizeRole } from "../../../middleware/UserRole.js";
 
 const route = express.Router();
 
-route.get("/", listAllUsers).get("/:userId", userProfile);
-//   .post("/", createBooking)
-//   .patch("/:id/cancel", cancelBooking);
+route
+  .get("/", authMiddleware, authorizeRole(["subscriber"]), listAllUsers)
+  .get("/:userId", userProfile);
 
 export default route;

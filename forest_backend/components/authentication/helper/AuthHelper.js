@@ -30,6 +30,7 @@ export const registerHelper = (data) => {
     phone_no: Joi.string()
       .required()
       .regex(/^\+?[0-9\s-()]+$/, "Invalid phone number format"),
+    roles: Joi.object().default({ subscriber: false }),
   });
 
   return schema.validate(data, { abortEarly: false });
