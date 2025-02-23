@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import debounce from "lodash.debounce";
+import { IoSearchOutline } from "react-icons/io5";
 
 const SearchWidget = ({ setSearch }) => {
   const [query, setQuery] = useState("");
@@ -26,24 +27,25 @@ const SearchWidget = ({ setSearch }) => {
   };
 
   return (
-    <div className="sidebar-item search">
-      <div className="sidebar-info">
-        <form onSubmit={handleSearch}>
-          <input
-            type="text"
-            placeholder="Enter Keyword"
-            value={query}
-            onChange={handleChange}
-            name="text"
-            className="form-control"
-            autoComplete="off"
-            required
-          />
-          <button type="submit">
-            <i className="fa-solid fa-search"></i>
+    <div>
+      <form onSubmit={handleSearch}
+            className="tw-w-[299px] tw-h-[44px] relative">
+        <div className="relative">
+          <input 
+          type="search"
+          placeholder="Search..."
+          value={query}
+          onChange={handleChange}
+          name="text"
+          className="w-full tw-p-4 tw-rounded-full tw-bg-white tw-border-[#41E3EB] tw-border-[3px]"
+          autoComplete="off"
+          required />
+          <button type="submit" className="absolute tw-bg-[#02952A] tw-rounded-full tw-right-10 tw-top-1 -translate-y-1/2 p-2 ">
+          <IoSearchOutline />
           </button>
-        </form>
-      </div>
+        </div>
+      </form>
+
     </div>
   );
 };
