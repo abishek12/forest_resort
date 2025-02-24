@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 
 import { logger } from "./utils/logger.js";
 import { corsOptions } from "./utils/CorsOption.js";
+import { configureCloudinary } from './utils/CloudinaryConfig.js';
 
 /**
  * import user defined components
@@ -21,6 +22,7 @@ console.log = (message) => {
 const PORT = process.env.PORT || 3000;
 
 let app = express();
+configureCloudinary();
 
 /**
  * use of middleware
