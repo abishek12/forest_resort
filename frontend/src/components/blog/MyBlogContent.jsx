@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from "react";
-import SingleBlogSideBar from "./SingleBlogSideBar";
-import Pagination from "../others/Pagination";
+import React, { useState } from "react";
+
 import SearchWidget from "../widgets/SearchWidget";
-import RecentPostWidget from "../widgets/RecentPostWidget";
 import CategoryDataListWidget from "../widgets/CategoryDataListWidget";
 import SocialWidget from "../widgets/SocialWidget";
-import { listBlogs } from "../../actions/blogActions";
-import { motion } from "framer-motion";
-import { fadeInAnimationVariantsContent } from "../../utils/fadeInAnimation";
+import { Breadcrumb } from "../widgets/Breadcrumb";
+
 import { Link } from "react-router-dom";
-import { MdHome } from "react-icons/md";
-import { BiSolidRightArrow } from "react-icons/bi";
 
 const MyBlogContent = () => {
   const [blogs, setBlogs] = useState([]);
@@ -19,65 +14,10 @@ const MyBlogContent = () => {
   const [search, setSearch] = useState("");
   const [blogsPerPage] = useState(10);
 
-  //  useEffect(() => {
-  //     const fetchBlogs = async () => {
-  //       try {
-  //         const fetchedBlogs = await listBlogs(search, currentPage, blogsPerPage);
-  //         setBlogs(fetchedBlogs);
-  //       } catch (error) {
-  //         console.error("Error fetching blogs:", error);
-  //       }
-  //     };
-  //     fetchBlogs();
-  // }, [search, currentPage, blogsPerPage]);
-
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  // useEffect(() => {
-  //     const filtered = blogs.filter((blog) =>
-  //       blog.title.toLowerCase().includes(search.toLowerCase())
-  //     );
-  //     setFilteredBlogs(filtered);
-  //     setCurrentBlogs(filtered.slice(0, blogsPerPage));
-  //   }, [blogs, search, blogsPerPage]);
-
-  // const [paginate] = (pageNumber) => setCurrentPage(pageNumber);
-
-  //    const blogData = [
-  //     {
-  //       title: "Futsal: The Fast-Paced Sport That Enhances Skills & Fitness",
-  //       imageUrl: "https://placehold.co/600x400",
-  //       date: "February 17, 2025",
-  //       description: "Futsal is not just another version of football—it's a game that demands quick thinking, agility, and precise ball control. The smaller court size forces players to make faster decisions and develop superior dribbling, passing and...",
-  //       link: "#"
-  //     },
-  // ];
-
   return (
     <>
       <div className="container tw-pt-20 ">
-        <div className="tw-text-[#D2EDD6] text-sm mb-4 tw-pt-20 flex items-center space-x-2">
-          <span className="tw-font-semibold text-black tw-flex items-center">
-            <MdHome className="tw-text-3xl tw-translate-y-3 -tw-translate-x-6" />
-            <a href="/home" className="ml-1 tw-font-semibold tw-px-2 -tw-translate-x-5 tw-translate-y-4">
-              Home
-            </a>
-            <span className="text-black">
-            <BiSolidRightArrow className="tw-translate-y-6 -tw-translate-x-6" />
-            <a
-              href="/blogs"
-              className="tw-font-semibold tw-text-[#1A7218F2] tw-px-"
-            >
-              Blogs
-            </a>
-          </span>
-          </span>
-          
-          <svg width="100%" height="2" border="2px" className="absolute mt-4">
-            <line x2="100%" y2="100%" stroke="#000000" strokeWidth="5" />
-          </svg>
-        </div>
-
+        <Breadcrumb page="Blogs" />
         <div className="tw-flex tw-justify-between tw-items-center tw-bg-[#D2EDD6]">
           <h3 className="tw-font-bold tw-text-3xl">Latest Blog</h3>
           <div className="mt-md-10 mt-xs-5 pb-3">
