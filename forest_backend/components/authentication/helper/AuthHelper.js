@@ -30,7 +30,32 @@ export const registerHelper = (data) => {
     phone_no: Joi.string()
       .required()
       .regex(/^\+?[0-9\s-()]+$/, "Invalid phone number format"),
+    activationToken: Joi.string().allow(null),
+    activationTokenExpires: Joi.date().allow(null),
     roles: Joi.object().default({ subscriber: false }),
+  });
+
+  return schema.validate(data, { abortEarly: false });
+};
+
+export const forgotPasswordHelper = (data) => {
+  let schema = Joi.object({
+    email: Joi.string().email().required(),
+  });
+
+  return schema.validate(data, { abortEarly: false });
+};
+
+export const resetPasswordHelper = (data) => {
+  let schema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string()
+      .required()
+      .min(8)
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character"
+      ),
   });
 
   return schema.validate(data, { abortEarly: false });

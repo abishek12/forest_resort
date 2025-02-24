@@ -29,7 +29,19 @@ const userSchema = new mongoose.Schema(
         const salt = bcrypt.genSaltSync(10);
         return bcrypt.hashSync(password, salt);
       },
-      minlength: [8, 'Password must be at least 8 characters'],
+      minlength: [8, "Password must be at least 8 characters"],
+    },
+    isActivated: {
+      type: Boolean,
+      default: false,
+    },
+    activationToken: {
+      type: String,
+      required: false,
+    },
+    activationTokenExpires: {
+      type: Date,
+      required: false,
     },
     token: {
       type: String,
