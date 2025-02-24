@@ -5594,10 +5594,11 @@ ul.gallery-project-basic-info li:first-child {
   top: 60px;
   padding: 50px;
   z-index: 1;
+ 
 }
 
 .about-two-thumb .experience h2 {
-  color: var(--white);
+  color: black;
   font-weight: 900;
   font-size: 20px;
   line-height: 1;
@@ -5608,8 +5609,8 @@ ul.gallery-project-basic-info li:first-child {
   font-size: 100px;
   display: block;
   color: transparent;
-  -webkit-text-stroke: 1px var(--white);
-  margin-bottom: 10px;
+  -webkit-text-stroke: 2px black;
+  margin-bottom: 1px;
 }
 
 .about-two-thumb .experience::after {
@@ -5619,7 +5620,7 @@ ul.gallery-project-basic-info li:first-child {
   content: "";
   height: 100%;
   width: 100%;
-  background: var(--dark);
+  background:#41E3EB;
   z-index: -1;
 }
 
