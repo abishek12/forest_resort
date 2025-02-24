@@ -16,7 +16,7 @@ const SocialWidget = () => {
         <div className="icon-container flex flex-wrap tw-space-x-2 tw-p-2 tw-text-xl">
           <a
             className="facebook px-2 py-[1/2px] cursor-pointer tw-rounded-full justify-center items-center tw-bg-[#02952A]"
-            href=""
+            href="https://www.facebook.com/forestsportsarena/"
           >
             <i class="fab fa-facebook-f tw-text-white "></i>
           </a>
