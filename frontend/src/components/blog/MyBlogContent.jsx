@@ -571,6 +571,15 @@ const MyBlogContent = () => {
             </div>
           </div>
         </div>
+
+        <div className="tw-flex tw-justify-center">
+          <p className="app tw-flex tw-justify-center tw-font-semibold tw-text-[#FFFFFF] tw-py-3 tw-rounded-full mt-5 tw-w-[204px]"
+            style={{
+              background: "linear-gradient(to right, #1A7218, #B5DE4C)",
+            }} >
+            Forest Arena App
+          </p>
+        </div>
       </div>
     </>
   );

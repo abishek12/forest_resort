@@ -9,19 +9,20 @@ const ContactForm = () => {
   const [fullname, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [subject, setSubject] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
 
   const handleForm = async (event) => {
     event.preventDefault();
 
     try {
-      let response = await createContact({ fullname, email, subject, message });
+      let response = await createContact({ fullname, email, phoneNo, message });
       if (response.status === 201) {
         toast.success("Thanks For Your Message");
         setName("");
         setEmail("");
         setSubject("");
         setMessage("");
+        setPhoneNo("");
       }
     } catch (error) {
       toast.error(error);
@@ -31,12 +32,9 @@ const ContactForm = () => {
 
   return (
     <>
-      <div className="contact-form-style-one">
-        <h4 className="sub-title">
-          <BoxReveal>Have Questions?</BoxReveal>
-        </h4>
-        <h2 className="title">
-          <BoxReveal>Send us a Message</BoxReveal>
+      <div className="contact-form-style-one -tw-mt-12">
+        <h2 className="title -tw-mt-12">
+          <span>Send us a Message</span>
         </h2>
         <Form onSubmit={handleForm} className="contact-form">
           <Form.Group className="row">
@@ -46,7 +44,7 @@ const ContactForm = () => {
                   className="form-control"
                   id="name"
                   name="name"
-                  placeholder="Name"
+                  placeholder="Full Name*"
                   type="text"
                   autoComplete="off"
                   onChange={(e) => setName(e.target.value)}
@@ -56,32 +54,41 @@ const ContactForm = () => {
               </div>
             </div>
           </Form.Group>
-          <div className="form-group">
-            <Form.Control
-              className="form-control"
-              id="email"
-              name="email"
-              placeholder="Email*"
-              type="email"
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="off"
-              required
-            />
-            <span className="alert-error"></span>
+       <div className="container">
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <Form.Control
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="Email*"
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="off"
+                    required
+                  />
+                  <span className="alert-error"></span>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="form-group">
+                  <Form.Control
+                    className="form-control"
+                    id="phoneNo"
+                    name="phoneNo"
+                    placeholder="Phone Number*"
+                    type="number"
+                    onChange={(e) => setPhoneNo(e.target.value)}
+                    autoComplete="off"
+                    required
+                  />
+                  <span className="alert-error"></span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="form-group">
-            <Form.Control
-              className="form-control"
-              id="subject"
-              name="subject"
-              placeholder="Subject*"
-              type="text"
-              onChange={(e) => setSubject(e.target.value)}
-              autoComplete="off"
-              required
-            />
-            <span className="alert-error"></span>
-          </div>
+
           <Form.Group className="row">
             <div className="col-lg-12">
               <div className="form-group comments">
@@ -89,7 +96,7 @@ const ContactForm = () => {
                   className="form-control"
                   id="comments"
                   name="comments"
-                  placeholder="Your message *"
+                  placeholder="Your message*"
                   autoComplete="off"
                   required
                   onChange={(e) => setMessage(e.target.value)}
@@ -97,11 +104,12 @@ const ContactForm = () => {
               </div>
             </div>
           </Form.Group>
+
           <div className="row">
             <div className="col-lg-12">
-              <Button type="submit" className="tw-bg-[#228c22]">
-                <i className="fa fa-paper-plane"></i> Get in Touch
-              </Button>
+              <button type="submit" className="tw-bg-[#02952A] tw-rounded-full tw-px-4">
+                Send Message <i className="fa fa-paper-plane"></i>
+                </button>
             </div>
           </div>
           <div className="col-lg-12 alert-notification">
