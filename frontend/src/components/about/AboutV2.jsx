@@ -28,12 +28,20 @@ const AboutV2 = () => {
                 </motion.div>
                 <div className="experience ">
                   <h2>
-                    <strong>4</strong> Years of Service
+                    <strong
+                      className="tw-translate-x-10"
+                      style={{
+                        fontFamily: "Poppins",
+                      }}
+                    >
+                      4
+                    </strong>{" "}
+                    Years of Service
                   </h2>
                 </div>
               </div>
             </div>
-            <div className="col-lg-6 about-style-two pl-50 pl-md-15 pl-xs-15 mt-60 mt-xs-40">
+            <div className="col-lg-6 about-style-two pl-50 pl-md-15 pl-xs-15 mt-60 mt-xs-40 tw-translate-x-8">
               <div className="about-two-info">
                 {/* <h4 className="sub-title">
                   <BoxReveal>About Us</BoxReveal>
@@ -41,16 +49,17 @@ const AboutV2 = () => {
                 <h2 className="title">
                   <div>
                     <p className="tw-text-black tw-text-2xl tw-font-bold -tw-mb-1 tw-py-2">
-                      Providing the best service <br /> </p>
-                      <span
+                      Providing the best service <br />{" "}
+                    </p>
+                    <span
                       className=" tw-font-semibold tw-text-[#FFFFFF] tw-py-3 tw-px-5 tw-rounded-2xl tw-text-2xl "
                       style={{
                         background:
-                          "linear-gradient(to right, #1A7218, #B5DE4C)",
-                      }}>
-                         In sports and recreation
+                          "linear-gradient(to right, #1A7218 83%, #B5DE4C 100%)",
+                      }}
+                    >
+                      In sports and recreation
                     </span>
-                    
                   </div>
                 </h2>
                 <p className="tw-text-[#000000]">

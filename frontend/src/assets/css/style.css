@@ -4537,10 +4537,10 @@ ul.check-list-item li::after {
   top: 0;
   content: "\f00c";
   font-family: "fontawesome";
-  height: 50px;
-  width: 50px;
+  height: 30px;
+  width: 30px;
   text-align: center;
-  line-height: 50px;
+  line-height: 30px;
   background: var(--bg-gradient);
   border-radius: 50%;
 }
@@ -5590,11 +5590,10 @@ ul.gallery-project-basic-info li:first-child {
 
 .about-two-thumb .experience {
   position: absolute;
-  right: 0;
-  top: 60px;
-  padding: 50px;
+  right: -50px;
+  top: 50px;
+  padding: 40px;
   z-index: 1;
- 
 }
 
 .about-two-thumb .experience h2 {
@@ -5609,8 +5608,8 @@ ul.gallery-project-basic-info li:first-child {
   font-size: 100px;
   display: block;
   color: transparent;
-  -webkit-text-stroke: 2px black;
-  margin-bottom: 1px;
+  -webkit-text-stroke: 6px black;
+  margin-bottom: 2px;
 }
 
 .about-two-thumb .experience::after {
@@ -6668,11 +6667,10 @@ a.btn-service {
 }
 
 h2.text-path {
-  font-size: 80px;
+  font-size: 55px;
   color: transparent;
-  -webkit-text-stroke: 1px var(--color-secondary);
-  font-weight: 900;
-  text-transform: uppercase;
+  -webkit-text-stroke:2px #B5DE4C;
+  font-weight: 800;
   line-height: 1;
   margin-bottom: 50px;
 }
@@ -10487,15 +10485,18 @@ body.bg-dark .megamenu-content .title {
   background-image: url(/img/shape/mountain-peaks.svg);
   background-position: center;
   background-size: cover;
-  background-color: var(--color-primary);
+  width: 1140px;
+  /* background-color: var(--color-primary); */
 }
 
 .testimonialsbg {
   background-image: url(/img/shape/testimonial.png);
   background-position: bottom;
   background-size: cover;
+  height: 750px;
   background-repeat: no-repeat;
-  background-color: #024f26;
+  /* background-color: #024f26; */
+  background-color: #D3F7D2;
 }
 
 .offerImg1 {
