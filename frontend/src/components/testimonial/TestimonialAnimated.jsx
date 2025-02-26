@@ -37,9 +37,9 @@ export const ReviewCard = ({ img, name, designation, body }) => {
   return (
     <figure
       className={cn(
-        "tw-relative tw-w-64 md:tw-w-96 tw-cursor-pointer tw-overflow-hidden tw-rounded-xl tw-border tw-p-4",
+        "tw-relative tw-w-64 md:tw-w-80 tw-h-75 tw-cursor-pointer tw-mr-12 tw-m-l-12 tw-overflow-hidden tw-rounded-xl tw-border tw-p-4",
         // light styles
-        "tw-border-gray-950/[.1] tw-bg-[#228b22]/[0.9]",
+        "tw-border-gray-950/[.1] tw-bg-[#228b22]/[0.9] tw-space-x-2",
         // dark styles
         "dark:tw-border-gray-50/[.1] tw-bg-[#228b22]/[0.9]"
       )}
@@ -53,11 +53,11 @@ export const ReviewCard = ({ img, name, designation, body }) => {
           alt=""
           src={img}
         />
-        <div className="tw-flex tw-flex-col">
-          <figcaption className="tw-text-sm tw-font-medium tw-text-white">
+        <div className="tw-flex tw-flex-col tw-translate-y-1">
+          <figcaption className="tw-text-sm tw-text-white tw-font-semibold">
             {name}
           </figcaption>
-          <p className="tw-text-xs tw-font-medium tw-text-white/40">
+          <p className="tw-text-xs tw-text-white/80 tw-font-semibold">
             {designation}
           </p>
         </div>
@@ -72,30 +72,29 @@ export const ReviewCard = ({ img, name, designation, body }) => {
 export const TestimonialMarquee = () => {
   return (
     <>
-      <div className="testimonialsbg tw-relative tw-flex tw-h-full tw-w-full tw-flex-col tw-items-center tw-justify-center tw-overflow-hidden tw-border tw-py-20 md:tw-shadow-xl">
-        <Spotlight
-          className="-tw-top-40 tw-left-0 sm:tw-left-64 md:tw-left-[200px] lg:tw-left-[700px] md:-tw-top-20"
-          fill="yellow"
-        />
-        <Spotlight className="md:tw-left-96" fill="orange" />
-        <Spotlight className="md:tw-left-96" fill="white" />
+    <div className="tw-bg-[#D3F7D2] tw-pb-5">
+      <div className="testimonialsbg tw-relative tw-flex tw-h-full tw-w-full tw-flex-col tw-items-center tw-justify-center tw-overflow-hidden tw-border tw-py-20">
         <div className="site-heading">
-          <h2 className="title tw-text-white ">
-            <BoxReveal boxColor={"#d2f6d2"}>What people say</BoxReveal>
-          </h2>
+          <p
+          className="tw-flex tw-justify-center tw-text-3xl tw-font-bold tw-text-[#FFFFFF] tw-rounded-full tw-w-[290px] -tw-translate-y-20"
+          style={{
+            background: "linear-gradient(to right, #1A7218 55%, #B5DE4C 100%)",
+            padding: "15px",
+            fontFamily: "Poppins",
+            margin: "2px"
+          }}
+        >
+         What People Say
+        </p>
         </div>
-        <Marquee pauseOnHover className="[--duration:20s]">
+        <div className="-tw-translate-y-12">
+        <Marquee pauseOnHover className="[--duration:20s] ">
           {firstRow.map((review) => (
             <ReviewCard key={review.designation} {...review} />
           ))}
         </Marquee>
-        {/* <Marquee reverse pauseOnHover className="[--duration:20s]">
-          {secondRow.map((review) => (
-            <ReviewCard key={review.designation} {...review} />
-          ))}
-        </Marquee> */}
-        <div className="tw-pointer-events-none tw-absolute tw-inset-y-0 tw-left-0 tw-w-1/3 md:tw-bg-gradient-to-r tw-from-[#316C31]"></div>
-        <div className="tw-pointer-events-none tw-absolute tw-inset-y-0 tw-right-0 tw-w-1/3 md:tw-bg-gradient-to-l tw-from-[#316C31]"></div>
+        </div>
+      </div>
       </div>
     </>
   );

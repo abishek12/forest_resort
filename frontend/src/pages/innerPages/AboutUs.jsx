@@ -49,7 +49,6 @@ const AboutUs = () => {
                       </span>
                     </div>
                   </div>
-            {/* <BreadCrumb breadCrumb="about-us" title1="About Us" bottomSpace="pb-0" /> */}
             <AboutV2 />
             <WhyChooseUsV2 />
             {/* <TestimonialV2/> */}
