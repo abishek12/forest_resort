@@ -12,7 +12,6 @@ import { dateTimeFormat } from "../../../../utils/date-time";
 const TABLE_HEADS = ["S.N", "Title", "Author", "Date", "Status", "Actions"];
 
 const AdminBlog = () => {
-
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -68,7 +67,7 @@ const AdminBlog = () => {
               <tr key={uuid()}>
                 <td>{index + 1}</td>
                 <td>{blog.title}</td>
-                <td>{blog.user.fullname}</td>
+                <td>{blog.user.fullname == "" ? "" : blog.user.fullname}</td>
                 <td>{dateTimeFormat(blog.createdAt)}</td>
                 <td>{blog.status}</td>
                 <td className="dt-cell-action">

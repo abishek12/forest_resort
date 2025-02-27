@@ -11,8 +11,13 @@ import { blogValidator } from "../helper/BlogHelper.js";
  */
 export const createBlog = async (req, res) => {
   try {
-    let { error, value } = blogValidator(req.body);
-
+    let { error, value } = blogValidator({
+      ...req.body,
+      tags:
+        typeof req.body.tags === "string"
+          ? JSON.parse(req.body.tags)
+          : req.body.tags,
+    });
     let slugs = slug(value.title);
 
     if (error)
@@ -25,11 +30,13 @@ export const createBlog = async (req, res) => {
 
     if (req.file) {
       // Convert the file buffer to a data URI
-      const dataUri = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+      const dataUri = `data:${
+        req.file.mimetype
+      };base64,${req.file.buffer.toString("base64")}`;
 
       // Upload the file to Cloudinary
       const result = await cloudinary.uploader.upload(dataUri, {
-        folder: 'blog-featured-images',
+        folder: "blog-featured-images",
       });
       featuredImageUrl = result.secure_url; // Get the secure URL of the uploaded image
     }

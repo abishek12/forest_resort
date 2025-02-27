@@ -8,6 +8,7 @@ export const listBlogs = async (req, res) => {
 
     // Sorting
     let sort = req.query.sort || "asc";
+    let status = req.query.status || "draft";
     sort = { createdAt: sort === "asc" ? 1 : -1 };
 
     // Offset calculation
@@ -15,7 +16,7 @@ export const listBlogs = async (req, res) => {
 
     let totalRecords = await Blog.countDocuments();
 
-    const items = await Blog.find({}, { __v: 0 })
+    const items = await Blog.find({  }, { __v: 0 })
       .populate("user category tags", "fullname -_id title")
       .sort(sort)
       .skip(offset)
@@ -50,7 +51,10 @@ export const listSingleBlog = async (req, res) => {
       });
     }
 
-    let item = await Blog.findById(post_id).populate("user category tags", "fullname title -_id");
+    let item = await Blog.findById(post_id).populate(
+      "user category tags",
+      "fullname title -_id"
+    );
 
     return res.status(200).json({
       message: "success",

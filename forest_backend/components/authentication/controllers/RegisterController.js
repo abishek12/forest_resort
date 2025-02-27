@@ -41,7 +41,7 @@ export const registerUser = async (req, res) => {
     await newUser.save();
 
     const activationUrl = `http://localhost:5173/activate-account?token=${activationToken}`;
-    // sendActivationEmail(value.email, activationUrl);
+    sendActivationEmail(value.email, activationUrl);
 
     return res
       .status(201)

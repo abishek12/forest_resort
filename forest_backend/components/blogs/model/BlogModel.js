@@ -5,6 +5,7 @@ const blogSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      unique: true,
       trim: true,
       minlength: [3, "Title must be at least 3 characters"],
       maxlength: [255, "Title cannot exceed 100 characters"],
@@ -12,6 +13,7 @@ const blogSchema = new mongoose.Schema(
     slugs: {
       type: String,
       required: true,
+      unique: true,
       trim: true,
       minlength: [3, "Title must be at least 3 characters"],
       maxlength: [255, "Title cannot exceed 100 characters"],
@@ -42,6 +44,11 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    status:{
+      type: String,
+      required: false,
+      default: "draft",
+    }
   },
   { timestamps: true }
 );
