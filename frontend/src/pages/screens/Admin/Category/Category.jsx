@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   listCategory,
   createCategory,
+  updateCategory,
   removeCategory,
 } from "../../../../actions/categoryActions";
 import { useSelector } from "react-redux";
@@ -11,13 +12,13 @@ export const AdminCategory = () => {
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [editCategoryId, setEditCategoryId] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     author: "",
   });
 
-  // Get userInfo from Redux store
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -41,7 +42,7 @@ export const AdminCategory = () => {
     if (window.confirm("Are you sure you want to delete this category?")) {
       try {
         setLoading(true);
-        await removeCategory(id, userInfo);
+        await removeCategory(id);
         toast("Category deleted successfully!");
         fetchCategories();
       } catch (err) {
@@ -56,34 +57,43 @@ export const AdminCategory = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleEdit = (category) => {
+    setEditCategoryId(category._id);
+    setFormData({
+      title: category.title,
+      description: category.description || "",
+      author: category.author.fullname || "",
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
-      setLoading(true);
+      if (editCategoryId) {
+        // Update existing category
+        await updateCategory(editCategoryId, {
+          title: formData.title,
+          description: formData.description,
+        });
+        toast("Category updated successfully!");
+        setEditCategoryId(null); // Reset edit mode
+      } else {
+        // Create new category
+        await createCategory({
+          ...formData,
+          author: userInfo.userId,
+        });
+        toast("Category created successfully!");
+      }
 
-      // Add userId from userInfo to formData
-      const updatedFormData = {
-        ...formData,
-        author: userInfo.userId,
-      };
-
-      // Call createCategory with updated formData
-      const newCategory = await createCategory(updatedFormData);
-      setLoading(false);
-
-      // Refresh the category list
-      const updatedCategories = await listCategory("", 1, 10, "desc");
-      setCategory(updatedCategories);
-
-      // Clear the form
-      setFormData({ title: "", description: "", author: "" });
-
-      // Show success message
-      toast("Category created successfully!");
+      fetchCategories(); // Refresh list
+      setFormData({ title: "", description: "", author: "" }); 
     } catch (err) {
-      setError(err.message);
+      toast("Failed to process category: " + err.message);
+    } finally {
       setLoading(false);
-      toast("Failed to create category: " + err.message);
     }
   };
 
@@ -112,19 +122,8 @@ export const AdminCategory = () => {
             rows={5}
           ></textarea>
         </div>
-        <div>
-          <label className="form-label">Author:</label>
-          <input
-            type="text"
-            name="author"
-            value={userInfo.fullname}
-            className="form-control"
-            required
-            readOnly
-          />
-        </div>
         <button type="submit" disabled={loading}>
-          {loading ? "Adding..." : "Add Category"}
+          {loading ? "Processing..." : editCategoryId ? "Update Category" : "Add Category"}
         </button>
       </form>
 
@@ -149,7 +148,7 @@ export const AdminCategory = () => {
               <td>{item.description || "N/A"}</td>
               <td>{item.author.fullname || "N/A"}</td>
               <td>
-                <button>Edit</button>
+                <button onClick={() => handleEdit(item)}>Edit</button>
                 <button
                   onClick={() => handleDelete(item._id)}
                   disabled={loading}

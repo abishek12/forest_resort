@@ -70,18 +70,17 @@ export const createCategory = async (catData) => {
   }
 };
 
-export const updateBlog = async (blog, userInfo) => {
+export const updateCategory = async (id, catdata) => {
   try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+    // const config = {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${userInfo.token}`,
+    //   },
+    // };
     const { data } = await axios.put(
-      `http://localhost:8888/api/blogs/${blog._id}`,
-      blog,
-      config
+      `http://localhost:8888/api/category/${id}`,
+      catdata,
     );
     return data;
   } catch (error) {

@@ -16,7 +16,7 @@ import {
   MdOutlineSettings,
   MdDescription,
   MdPreview,
-  MdTag
+  MdTag,
 } from "react-icons/md";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
@@ -68,6 +68,9 @@ const AdminSidebar = ({ isOpen }) => {
       <div className="sidebar-body">
         <div className="sidebar-menu">
           <ul className="menu-list">
+            <div style={{ marginTop: 20 }}>
+              <span className="menu-link-text">Posts</span>
+            </div>
             <li className="menu-item">
               <NavLink
                 to="/admin/blogs"
