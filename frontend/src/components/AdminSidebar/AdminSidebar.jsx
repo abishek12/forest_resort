@@ -16,6 +16,7 @@ import {
   MdOutlineSettings,
   MdDescription,
   MdPreview,
+  MdTag
 } from "react-icons/md";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
@@ -89,6 +90,17 @@ const AdminSidebar = ({ isOpen }) => {
                   <MdDocumentScanner size={20} />
                 </span>
                 <span className="menu-link-text">Categories</span>
+              </NavLink>
+              <NavLink
+                to="/admin/tag"
+                className={({ isActive }) =>
+                  isActive ? "menu-link active" : "menu-link"
+                }
+              >
+                <span className="menu-link-icon">
+                  <MdTag size={20} />
+                </span>
+                <span className="menu-link-text">Tags</span>
               </NavLink>
               <NavLink
                 to="/admin/users"

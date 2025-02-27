@@ -44,6 +44,7 @@ import Dashboard from "./pages/screens/Admin/Dashboard";
 import AdminBlog from "./pages/screens/Admin/Blog/AdminBlog";
 import AdminContact from "./pages/screens/Admin/Contact/Contact";
 import { AdminCategory } from "./pages/screens/Admin/Category/Category";
+import { AdminTag } from "./pages/screens/Admin/Tag/AdminTag";
 import Offer from "./components/offer/Offer";
 
 import AdminAppointment from "./pages/screens/Admin/Appointment/Appointment";
@@ -136,6 +137,14 @@ const Routers = () => {
                 <AdminCategory />
               </PrivateRoute>
             }
+          />
+          <Route
+          path="/admin/tag"
+          element={
+            <PrivateRoute>
+              <AdminTag />
+            </PrivateRoute>
+          }
           />
           <Route
             path="/admin/users"
