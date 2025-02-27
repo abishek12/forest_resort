@@ -5590,7 +5590,7 @@ ul.gallery-project-basic-info li:first-child {
 
 .about-two-thumb .experience {
   position: absolute;
-  right: -50px;
+  right: -55px;
   top: 50px;
   padding: 40px;
   z-index: 1;
@@ -5608,7 +5608,7 @@ ul.gallery-project-basic-info li:first-child {
   font-size: 100px;
   display: block;
   color: transparent;
-  -webkit-text-stroke: 6px black;
+  -webkit-text-stroke: 5px black;
   margin-bottom: 2px;
 }
 
@@ -5623,26 +5623,58 @@ ul.gallery-project-basic-info li:first-child {
   z-index: -1;
 }
 
-.about-two-thumb::after {
+/* BarChart.css */
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 200px;
+  width: 100px;
+}
+
+.bar {
+  width: 30px;
+}
+
+.bar1 {
+  height: 240px;
+  background-color: #208D23;
+}
+
+.bar2 {
+  height: 180px;
+  background-color: #208D23;
+  opacity: 75%;
+}
+
+.bar3 {
+  height: 120px;
+  background-color: #208D23;
+  opacity: 50%;
+}
+
+
+/* .about-two-thumb::after {
   position: absolute;
-  right: 0;
+  right: -20px;
   bottom: 0;
   height: 31%;
-  width: 20px;
+  width: 28px;
   background: var(--color-primary);
   content: "";
-  opacity: 0.3;
+  opacity: 0.75;
+  
 }
 
 .about-two-thumb::before {
   position: absolute;
-  right: 35px;
+  right: 22px;
   height: 45%;
   content: "";
-  width: 20px;
+  width: 28px;
   background: var(--color-primary);
   bottom: 0;
-}
+} */
 
 .about-grid-info {
   display: grid;
@@ -5652,8 +5684,8 @@ ul.gallery-project-basic-info li:first-child {
 
 a.btn-round-animation {
   display: inline-block;
-  height: 180px;
-  width: 180px;
+  height: 169px;
+  width: 170px;
   text-align: center;
   line-height: 180px;
   border: 1px solid #cccccc;
@@ -5716,6 +5748,7 @@ ul.list-info-item a {
 
 ul.list-info-item li {
   border-top: 1px solid #e7e7e7;
+  width: 252px;
 }
 
 ul.list-info-item li h4 {
@@ -10493,10 +10526,19 @@ body.bg-dark .megamenu-content .title {
   background-image: url(/img/shape/testimonial.png);
   background-position: bottom;
   background-size: cover;
-  height: 750px;
+  height: 604px;
+  width: 1444px;
   background-repeat: no-repeat;
-  /* background-color: #024f26; */
   background-color: #D3F7D2;
+  animation: marqueeBackground 15s linear infinite;
+}
+@keyframes marqueeBackground {
+  0% {
+    background-position: 0% bottom;
+  }
+  100% {
+    background-position: 100% bottom;
+  }
 }
 
 .offerImg1 {

@@ -11,13 +11,13 @@ const AboutV2 = () => {
       <div className="about-style-two-area default-padding tw-bg-white">
         <div className="container ">
           <div className="row ">
-            <div className="col-lg-6 about-style-two ">
-              <div className="about-two-thumb">
+            <div className="col-lg-6 about-style-two">
+              <div className="about-two-thumb tw-relative">
                 <motion.div
                   variants={fadeInAnimationVariantsImg}
                   initial="initial"
                   whileInView="animate"
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{ scale: 1.04 }}
                   style={{ height: "100%" }}
                 >
                   <img
@@ -39,6 +39,11 @@ const AboutV2 = () => {
                     Years of Service
                   </h2>
                 </div>
+                <div className="bar-chart tw-absolute -tw-right-10 tw-bottom-0">
+                  <div className="bar bar1"></div>
+                  <div className="bar bar2"></div>
+                  <div className="bar bar3"></div>
+                </div>
               </div>
             </div>
             <div className="col-lg-6 about-style-two pl-50 pl-md-15 pl-xs-15 mt-60 mt-xs-40 tw-translate-x-8">
@@ -48,21 +53,27 @@ const AboutV2 = () => {
                 </h4> */}
                 <h2 className="title">
                   <div>
-                    <p className="tw-text-black tw-text-2xl tw-font-bold -tw-mb-1 tw-py-2">
+                    <p className="tw-text-black tw-text-2xl tw-font-bold -tw-mb-1">
                       Providing the best service <br />{" "}
                     </p>
                     <span
-                      className=" tw-font-semibold tw-text-[#FFFFFF] tw-py-3 tw-px-5 tw-rounded-2xl tw-text-2xl "
+                      className=" tw-font-semibold tw-text-[#FFFFFF] tw-py-2 tw-px-5 tw-rounded-2xl tw-text-xl "
                       style={{
                         background:
                           "linear-gradient(to right, #1A7218 83%, #B5DE4C 100%)",
+                        fontFamily: "Poppins",
                       }}
                     >
                       In sports and recreation
                     </span>
                   </div>
                 </h2>
-                <p className="tw-text-[#000000]">
+                <p
+                  className="tw-text-[#000000] tw-opacity-70"
+                  style={{
+                    fontFamily: "Poppins",
+                  }}
+                >
                   <BoxReveal>
                     Welcome to our premier sports and recreation center, where
                     passion meets excellence. We offer top-notch swimming,
@@ -75,18 +86,60 @@ const AboutV2 = () => {
                   <Link className="btn-round-animation" to="/services#">
                     Discover More <i className="fa-solid fa-arrow-right"></i>
                   </Link>
-                  <ul className="list-info-item">
+                  <ul className="list-info-item tw-translate-y-2">
                     <li>
-                      <h4 className="tw-text-xl tw-font-extrabold">
-                        <Link to="services-details/1">
-                          SWIMMING <i className="fa-solid fa-angle-right"></i>
+                      <h4
+                        className="tw-text-xl tw-font-extrabold"
+                        style={{
+                          fontFamily: "Poppins",
+                        }}
+                      >
+                        <Link
+                          to="services-details/1"
+                          style={{
+                            display: "flex",
+                          }}
+                        >
+                          <img
+                            src="/img/shape/swim.svg"
+                            alt="Swimming Icon"
+                            style={{
+                              width: "62px",
+                              height: "30px",
+                              translate: "-10px",
+                              marginRight: "2px",
+                            }}
+                          />
+                          SWIMMING{" "}
+                          <i className="fa-solid fa-angle-right tw-ml-14 tw-my-1"></i>
                         </Link>
                       </h4>
                     </li>
                     <li>
-                      <h4 className="tw-text-xl tw-font-extrabold">
-                        <Link to="services-details/2">
-                          FUTSAL <i className="fa-solid fa-angle-right"></i>
+                      <h4
+                        className="tw-text-xl tw-font-extrabold"
+                        style={{
+                          fontFamily: "Poppins",
+                        }}
+                      >
+                        <Link
+                          to="services-details/1"
+                          style={{
+                            display: "flex",
+                          }}
+                        >
+                          <img
+                            src="/img/shape/futsal.svg"
+                            alt="Swimming Icon"
+                            style={{
+                              width: "62px",
+                              height: "30px",
+                              translate: "-10px",
+                              marginRight: "2px",
+                            }}
+                          />
+                          FUTSAL{" "}
+                          <i className="fa-solid fa-angle-right tw-ml-20 tw-translate-x-3.5 tw-my-1"></i>
                         </Link>
                       </h4>
                     </li>
