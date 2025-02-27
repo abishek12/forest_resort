@@ -2,10 +2,10 @@ import { Category } from "../model/CategoryModel.js";
 
 export const deleteCategoryController = async (req, res) => {
   try {
-    let { category_id } = req.query;
+    let { id: category_id } = req.params;
 
-    let { id, role } = req.user;
-    const isAdmin = role["admin"] === true || role["super-admin"] === true;
+    // let { id, role } = req.user;
+    // const isAdmin = role["admin"] === true || role["super-admin"] === true;
 
     let items = await Category.findById({
       _id: category_id,
@@ -18,12 +18,12 @@ export const deleteCategoryController = async (req, res) => {
       });
     }
 
-    if (id !== items.author._id && isAdmin === false) {
-      return res.status(403).json({
-        status: 403,
-        message: "You are not authorized to delete this tag",
-      });
-    }
+    // if (id !== items.author._id && isAdmin === false) {
+    //   return res.status(403).json({
+    //     status: 403,
+    //     message: "You are not authorized to delete this tag",
+    //   });
+    // }
 
     await Category.findOneAndDelete({
       _id: category_id,
