@@ -6,7 +6,15 @@ export const registerUser = async (fullname, email, password, phone_no) => {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ fullname, email, password, phone_no }),
+      body: JSON.stringify({
+        fullname,
+        email,
+        password,
+        phone_no,
+        roles: {
+          subscriber: false,
+        },
+      }),
     };
     const response = await axios.post(
       "http://localhost:8888/api/auth/register",

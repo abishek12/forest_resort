@@ -3,8 +3,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./PrivateRouters";
 
 import Home1 from "./pages/homePages/Home1";
-import Home2 from "./pages/homePages/Home2";
-import Home3 from "./pages/homePages/Home3";
 import Business from "./pages/homePages/Business";
 import Home1Dark from "./pages/homePages/Home1Dark";
 import Home2Dark from "./pages/homePages/Home2Dark";
@@ -35,6 +33,7 @@ import BlogSingle from "./pages/blogPages/BlogSingle";
 import BlogSingleSidebar from "./pages/blogPages/BlogSingleSidebar";
 
 import LoginScreen from "./pages/screens/LoginScreen";
+import ActivateAccount from "./pages/screens/ActivateAccount";
 
 import BaseLayout from "./layout/BaseLayout";
 import ProfileScreen from "./pages/screens/Admin/Profile/ProfileScreen";
@@ -44,6 +43,7 @@ import BlogEditScreen from "./pages/screens/Admin/Blog/BlogEditScreen";
 import Dashboard from "./pages/screens/Admin/Dashboard";
 import AdminBlog from "./pages/screens/Admin/Blog/AdminBlog";
 import AdminContact from "./pages/screens/Admin/Contact/Contact";
+import { AdminCategory } from "./pages/screens/Admin/Category/Category";
 import Offer from "./components/offer/Offer";
 
 import AdminAppointment from "./pages/screens/Admin/Appointment/Appointment";
@@ -52,7 +52,7 @@ import AppointmentViewScreen from "./pages/screens/Admin/Appointment/Appointment
 import Service from "./pages/screens/Admin/Services/Service";
 import Booking from "./pages/screens/Admin/Bookings/Booking";
 import BookingTime from "./components/booking/BookingTime";
-import RegisterScreen from "./pages/screens/Register";
+import RegisterScreen from "./pages/screens/RegisterScreen";
 import User from "./pages/screens/Admin/User/User";
 
 const Routers = () => {
@@ -119,12 +119,21 @@ const Routers = () => {
 
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
+        <Route path="/activate-account" element={<ActivateAccount />} />
         <Route element={<BaseLayout />}>
           <Route
             path="/admin/dashboard"
             element={
               <PrivateRoute>
                 <AdminBlog />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/category"
+            element={
+              <PrivateRoute>
+                <AdminCategory />
               </PrivateRoute>
             }
           />

@@ -80,6 +80,17 @@ const AdminSidebar = ({ isOpen }) => {
                 <span className="menu-link-text">Blogs</span>
               </NavLink>
               <NavLink
+                to="/admin/category"
+                className={({ isActive }) =>
+                  isActive ? "menu-link active" : "menu-link"
+                }
+              >
+                <span className="menu-link-icon">
+                  <MdDocumentScanner size={20} />
+                </span>
+                <span className="menu-link-text">Categories</span>
+              </NavLink>
+              <NavLink
                 to="/admin/users"
                 className={({ isActive }) =>
                   isActive ? "menu-link active" : "menu-link"

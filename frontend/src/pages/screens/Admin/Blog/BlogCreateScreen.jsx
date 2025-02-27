@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import ReactQuill from "react-quill";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
-import Loader from "../../../../components/Loader";
 import FormContainer from "../../../../components/FormContainer";
 import { createBlog } from "../../../../actions/blogActions";
 import "./BlogCreateScreen.scss";
@@ -13,18 +13,25 @@ import "./BlogCreateScreen.scss";
 const BlogCreateScreen = () => {
   const navigate = useNavigate();
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
+  const [author, setAuthor] = useState(userInfo.userId);
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState(""); // Category (single)
   const [description, setDescription] = useState("");
-  const [tags, setTags] = useState([]); // Tags (multiple)
-  const [images, setImages] = useState([]);
+  const [image, setImage] = useState([]);
+  const [status, setStatus] = useState("draft");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [categories, setCategories] = useState([]); // For Categories
-  const [allTags, setAllTags] = useState([]); // For Tags
+  const [categories, setCategories] = useState([]);
+  const [allTags, setAllTags] = useState([]);
+
+  const [searchCategory, setSearchCategory] = useState("");
+  const [searchTag, setSearchTag] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
 
   const quillRef = useRef(null);
 
@@ -44,11 +51,11 @@ const BlogCreateScreen = () => {
   useEffect(() => {
     const fetchCategoriesAndTags = async () => {
       try {
-        // Fetch categories (replace with your API endpoint)
-        const categoryResponse = await axios.get("http://localhost:8888/api/category");
+        const categoryResponse = await axios.get(
+          "http://localhost:8888/api/category"
+        );
         setCategories(categoryResponse.data.items);
 
-        // Fetch tags (replace with your API endpoint)
         const tagResponse = await axios.get("http://localhost:8888/api/tag");
         setAllTags(tagResponse.data.items);
       } catch (error) {
@@ -59,26 +66,54 @@ const BlogCreateScreen = () => {
     fetchCategoriesAndTags();
   }, []);
 
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category._id);
+    setSearchCategory(category.title);
+  };
+
+  const handleTagSelect = (tag) => {
+    if (!selectedTags.includes(tag._id)) {
+      setSelectedTags([...selectedTags, tag._id]);
+    }
+    setSearchTag("");
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
+    setUploading(true);
     try {
-      const blogData = {
-        title,
-        user: author,
-        featured_image: "https://placehold.co/600x400",
-        category,
-        tags, 
-        content,
-        description,
-      };
-      await createBlog(blogData);
-      toast.success("Blog created successfully");
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("user", author);
+      formData.append("category", selectedCategory);
+      formData.append("tags", JSON.stringify(selectedTags));
+      formData.append("content", content);
+      formData.append("description", description);
+      formData.append("status", status);
+
+      if (image) {
+        formData.append("featured_image", image);
+      }
+
+      await createBlog(formData);
+
+      toast.success("Blog created successfully!");
       navigate("/admin/blogs");
     } catch (error) {
-      toast.error(error.message || "Error creating blog");
-      setError(error.message || "Error creating blog");
+      toast.error(error);
+      setError(error);
+    } finally {
+      setUploading(false);
     }
   };
+
+  const filteredCategories = categories.filter((cat) =>
+    cat.title.toLowerCase().includes(searchCategory.toLowerCase())
+  );
+
+  const filteredTags = allTags.filter((tag) =>
+    tag.title.toLowerCase().includes(searchTag.toLowerCase())
+  );
 
   return (
     <>
@@ -104,8 +139,8 @@ const BlogCreateScreen = () => {
             <Form.Control
               type="text"
               placeholder="Enter Author"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
+              value={userInfo.fullname}
+              readOnly
               required
             />
           </Form.Group>
@@ -113,33 +148,88 @@ const BlogCreateScreen = () => {
           <Form.Group controlId="category">
             <Form.Label className="form-item">Category</Form.Label>
             <Form.Control
-              as="select"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            >
-              <option value="">Select Category</option>
-              {categories.map((cat) => (
-                <option key={cat._id} value={cat._id}>
-                  {cat.title}
-                </option>
-              ))}
-            </Form.Control>
+              type="text"
+              placeholder="Search and select a category"
+              value={searchCategory}
+              onChange={(e) => setSearchCategory(e.target.value)}
+              disabled={!!selectedCategory}
+            />
+            {!selectedCategory && searchCategory && (
+              <div className="search-results">
+                {filteredCategories.map((cat) => (
+                  <div
+                    key={cat._id}
+                    className="search-item"
+                    onClick={() => handleCategorySelect(cat)}
+                  >
+                    {cat.title}
+                  </div>
+                ))}
+              </div>
+            )}
           </Form.Group>
 
           <Form.Group controlId="tags">
             <Form.Label className="form-item">Tags</Form.Label>
             <Form.Control
+              type="text"
+              placeholder="Search and add tags"
+              value={searchTag}
+              onChange={(e) => setSearchTag(e.target.value)}
+            />
+            {searchTag && (
+              <div className="search-results">
+                {filteredTags.map((tag) => (
+                  <div
+                    key={tag._id}
+                    className="search-item"
+                    onClick={() => handleTagSelect(tag)}
+                  >
+                    {tag.title}
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="selected-tags">
+              {selectedTags.map((tagId) => {
+                const tag = allTags.find((t) => t._id === tagId);
+                return (
+                  <span key={tagId} className="tag">
+                    {tag.title}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedTags(selectedTags.filter((id) => id !== tagId))
+                      }
+                    >
+                      ×
+                    </button>
+                  </span>
+                );
+              })}
+            </div>
+          </Form.Group>
+
+          <Form.Group controlId="featuredImage">
+            <Form.Label className="form-item">Featured Image</Form.Label>
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="status">
+            <Form.Label className="form-item">Status</Form.Label>
+            <Form.Control
               as="select"
-              multiple
-              value={tags}
-              onChange={(e) => setTags(Array.from(e.target.selectedOptions, option => option.value))}
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              required
             >
-              {allTags.map((tag) => (
-                <option key={tag._id} value={tag._id}>
-                  {tag.title}
-                </option>
-              ))}
+              <option value="">Select Status</option>
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
             </Form.Control>
           </Form.Group>
 
