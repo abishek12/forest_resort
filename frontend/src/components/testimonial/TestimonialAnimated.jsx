@@ -72,11 +72,11 @@ export const ReviewCard = ({ img, name, designation, body }) => {
 export const TestimonialMarquee = () => {
   return (
     <>
-    <div className="tw-bg-[#D3F7D2] tw-pb-5">
-      <div className="testimonialsbg tw-relative tw-flex tw-h-full tw-w-full tw-flex-col tw-items-center tw-justify-center tw-overflow-hidden tw-border tw-py-20">
+    <div className="tw-bg-[#D3F7D2] tw-pb-5 tw-flex tw-pt-10">
+      <div className="testimonialsbg tw-relative tw-flex tw-h-full tw-w-full tw-flex-col tw-items-center tw-justify-center tw-overflow-hidden tw-border">
         <div className="site-heading">
           <p
-          className="tw-flex tw-justify-center tw-text-3xl tw-font-bold tw-text-[#FFFFFF] tw-rounded-full tw-w-[290px] -tw-translate-y-20"
+          className="tw-flex tw-justify-center tw-text-3xl tw-font-bold tw-text-[#FFFFFF] tw-rounded-full tw-w-[290px] -tw-translate-y-52"
           style={{
             background: "linear-gradient(to right, #1A7218 55%, #B5DE4C 100%)",
             padding: "15px",
@@ -87,7 +87,7 @@ export const TestimonialMarquee = () => {
          What People Say
         </p>
         </div>
-        <div className="-tw-translate-y-12">
+        <div className="tw-absolute">
         <Marquee pauseOnHover className="[--duration:20s] ">
           {firstRow.map((review) => (
             <ReviewCard key={review.designation} {...review} />
