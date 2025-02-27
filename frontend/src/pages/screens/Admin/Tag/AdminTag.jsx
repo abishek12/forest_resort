@@ -121,11 +121,11 @@ export const AdminTag = () => {
             readOnly
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button className="btn" type="submit" disabled={loading}>
           {loading ? "Processing..." : editTagId ? "Update Tag" : "Add Tag"}
         </button>
         {editTagId && (
-          <button type="button" onClick={() => setEditTagId(null)}>
+          <button className="btn mx-2" type="button" onClick={() => setEditTagId(null)}>
             Cancel
           </button>
         )}
@@ -150,8 +150,8 @@ export const AdminTag = () => {
               <td>{item.title}</td>
               <td>{item.author.fullname || "N/A"}</td>
               <td>
-                <button onClick={() => handleEdit(item)}>Edit</button>
-                <button onClick={() => handleDelete(item._id)} disabled={loading}>
+                <button className="btn" onClick={() => handleEdit(item)}>Edit</button>
+                <button className="btn mx-2" onClick={() => handleDelete(item._id)} disabled={loading}>
                   {loading ? "Deleting..." : "Delete"}
                 </button>
               </td>

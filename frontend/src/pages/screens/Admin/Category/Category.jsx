@@ -89,7 +89,7 @@ export const AdminCategory = () => {
       }
 
       fetchCategories(); // Refresh list
-      setFormData({ title: "", description: "", author: "" }); 
+      setFormData({ title: "", description: "", author: "" });
     } catch (err) {
       toast("Failed to process category: " + err.message);
     } finally {
@@ -122,8 +122,12 @@ export const AdminCategory = () => {
             rows={5}
           ></textarea>
         </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Processing..." : editCategoryId ? "Update Category" : "Add Category"}
+        <button className="btn" type="submit" disabled={loading}>
+          {loading
+            ? "Processing..."
+            : editCategoryId
+            ? "Update Category"
+            : "Add Category"}
         </button>
       </form>
 
@@ -148,10 +152,13 @@ export const AdminCategory = () => {
               <td>{item.description || "N/A"}</td>
               <td>{item.author.fullname || "N/A"}</td>
               <td>
-                <button onClick={() => handleEdit(item)}>Edit</button>
+                <button className="btn mx-2" onClick={() => handleEdit(item)}>
+                  Edit
+                </button>
                 <button
                   onClick={() => handleDelete(item._id)}
                   disabled={loading}
+                  className="btn"
                 >
                   {loading ? "Deleting..." : "Delete"}
                 </button>
