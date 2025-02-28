@@ -1,14 +1,14 @@
 import axios from "axios";
 import { logout } from "./authentication/userLogout";
 
-export const listCategory = async (
+export const listOffers = async (
   keyword = "",
   page = 1,
   limit = 10,
   sort = "desc"
 ) => {
   try {
-    const { data } = await axios.get(`http://localhost:8888/api/category`, {
+    const { data } = await axios.get(`http://localhost:8888/api/offer`, {
       params: {
         page,
         limit,
@@ -25,14 +25,14 @@ export const listCategory = async (
   }
 };
 
-export const removeCategory = async (id, userInfo) => {
+export const removeOffer = async (id, userInfo) => {
   try {
     // const config = {
     //   headers: {
     //     Authorization: `Bearer ${userInfo.token}`,
     //   },
     // };
-    await axios.delete(`http://localhost:8888/api/category/${id}`);
+    await axios.delete(`http://localhost:8888/api/offer/${id}/delete`);
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -45,17 +45,18 @@ export const removeCategory = async (id, userInfo) => {
   }
 };
 
-export const createCategory = async (catData) => {
+export const createOffer = async (offerData) => {
   try {
     // pass userInfo in params in function
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${userInfo.token}`,
-    //   },
-    // };
+    const config = {
+      headers: {
+        // Authorization: `Bearer ${userInfo.token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
     const { data } = await axios.post(
-      `http://localhost:8888/api/category`,
-      catData
+      `http://localhost:8888/api/offer`,
+      offerData
     );
     return data;
   } catch (error) {
@@ -80,7 +81,7 @@ export const updateCategory = async (id, catdata) => {
     // };
     const { data } = await axios.put(
       `http://localhost:8888/api/category/${id}`,
-      catdata,
+      catdata
     );
     return data;
   } catch (error) {

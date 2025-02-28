@@ -3,21 +3,16 @@ import { ThemeContext } from "../../context/ThemeContext";
 import { LIGHT_THEME } from "../../constants/themeConstants";
 
 import {
-  MdOutlineAttachMoney,
-  MdOutlineBarChart,
   MdOutlineClose,
-  MdOutlineCurrencyExchange,
-  MdOutlineGridView,
   MdOutlineLogout,
-  MdOutlineMessage,
   MdDocumentScanner,
   MdOutlinePeople,
   MdPageview,
   MdOutlineSettings,
   MdDescription,
-  MdPreview,
-  MdTag
+  MdTag,
 } from "react-icons/md";
+import { BiSolidOffer } from "react-icons/bi";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
 import { SidebarContext } from "../../context/SidebarContext";
@@ -68,6 +63,9 @@ const AdminSidebar = ({ isOpen }) => {
       <div className="sidebar-body">
         <div className="sidebar-menu">
           <ul className="menu-list">
+            <div style={{ marginTop: 20 }}>
+              <span className="menu-link-text">Posts</span>
+            </div>
             <li className="menu-item">
               <NavLink
                 to="/admin/blogs"
@@ -160,28 +158,15 @@ const AdminSidebar = ({ isOpen }) => {
                 <span className="menu-link-text">All Bookings</span>
               </NavLink>
               <NavLink
-                to="/admin/appointmentsviewed"
+                to="/admin/offers"
                 className={({ isActive }) =>
                   isActive ? "menu-link active" : "menu-link"
                 }
               >
                 <span className="menu-link-icon">
-                  <MdPreview size={20} />
+                  <BiSolidOffer size={20} />
                 </span>
-                <span className="menu-link-text">Viewed</span>
-              </NavLink>
-            </li>
-            <li className="menu-item" style={{ marginTop: 10 }}>
-              <NavLink
-                to="/admin/service"
-                className={({ isActive }) =>
-                  isActive ? "menu-link active" : "menu-link"
-                }
-              >
-                <span className="menu-link-icon">
-                  <MdDescription size={20} />
-                </span>
-                <span className="menu-link-text">Manage Services</span>
+                <span className="menu-link-text">Offers</span>
               </NavLink>
             </li>
           </ul>

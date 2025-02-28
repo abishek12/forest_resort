@@ -13,6 +13,9 @@ router.use("/category", categoryRoute);
 import tagRoute from "../components/tags/router/TagRoute.js";
 router.use("/tag", tagRoute);
 
+import offerRoute from "../components/offers/router/OfferRouter.js";
+router.use("/offer", offerRoute);
+
 import bookingRoute from "../components/bookings/router/BookingRouter.js";
 router.use("/booking", bookingRoute);
 

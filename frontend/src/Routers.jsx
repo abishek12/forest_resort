@@ -55,6 +55,7 @@ import Booking from "./pages/screens/Admin/Bookings/Booking";
 import BookingTime from "./components/booking/BookingTime";
 import RegisterScreen from "./pages/screens/RegisterScreen";
 import User from "./pages/screens/Admin/User/User";
+import { AdminOffers } from "./pages/screens/Admin/Offers/AdminOffers";
 
 const Routers = () => {
   return (
@@ -139,12 +140,12 @@ const Routers = () => {
             }
           />
           <Route
-          path="/admin/tag"
-          element={
-            <PrivateRoute>
-              <AdminTag />
-            </PrivateRoute>
-          }
+            path="/admin/tag"
+            element={
+              <PrivateRoute>
+                <AdminTag />
+              </PrivateRoute>
+            }
           />
           <Route
             path="/admin/users"
@@ -219,6 +220,15 @@ const Routers = () => {
           <Route
             path="/admin/appointment/:id/view"
             element={<AppointmentViewScreen />}
+          />
+          <Route
+            path="/admin/offers"
+            element={
+              <PrivateRoute>
+                <AdminOffers />
+              </PrivateRoute>
+            }
+            exact
           />
           <Route path="/admin/service" element={<Service />} />
           <Route path="/admin/booking" element={<Booking />} />
