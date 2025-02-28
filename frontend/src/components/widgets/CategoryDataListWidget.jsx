@@ -27,6 +27,7 @@ const CategoryDataListWidget = () => {
 
     fetchCategories();
   }, []);
+  
 
   if (loading) {
     return <div>Loading...</div>;
