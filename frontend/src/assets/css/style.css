@@ -297,6 +297,7 @@ select:focus {
   -webkit-box-shadow: inherit;
   box-shadow: inherit;
 }
+<<<<<<< HEAD
 .common-header {
   padding: 1rem 1rem;
   font-weight: bold;
@@ -332,6 +333,9 @@ select:focus {
     
   }
 }
+=======
+
+>>>>>>> 1b623ca2972a84a66c8d67f2e26d4e2af8aeff60
 ul {
   list-style-type: none;
 }
