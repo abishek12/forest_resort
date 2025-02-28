@@ -3,21 +3,16 @@ import { ThemeContext } from "../../context/ThemeContext";
 import { LIGHT_THEME } from "../../constants/themeConstants";
 
 import {
-  MdOutlineAttachMoney,
-  MdOutlineBarChart,
   MdOutlineClose,
-  MdOutlineCurrencyExchange,
-  MdOutlineGridView,
   MdOutlineLogout,
-  MdOutlineMessage,
   MdDocumentScanner,
   MdOutlinePeople,
   MdPageview,
   MdOutlineSettings,
   MdDescription,
-  MdPreview,
   MdTag,
 } from "react-icons/md";
+import { BiSolidOffer } from "react-icons/bi";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
 import { SidebarContext } from "../../context/SidebarContext";
@@ -161,6 +156,17 @@ const AdminSidebar = ({ isOpen }) => {
                   <MdDescription size={20} />
                 </span>
                 <span className="menu-link-text">All Bookings</span>
+              </NavLink>
+              <NavLink
+                to="/admin/offers"
+                className={({ isActive }) =>
+                  isActive ? "menu-link active" : "menu-link"
+                }
+              >
+                <span className="menu-link-icon">
+                  <BiSolidOffer size={20} />
+                </span>
+                <span className="menu-link-text">Offers</span>
               </NavLink>
             </li>
           </ul>

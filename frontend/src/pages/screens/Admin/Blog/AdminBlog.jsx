@@ -67,7 +67,7 @@ const AdminBlog = () => {
               <tr key={uuid()}>
                 <td>{index + 1}</td>
                 <td>{blog.title}</td>
-                <td>{blog.user.fullname == "" ? "" : blog.user.fullname}</td>
+                <td>{blog.user == null ? "N/A" : blog.user.fullname}</td>
                 <td>{dateTimeFormat(blog.createdAt)}</td>
                 <td>{blog.status}</td>
                 <td className="dt-cell-action">
