@@ -5,14 +5,14 @@ import BoxReveal from "../ui/magic_ui/box-reveal";
 const WhyChooseUsV2 = () => {
   return (
     <>
-      <div className="tw-bg-white tw-pb-2 tw-w-[1290px]">
+      <div className=" choose-us tw-bg-white tw-pb-2 tw-w-full">
         <div
           className="choose-us-style-two-area default-padding text-light md:tw-mx-24 tw-mb-10 md:tw-mb-32 
       tw-bg-gradient-to-r tw-from-[#299029] tw-to-[#96d397] -tw-translate-x-5"
         >
-          <div className="container">
+          <div className="container tw-mx-auto tw-px-4">
             <div className="row">
-              <div className="col-xl-4">
+              <div className="col-xl-4 col-lg-5 col-md-12">
                 <div className="choose-us-style-two">
                   <h2 className="title mb-50">
                     <p className="tw-text-2xl tw-font-extrabold tw-px-10 -tw-translate-y-8">
@@ -44,7 +44,7 @@ const WhyChooseUsV2 = () => {
               </div>
               <div className="col-xl-7 offset-xl-1 text-end">
                 <div className="choose-us-style-two-thumb">
-                  <div className="tw-px-10 -tw-translate-y-8">
+                  <div className="since-box tw-px-10 -tw-translate-y-8">
                     <p className="tw-text-xl tw-font-bold">
                       We are dedicated to serving you
                     </p>

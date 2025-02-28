@@ -23,6 +23,7 @@ const User = () => {
   const dispatch = useDispatch();
 
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -38,6 +39,7 @@ const User = () => {
           setError(data.error);
         } else {
           setUsers(data);
+          setFilteredUsers(data);
         }
         setLoading(false);
       } catch (err) {
@@ -49,20 +51,32 @@ const User = () => {
     fetchUsers();
   }, []);
 
-  // const handleRemoveBlog = async (id) => {
-  //   if (window.confirm("Are you sure you want to delete this blog?")) {
-  //     try {
-  //       await removeBlog(id, userInfo);
-  //       setBlogs(blogs.filter((blog) => blog._id !== id));
-  //     } catch (err) {
-  //       setError(err.message);
-  //     }
-  //   }
-  // };
+  const handleStatusFilter = (status) => {
+    if (status === "") {
+      setFilteredUsers(users);
+    } else {
+      setFilteredUsers(
+        users.filter((user) => user.role === status)
+      );
+    }
+  };
 
   return (
     <div className="blog-list">
       <h1>Users</h1>
+
+      <div className="filter-container col-3 mb-4">
+        <label htmlFor="" className="form-label">Status</label>
+        <select
+          className="form-select"
+          onChange={(e) => handleStatusFilter(e.target.value)}
+        >
+          <option value="">All</option>
+          <option value="admin">Admin</option>
+          <option value="subscriber">Subscriber</option>
+        </select>
+      </div>
+      
       {loading && <Loader />}
       {error && <Message variant="danger">{error}</Message>}
 
@@ -76,18 +90,15 @@ const User = () => {
             </tr>
           </thead>
           <tbody>
-            {users?.map((user, index) => (
+            {filteredUsers?.map((user, index) => (
               <tr key={uuid()}>
                 <td>{index + 1}</td>
                 <td>{user.fullname}</td>
                 <td>{user.email}</td>
-
                 <td>{user.phone_no}</td>
                 <td>{dateTimeFormat(user.createdAt)}</td>
                 <td>
-                  <Link
-                  //onClick={() => handleRemoveBlog(blog._id)}
-                  >
+                  <Link>
                     <MdDeleteOutline />
                   </Link>
                 </td>

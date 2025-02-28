@@ -3,6 +3,7 @@ import {
   listOffers,
   removeOffer,
   createOffer,
+  editOffer,
 } from "../../../../actions/offerActions";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -87,6 +88,22 @@ export const AdminOffers = () => {
       }
     }
   };
+
+  const handleEdit = async (id) => {
+    if (window.confirm("Are you sure you want to edit this offer?")){
+      try{
+        setLoading(true);
+        await editOffer(id);
+        toast("Offer loaded for editing!");
+        fetchOffers();
+      } catch (err) {
+        toast("Failed to edit offer: " + err.message);
+      } finally {
+        setLoading(false);
+      }
+      }
+    }
+  
 
   return (
     <>
@@ -196,13 +213,20 @@ export const AdminOffers = () => {
               <td>{item.title}</td>
               <td>{item.user.fullname || "N/A"}</td>
               <td>{item.status}</td>
-              <td>
+              <td className="tw-space-x-4">
                 <button
                   className="btn btn-danger"
                   onClick={() => handleDelete(item._id)}
                   disabled={loading}
                 >
                   {loading ? "Deleting..." : "Delete"}
+                </button>
+                <button
+                  className="btn btn-warning"
+                  onClick={() => handleEdit(item._id)}
+                  disabled={loading}
+                >
+                  {loading ? "Editing..." : "Edit"}
                 </button>
               </td>
             </tr>

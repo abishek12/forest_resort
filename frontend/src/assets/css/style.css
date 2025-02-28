@@ -10514,8 +10514,33 @@ body.bg-dark .megamenu-content .title {
   }
 }
 
+.choose-us-style-two-thumb img {
+  width: 100%;
+  height: auto;
+  transform: translateY(-1rem);
+}
+
+/* large screens */
+@media (min-width: 1200px) {
+  .choose-us-style-two .title p {
+    font-size: 1.6rem;
+    transform: translateY(-2rem);
+  }
+
+  .choose-us-style-two .check-list-item {
+    font-size: 1rem;
+    transform: translateX(4rem) translateY(1.75rem);
+  }
+
+  .choose-us-style-two-thumb img {
+    width: 600px;
+    height: 350px;
+  }
+}
+
 .choose-us-style-two-area {
   background-image: url(/img/shape/mountain-peaks.svg);
+  background-color:rgba(0, 0, 0, 0.65);
   background-position: center;
   background-size: cover;
   width: 1140px;
