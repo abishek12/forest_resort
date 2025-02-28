@@ -65,7 +65,7 @@ export const AdminTag = () => {
         </div>
         <div className="tw-space-x-10">
         <button type="submit" className="tw-bg-green-600">Add Tag</button>
-        <button type="submit" className="tw-bg-green-600">Delete Tag</button>
+        <button type="submit" className="tw-bg-green-600">Create Tag</button>
         </div>
       </form>
 
