@@ -9,14 +9,21 @@ export const listBlogs = async (req, res) => {
     // Sorting
     let sort = req.query.sort || "asc";
     let status = req.query.status || "draft";
+    let search = req.query.q || "";
     sort = { createdAt: sort === "asc" ? 1 : -1 };
+
+    let query = {};
+
+    if (search) {
+      query.$or = [{ title: { $regex: search, $options: "i" } }];
+    }
 
     // Offset calculation
     let offset = (page - 1) * limit;
 
-    let totalRecords = await Blog.countDocuments();
+    let totalRecords = await Blog.countDocuments(query);
 
-    const items = await Blog.find({  }, { __v: 0 })
+    const items = await Blog.find(query, { __v: 0 })
       .populate("user category tags", "fullname -_id title")
       .sort(sort)
       .skip(offset)

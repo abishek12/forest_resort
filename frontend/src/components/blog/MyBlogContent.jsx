@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import SearchWidget from "../widgets/SearchWidget";
 import CategoryDataListWidget from "../widgets/CategoryDataListWidget";
@@ -6,13 +6,35 @@ import SocialWidget from "../widgets/SocialWidget";
 import { Breadcrumb } from "../widgets/Breadcrumb";
 
 import { Link } from "react-router-dom";
+import { listBlogs } from "../../actions/blogActions";
+import { toast } from "react-toastify";
+import { dateTimeFormat } from "../../utils/date-time";
 
 const MyBlogContent = () => {
   const [blogs, setBlogs] = useState([]);
   const [currentBlogs, setCurrentBlogs] = useState();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [blogsPerPage] = useState(10);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    try {
+      setLoading(true);
+      const data = await listBlogs("", 1, 10, "desc", search);
+      setBlogs(data);
+    } catch (error) {
+      toast.error("Error fetching offers");
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -40,11 +62,11 @@ const MyBlogContent = () => {
 
             <div name="blog" className="col-8 col-md-9 col-lg-9 pt-2 bt-2">
               <div className="row row-cols-2">
-                <div className="col">
-                  <div className="tw-rounded-lg tw-bg-white">
-                    <div className="tw-p-6">
+                {blogs.map((item, index) => (
+                  <div className="tw-rounded-lg tw-bg-white" key={index}>
+                    <div className="tw-p-6" key={index}>
                       <img
-                        src="https://placehold.co/600x400"
+                        src={item.featured_image}
                         alt="Futsal"
                         width="439"
                         height="274"
@@ -54,12 +76,11 @@ const MyBlogContent = () => {
                       />
                       {/* <div className="tw-w-[380px] tw-h-[240px] tw-top-[648px] tw-left-[465px] "> */}
                       <h3 className="tw-mb-2 tw-text-xl tw-font-bold">
-                        Futsal: The Fast-Paced Sport That Enhances Skills &
-                        Fitness
+                        {item.title}
                       </h3>
                       <div className="relative mb-2">
                         <p className="mb-1 text-sm text-black tw-font-bold">
-                          February 17, 2025
+                          {dateTimeFormat(item.createdAt)}
                         </p>
                         <svg
                           width="25%"
@@ -76,11 +97,7 @@ const MyBlogContent = () => {
                         </svg>
                       </div>
                       <p className="tw-mb-4 tw-text-black">
-                        Futsal is not just another version of football—it's a
-                        game that demands quick thinking, agility, and precise
-                        ball control. The smaller court size forces players to
-                        make faster decisions and develop superior dribbling,
-                        passing and...
+                        {item.content}
                       </p>
                       <Link
                         href="#"
@@ -104,484 +121,22 @@ const MyBlogContent = () => {
                       {/* </div> */}
                     </div>
                   </div>
-                </div>
-                <div className="col">
-                  <div className="tw-rounded-lg tw-bg-white">
-                    <div className="tw-p-6">
-                      <img
-                        src="https://placehold.co/600x400"
-                        alt="Futsal"
-                        width="439"
-                        height="274"
-                        top="298"
-                        Left="465"
-                        className="tw-w-[439px] tw-h-[274px] tw-object-cover"
-                      />
-                      {/* <div className="tw-w-[380px] tw-h-[240px] tw-top-[648px] tw-left-[465px] "> */}
-                      <h3 className="tw-mb-2 tw-text-xl tw-font-bold">
-                        Futsal: The Fast-Paced Sport That Enhances Skills &
-                        Fitness
-                      </h3>
-                      <div className="relative mb-2">
-                        <p className="mb-1 text-sm text-black tw-font-bold">
-                          February 17, 2025
-                        </p>
-                        <svg
-                          width="25%"
-                          height="2"
-                          border="2px"
-                          className="absolute bottom-0 left-0"
-                        >
-                          <line
-                            x2="100%"
-                            y2="100%"
-                            stroke="#1A7218F2"
-                            strokeWidth="5"
-                          />
-                        </svg>
-                      </div>
-                      <p className="tw-mb-2 tw-text-sm tw-text-gray-500"> </p>
-                      <p className="tw-mb-4 tw-text-black">
-                        Futsal is not just another version of football—it's a
-                        game that demands quick thinking, agility, and precise
-                        ball control. The smaller court size forces players to
-                        make faster decisions and develop superior dribbling,
-                        passing and...
-                      </p>
-                      <Link
-                        href="#"
-                        className="d-flex align-items-center text-[#1A7218F2] hover:underline"
-                      >
-                        Read More
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="ms-1"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M1 8a.5.5 0 0 1 .5-.5h10.793L8.146 3.354a.5.5 0 1 1 .708-.708l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 1 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                          />
-                        </svg>
-                      </Link>
-                      {/* </div> */}
-                    </div>
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="tw-rounded-lg tw-bg-white tw-shadow-sm">
-                    <div className="tw-p-6">
-                      <img
-                        src="https://placehold.co/600x400"
-                        alt="Futsal Post"
-                        width={439}
-                        height={274}
-                        Top={398}
-                        Left={465}
-                        className="tw-w-[439px] tw-h-[274px] tw-object-cover"
-                      />
-                      {/* <div className="tw-w-[380px] tw-h-[240px] tw-top-[648px] tw-left-[465px] "> */}
-                      <h3 className="tw-mb-2 tw-text-xl tw-font-bold">
-                        Futsal: The Fast-Paced Sport That Enhances Skills &
-                        Fitness
-                      </h3>
-                      <div className="relative mb-2">
-                        <p className="mb-1 text-sm text-black tw-font-bold">
-                          February 17, 2025
-                        </p>
-                        <svg
-                          width="25%"
-                          height="2"
-                          border="2px"
-                          className="absolute bottom-0 left-0"
-                        >
-                          <line
-                            x2="100%"
-                            y2="100%"
-                            stroke="#1A7218F2"
-                            strokeWidth="5"
-                          />
-                        </svg>
-                      </div>
-                      <p className="tw-mb-2 tw-text-sm tw-text-gray-500"> </p>
-                      <p className="tw-mb-4 tw-text-black">
-                        Futsal is not just another version of football—it's a
-                        game that demands quick thinking, agility, and precise
-                        ball control. The smaller court size forces players to
-                        make faster decisions and develop superior dribbling,
-                        passing and...
-                      </p>
-                      <Link
-                        href="#"
-                        className="d-flex align-items-center text-[#1A7218F2] hover:underline"
-                      >
-                        Read More
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="ms-1"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M1 8a.5.5 0 0 1 .5-.5h10.793L8.146 3.354a.5.5 0 1 1 .708-.708l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 1 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                          />
-                        </svg>
-                      </Link>
-                      {/* </div> */}
-                    </div>
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="tw-rounded-lg tw-bg-white tw-shadow-sm">
-                    <div className="tw-p-6">
-                      <img
-                        src="https://placehold.co/600x400"
-                        alt="Futsal Post"
-                        width={439}
-                        height={274}
-                        Top={398}
-                        Left={465}
-                        className="tw-w-[439px] tw-h-[274px] tw-object-cover"
-                      />
-                      {/* <div className="tw-w-[380px] tw-h-[240px] tw-top-[648px] tw-left-[465px] "> */}
-                      <h3 className="tw-mb-2 tw-text-xl tw-font-bold">
-                        Futsal: The Fast-Paced Sport That Enhances Skills &
-                        Fitness
-                      </h3>
-                      <div className="relative mb-2">
-                        <p className="mb-1 text-sm text-black tw-font-bold">
-                          February 17, 2025
-                        </p>
-                        <svg
-                          width="25%"
-                          height="2"
-                          border="2px"
-                          className="absolute bottom-0 left-0"
-                        >
-                          <line
-                            x2="100%"
-                            y2="100%"
-                            stroke="#1A7218F2"
-                            strokeWidth="5"
-                          />
-                        </svg>
-                      </div>
-                      <p className="tw-mb-2 tw-text-sm tw-text-gray-500"> </p>
-                      <p className="tw-mb-4 tw-text-black">
-                        Futsal is not just another version of football—it's a
-                        game that demands quick thinking, agility, and precise
-                        ball control. The smaller court size forces players to
-                        make faster decisions and develop superior dribbling,
-                        passing and...
-                      </p>
-                      <Link
-                        href="#"
-                        className="d-flex align-items-center text-[#1A7218F2] hover:underline"
-                      >
-                        Read More
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="ms-1"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M1 8a.5.5 0 0 1 .5-.5h10.793L8.146 3.354a.5.5 0 1 1 .708-.708l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 1 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                          />
-                        </svg>
-                      </Link>
-                      {/* </div> */}
-                    </div>
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="tw-rounded-lg tw-bg-white tw-shadow-sm">
-                    <div className="tw-p-6">
-                      <img
-                        src="https://placehold.co/600x400"
-                        alt="Futsal Post"
-                        width={439}
-                        height={274}
-                        Top={398}
-                        Left={465}
-                        className="tw-w-[439px] tw-h-[274px] tw-object-cover"
-                      />
-                      {/* <div className="tw-w-[380px] tw-h-[240px] tw-top-[648px] tw-left-[465px] "> */}
-                      <h3 className="tw-mb-2 tw-text-xl tw-font-bold">
-                        Futsal: The Fast-Paced Sport That Enhances Skills &
-                        Fitness
-                      </h3>
-                      <div className="relative mb-2">
-                        <p className="mb-1 text-sm text-black tw-font-bold">
-                          February 17, 2025
-                        </p>
-                        <svg
-                          width="25%"
-                          height="2"
-                          border="2px"
-                          className="absolute bottom-0 left-0"
-                        >
-                          <line
-                            x2="100%"
-                            y2="100%"
-                            stroke="#1A7218F2"
-                            strokeWidth="5"
-                          />
-                        </svg>
-                      </div>
-                      <p className="tw-mb-2 tw-text-sm tw-text-gray-500"> </p>
-                      <p className="tw-mb-4 tw-text-black">
-                        Futsal is not just another version of football—it's a
-                        game that demands quick thinking, agility, and precise
-                        ball control. The smaller court size forces players to
-                        make faster decisions and develop superior dribbling,
-                        passing and...
-                      </p>
-                      <Link
-                        href="#"
-                        className="d-flex align-items-center text-[#1A7218F2] hover:underline"
-                      >
-                        Read More
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="ms-1"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M1 8a.5.5 0 0 1 .5-.5h10.793L8.146 3.354a.5.5 0 1 1 .708-.708l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 1 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                          />
-                        </svg>
-                      </Link>
-                      {/* </div> */}
-                    </div>
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="tw-rounded-lg tw-bg-white tw-shadow-sm">
-                    <div className="tw-p-6">
-                      <img
-                        src="https://placehold.co/600x400"
-                        alt="Futsal Post"
-                        width={439}
-                        height={274}
-                        Top={398}
-                        Left={465}
-                        className="tw-w-[439px] tw-h-[274px] tw-object-cover"
-                      />
-                      {/* <div className="tw-w-[380px] tw-h-[240px] tw-top-[648px] tw-left-[465px] "> */}
-                      <h3 className="tw-mb-2 tw-text-xl tw-font-bold">
-                        Futsal: The Fast-Paced Sport That Enhances Skills &
-                        Fitness
-                      </h3>
-                      <div className="relative mb-2">
-                        <p className="mb-1 text-sm text-black tw-font-bold">
-                          February 17, 2025
-                        </p>
-                        <svg
-                          width="25%"
-                          height="2"
-                          border="2px"
-                          className="absolute bottom-0 left-0"
-                        >
-                          <line
-                            x2="100%"
-                            y2="100%"
-                            stroke="#1A7218F2"
-                            strokeWidth="5"
-                          />
-                        </svg>
-                      </div>
-                      <p className="tw-mb-2 tw-text-sm tw-text-gray-500"> </p>
-                      <p className="tw-mb-4 tw-text-black">
-                        Futsal is not just another version of football—it's a
-                        game that demands quick thinking, agility, and precise
-                        ball control. The smaller court size forces players to
-                        make faster decisions and develop superior dribbling,
-                        passing and...
-                      </p>
-                      <Link
-                        href="#"
-                        className="d-flex align-items-center text-[#1A7218F2] hover:underline"
-                      >
-                        Read More
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="ms-1"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M1 8a.5.5 0 0 1 .5-.5h10.793L8.146 3.354a.5.5 0 1 1 .708-.708l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 1 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                          />
-                        </svg>
-                      </Link>
-                      {/* </div> */}
-                    </div>
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="tw-rounded-lg tw-bg-white tw-shadow-sm">
-                    <div className="tw-p-6">
-                      <img
-                        src="https://placehold.co/600x400"
-                        alt="Futsal Post"
-                        width={439}
-                        height={274}
-                        Top={398}
-                        Left={465}
-                        className="tw-w-[439px] tw-h-[274px] tw-object-cover"
-                      />
-                      {/* <div className="tw-w-[380px] tw-h-[240px] tw-top-[648px] tw-left-[465px] "> */}
-                      <h3 className="tw-mb-2 tw-text-xl tw-font-bold">
-                        Futsal: The Fast-Paced Sport That Enhances Skills &
-                        Fitness
-                      </h3>
-                      <div className="relative mb-2">
-                        <p className="mb-1 text-sm text-black tw-font-bold">
-                          February 17, 2025
-                        </p>
-                        <svg
-                          width="25%"
-                          height="2"
-                          border="2px"
-                          className="absolute bottom-0 left-0"
-                        >
-                          <line
-                            x2="100%"
-                            y2="100%"
-                            stroke="#1A7218F2"
-                            strokeWidth="5"
-                          />
-                        </svg>
-                      </div>
-                      <p className="tw-mb-2 tw-text-sm tw-text-gray-500"> </p>
-                      <p className="tw-mb-4 tw-text-black">
-                        Futsal is not just another version of football—it's a
-                        game that demands quick thinking, agility, and precise
-                        ball control. The smaller court size forces players to
-                        make faster decisions and develop superior dribbling,
-                        passing and...
-                      </p>
-                      <Link
-                        href="#"
-                        className="d-flex align-items-center text-[#1A7218F2] hover:underline"
-                      >
-                        Read More
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="ms-1"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M1 8a.5.5 0 0 1 .5-.5h10.793L8.146 3.354a.5.5 0 1 1 .708-.708l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 1 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                          />
-                        </svg>
-                      </Link>
-                      {/* </div> */}
-                    </div>
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="tw-rounded-lg tw-bg-white tw-shadow-sm">
-                    <div className="tw-p-6">
-                      <img
-                        src="https://placehold.co/600x400"
-                        alt="Futsal Post"
-                        width={439}
-                        height={274}
-                        Top={398}
-                        Left={465}
-                        className="tw-w-[439px] tw-h-[274px] tw-object-cover"
-                      />
-                      {/* <div className="tw-w-[380px] tw-h-[240px] tw-top-[648px] tw-left-[465px] "> */}
-                      <h3 className="tw-mb-2 tw-text-xl tw-font-bold">
-                        Futsal: The Fast-Paced Sport That Enhances Skills &
-                        Fitness
-                      </h3>
-                      <div className="relative mb-2">
-                        <p className="mb-1 text-sm text-black tw-font-bold">
-                          February 17, 2025
-                        </p>
-                        <svg
-                          width="25%"
-                          height="2"
-                          border="2px"
-                          className="absolute bottom-0 left-0"
-                        >
-                          <line
-                            x2="100%"
-                            y2="100%"
-                            stroke="#1A7218F2"
-                            strokeWidth="5"
-                          />
-                        </svg>
-                      </div>
-                      <p className="tw-mb-2 tw-text-sm tw-text-gray-500"> </p>
-                      <p className="tw-mb-4 tw-text-black">
-                        Futsal is not just another version of football—it's a
-                        game that demands quick thinking, agility, and precise
-                        ball control. The smaller court size forces players to
-                        make faster decisions and develop superior dribbling,
-                        passing and...
-                      </p>
-                      <Link
-                        href="#"
-                        className="d-flex align-items-center text-[#1A7218F2] hover:underline"
-                      >
-                        Read More
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="ms-1"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M1 8a.5.5 0 0 1 .5-.5h10.793L8.146 3.354a.5.5 0 1 1 .708-.708l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 1 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                          />
-                        </svg>
-                      </Link>
-                      {/* </div> */}
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
         <div className="tw-flex tw-justify-center">
-        <p
-          className="app tw-flex tw-justify-center tw-font-bold tw-text-[#FFFFFF] tw-py-3 tw-rounded-full mt-5 tw-w-[204px]"
-          style={{
-            background: "linear-gradient(to right, #1A7218 34%, #B5DE4C 100%)",
-          }}
-        >
-          Forest Arena App
-        </p>
-      </div>
+          <p
+            className="app tw-flex tw-justify-center tw-font-semibold tw-text-[#FFFFFF] tw-py-3 tw-rounded-full mt-5 tw-w-[204px]"
+            style={{
+              background: "linear-gradient(to right, #1A7218, #B5DE4C)",
+            }}
+          >
+            Forest Arena App
+          </p>
+        </div>
       </div>
     </>
   );

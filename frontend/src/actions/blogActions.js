@@ -5,7 +5,8 @@ export const listBlogs = async (
   keyword = "",
   page = 1,
   limit = 10,
-  sort = "desc"
+  sort = "desc",
+  q = ""
 ) => {
   try {
     const { data } = await axios.get(`http://localhost:8888/api/blog`, {
@@ -13,6 +14,7 @@ export const listBlogs = async (
         page,
         limit,
         sort,
+        q,
       },
     });
     return data.items;
