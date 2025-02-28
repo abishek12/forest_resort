@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "icon1": "1.png",
+    "icon1Dark": "1.png",
+    "thumb": "swim3.jpg",
+    "icon2": "fas fa-long-arrow-right",
+    "text": "Biggest Swimming Pool with Training Facilities. With professional instructors and a safe,clean environment, it’s ideal for both beginners and seasoned swimmers.",
+    "title": "Swimming Pool",
+    "serviceLink": "services-details",
+    "services": [
+      {"1": "Safety standards, ensuring a safe environment with certified lifeguards on duty at all times"},
+      {"2": "Variety of lessons, including private and group options"},
+      {"3": "Comprehensive training programs for all skill levels"},
+      {"4": "Rigorous cleanliness protocols"}
+    ],
+    "provide": "At our facility, we provide access to the largest swimming pool equipped with comprehensive training facilities. Our pool is designed to cater to swimmers of all levels, from beginners to seasoned athletes. With professional instructors on hand, we offer expert guidance and training to help you achieve your swimming goals. Safety and cleanliness are our top priorities, ensuring a secure and hygienic environment for all our visitors. Whether you're looking to learn the basics or refine your techniques, our state-of-the-art pool and dedicated staff are here to support your journey."
+  },
+  {
+    "id": 2,
+    "icon1": "2.png",
+    "icon1Dark": "2.png",
+    "thumb": "futsal.jpeg",
+    "icon2": "fas fa-long-arrow-right",
+    "text": "Bring your friends and play futsal. Whether you're looking to join a match or just play for fun, Forest Sports and Recreation Centre has the perfect spot for you.",
+    "title": "Futsal",
+    "serviceLink": "services-details",
+    "services": [
+      {"1": "Regular maintenance to ensure a safe and enjoyable experience"},
+      {"2": "Access to experienced coaches offering training sessions"},
+      {"3": "Opportunities to participate in competitive tournaments"},
+      {"4": "Availability of futsal gear and equipment"}
+    ],
+    "provide": "At our Forest Sports and Recreation Centre, we provide top-notch futsal facilities that cater to enthusiasts of all skill levels. Whether you're looking to join a competitive match or simply play for fun with friends, our center offers a welcoming environment and well-maintained courts to ensure an enjoyable experience. We prioritize safety and cleanliness, maintaining our facilities to the highest standards to guarantee a secure and pleasant playing space for everyone. With opportunities to engage in both organized leagues and casual games, our futsal program is designed to foster community, teamwork, and a love for the sport."
+  }
+]

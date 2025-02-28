@@ -1,0 +1,53 @@
+[
+    {
+        "id": 1,
+        "planClass": "",
+        "plan": "Standard Access",
+        "planInfo": "Basic access to all sports facilities.",
+        "planPrice": 1799,
+        "priceType": " / Month",
+        "list1": "Access to all sports facilities",
+        "list2": "Free WiFi",
+        "list3": "Locker included",
+        "icon1": "fa-solid fa-check-circle",
+        "icon2": "fa-solid fa-check-circle",
+        "icon3": "fa-solid fa-check-circle",
+        "btnLink": "contact-us",
+        "btnText": "Select Plan",
+        "btnClass": "btn-dark"
+    },
+    {
+        "id": 2,
+        "planClass": "active",
+        "plan": "Premium Access",
+        "planInfo": "Full access with additional perks.",
+        "planPrice": 1499,
+        "priceType": " / Month",
+        "list1": "Full access to all facilities",
+        "list2": "Personal trainer sessions",
+        "list3": "24/7 Lifeguard service",
+        "icon1": "fa-solid fa-check-circle",
+        "icon2": "fa-solid fa-check-circle",
+        "icon3": "fa-solid fa-check-circle",
+        "btnLink": "contact-us",
+        "btnText": "Select Plan",
+        "btnClass": "btn-light"
+    },
+    {
+        "id": 3,
+        "planClass": "",
+        "plan": "Family Membership",
+        "planInfo": "Access for entire family.",
+        "planPrice": 1199,
+        "priceType": " / Month",
+        "list1": "Access for entire family",
+        "list2": "Kids' play area access",
+        "list3": "Family discount on events",
+        "icon1": "fa-solid fa-check-circle",
+        "icon2": "fa-solid fa-check-circle",
+        "icon3": "fa-solid fa-check-circle",
+        "btnLink": "contact-us",
+        "btnText": "Select Plan",
+        "btnClass": "btn-dark"
+    }
+]

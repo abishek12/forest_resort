@@ -1,0 +1,107 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin: 0 auto;
+  font-size: 1.2em;
+}
+
+.blog-description-input {
+  background-color: #fff;
+  width: 100%;
+  border-radius: 4px;
+  outline: none;
+}
+.blog-description-input {
+  height: 280px;
+  font-family: monospace;
+  font-size: 24px;
+}
+
+/* .logo {
+  max-width: 130px;
+  display: block;
+  margin: 0 auto 30px;
+} */
+
+input {
+  height: 30px;
+  margin-bottom: 8px;
+  position: relative;
+  line-height: 1.1em;
+  font-size: 1em;
+}
+
+.login-page {
+  padding-top: 9rem;
+  display: flex;
+  justify-content: center;
+  height: 700px;
+}
+
+.form-login label {
+  font-size: large;
+  color: black;
+  padding-left: 15px;
+}
+
+.form-login .show {
+  color: #786673;
+  font-size: medium;
+}
+
+.form-login input {
+  border: 1px solid #57d557;
+  border-radius: 15px;
+  padding-left: 15px;
+  box-shadow: inherit;
+  width: 100%;
+}
+
+.form-login input :focus {
+  box-shadow: inherit;
+}
+
+.checkbox {
+  height: 25px;
+  width: 25px;
+}
+
+.login {
+  color: #fff;
+  background-color: #228c22;
+  width: 100%;
+  border-radius: 15px;
+}
+
+.image-preview {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.image-preview-item {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 20px;
+  z-index: 9999;
+}

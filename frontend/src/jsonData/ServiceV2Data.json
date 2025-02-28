@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "thumb": "7.png",
+        "text": "Free wifi available throughout the our forest arena.",
+        "serviceName": "Free WiFi",
+        "tag": "Amenities",
+        "serviceLink": "services-details",
+        "icon": "fa-solid fa-arrow-right",
+        "shape": "15.webp"
+    },
+    {
+        "id": 2,
+        "thumb": "10.png",
+        "text": "Secure lockers available for all your belongings.",
+        "serviceName": "Lockers",
+        "tag": "Security",
+        "serviceLink": "services-details",
+        "icon": "fa-solid fa-arrow-right",
+        "shape": "15.webp"
+    },
+    {
+        "id": 3,
+        "thumb": "9.png",
+        "text": "Certified lifeguards on duty to ensure your safety.",
+        "serviceName": "Lifeguards on Duty",
+        "tag": "Safety",
+        "serviceLink": "services-details",
+        "icon": "fa-solid fa-arrow-right",
+        "shape": "15.webp"
+    },
+    {
+        "id": 4,
+        "thumb": "5.png",
+        "text": "Modern showers with hot and cold water available.",
+        "serviceName": "Showers",
+        "tag": "Facilities",
+        "serviceLink": "services-details",
+        "icon": "fa-solid fa-arrow-right",
+        "shape": "15.webp"
+    },
+    {
+        "id": 5,
+        "thumb": "6.png",
+        "text": "Expert personal trainers available for guidance.",
+        "serviceName": "Personal Trainer",
+        "tag": "Services",
+        "serviceLink": "services-details",
+        "icon": "fa-solid fa-arrow-right",
+        "shape": "15.webp"
+    },
+    {
+        "id": 6,
+        "thumb": "5.png",
+        "text": "Clean and spacious changing rooms available.",
+        "serviceName": "Changing Rooms",
+        "tag": "Facilities",
+        "serviceLink": "services-details",
+        "icon": "fa-solid fa-arrow-right",
+        "shape": "15.webp"
+    }
+]

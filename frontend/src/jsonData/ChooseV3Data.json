@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "listLink": "services-details",
+        "listName": "Digital Solution",
+        "listIcon": "fa-solid fa-angle-right"
+    },
+    {
+        "id": 2,
+        "listLink": "services-details",
+        "listName": "Strategy",
+        "listIcon": "fa-solid fa-angle-right"
+    },
+    {
+        "id": 3,
+        "listLink": "services-details",
+        "listName": "Branding",
+        "listIcon": "fa-solid fa-angle-right"
+    }
+]

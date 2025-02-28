@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "thumb": "1.jpg",
+        "icon1": "fa-solid fa-share-alt",
+        "icon2": "fa-regular fa-comment",
+        "member": "James Baker",
+        "memberLink": "team-details",
+        "designation": "Marketing"
+    },
+    {
+        "id": 2,
+        "thumb": "2.jpg",
+        "icon1": "fa-solid fa-share-alt",
+        "icon2": "fa-regular fa-comment",
+        "member": "Mir Siap",
+        "memberLink": "team-details",
+        "designation": "Marketing"
+    },
+    {
+        "id": 3,
+        "thumb": "3.jpg",
+        "icon1": "fa-solid fa-share-alt",
+        "icon2": "fa-regular fa-comment",
+        "member": "Ryan Ricketts",
+        "memberLink": "team-details",
+        "designation": "Marketing"
+    },
+    {
+        "id": 4,
+        "thumb": "4.jpg",
+        "icon1": "fa-solid fa-share-alt",
+        "icon2": "fa-regular fa-comment",
+        "member": "James Baker",
+        "memberLink": "team-details",
+        "designation": "Marketing"
+    },
+    {
+        "id": 5,
+        "thumb": "5.jpg",
+        "icon1": "fa-solid fa-share-alt",
+        "icon2": "fa-regular fa-comment",
+        "member": "Ema Watson",
+        "memberLink": "team-details",
+        "designation": "Marketing"
+    },
+    {
+        "id": 6,
+        "thumb": "6.jpg",
+        "icon1": "fa-solid fa-share-alt",
+        "icon2": "fa-regular fa-comment",
+        "member": "Istiak Ahmed",
+        "memberLink": "team-details",
+        "designation": "Marketing"
+    }
+]

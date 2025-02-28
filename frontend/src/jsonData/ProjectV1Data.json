@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "thumb": "1.jpg",
+        "thumbFull": "1-full.jpg",
+        "projectLink": "project-details",
+        "subTitle": "Marketing",
+        "title": "Digital Marketing",
+        "shape": "10.png"
+    },
+    {
+        "id": 2,
+        "thumb": "2.jpg",
+        "thumbFull": "2-full.jpg",
+        "projectLink": "project-details",
+        "subTitle": "Digital",
+        "title": "Development Agency",
+        "shape": "10.png"
+    },
+    {
+        "id": 3,
+        "thumb": "3.jpg",
+        "thumbFull": "3-full.jpg",
+        "projectLink": "project-details",
+        "subTitle": "Promotion",
+        "title": "Data Scientist",
+        "shape": "10.png"
+    },
+    {
+        "id": 4,
+        "thumb": "4.jpg",
+        "thumbFull": "4-full.jpg",
+        "projectLink": "project-details",
+        "subTitle": "Development",
+        "title": "Benefits Research",
+        "shape": "10.png"
+    },
+    {
+        "id": 5,
+        "thumb": "5.jpg",
+        "thumbFull": "5-full.jpg",
+        "projectLink": "project-details",
+        "subTitle": "Research",
+        "title": "Content Optimization",
+        "shape": "10.png"
+    },
+    {
+        "id": 6,
+        "thumb": "6.jpg",
+        "thumbFull": "6-full.jpg",
+        "projectLink": "project-details",
+        "subTitle": "Digital",
+        "title": "Development Agency",
+        "shape": "10.png"
+    }
+]

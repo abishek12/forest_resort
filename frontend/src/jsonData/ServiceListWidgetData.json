@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "listTitle": "Swimming Pool",
+        "listLink": "services-details",
+        "listIcon": "fa-solid fa-angle-right"
+    },
+    {
+        "id": 2,
+        "listTitle": "Futsal",
+        "listLink": "services-details",
+        "listIcon": "fa-solid fa-angle-right"
+    }
+]

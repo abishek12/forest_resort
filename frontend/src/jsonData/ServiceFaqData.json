@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingOne",
+    "collapsedClass": "",
+    "dataTarget": "#collapseOne",
+    "ariaExpanded": "true",
+    "ariaControls": "collapseOne",
+    "title": "What safety measures are in place at the swimming pool?",
+    "text": "Safety is our top priority. We have certified lifeguards on duty at all times to ensure the well-being of all swimmers. Our pool area is equipped with safety equipment, and we follow strict cleanliness and maintenance protocols to provide a safe environment for everyone.",
+    "collapseShow": "show"
+  },
+  {
+    "id": 2,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingTwo",
+    "collapsedClass": "collapsed",
+    "dataTarget": "#collapseTwo",
+    "ariaExpanded": "false",
+    "ariaControls": "collapseTwo",
+    "title": " Do you offer swimming lessons for kids?",
+    "text": " Yes, we offer a variety of swimming lessons for kids, ranging from beginner to advanced levels. Our certified instructors provide a fun and safe learning environment, focusing on building confidence and essential swimming skills.",
+    "collapseShow": ""
+  },
+  {
+    "id": 3,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingThree",
+    "collapsedClass": "collapsed",
+    "dataTarget": "#collapseThree",
+    "ariaExpanded": "false",
+    "ariaControls": "collapseThree",
+    "title": "Are there separate training programs for adults?",
+    "text": "Absolutely! We offer specialized training programs for adults, including separate classes for ladies and gents. Whether you're a beginner looking to learn the basics or an experienced swimmer aiming to improve your technique, we have programs tailored to suit your needs.",
+    "collapseShow": ""
+  },
+  {
+    "id": 4,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingFour",
+    "collapsedClass": "collapsed",
+    "dataTarget": "#collapseFour",
+    "ariaExpanded": "false",
+    "ariaControls": "collapseFour",
+    "title": "Can I book private swimming lessons?",
+    "text": "Yes, we offer private swimming lessons for both kids and adults. Private sessions are ideal for those who prefer one-on-one instruction or need a more flexible schedule. You can book private lessons with one of our certified instructors at a time that works best for you.",
+    "collapseShow": ""
+  },
+  {
+    "id": 5,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingFive",
+    "collapsedClass": "collapsed",
+    "dataTarget": "#collapseFive",
+    "ariaExpanded": "false",
+    "ariaControls": "collapseFive",
+    "title": " What are the cleanliness and hygiene standards of the pool?",
+    "text": "We maintain rigorous cleanliness standards for our pool. The water is regularly tested and treated to ensure it meets health and safety guidelines. Additionally, our pool area, including showers and changing rooms, is cleaned and sanitized multiple times a day to provide a hygienic environment for all visitors.",
+    "collapseShow": ""
+  },
+  {
+    "id": 6,
+    "dataParent": "faqAccordion",
+    "accordionId": "headingSix",
+    "collapsedClass": "collapsed",
+    "dataTarget": "#collapseSix",
+    "ariaExpanded": "false",
+    "ariaControls": "collapseSix",
+    "title": "How do you ensure the safety of children during swimming lessons?",
+    "text": "During swimming lessons, our certified instructors and lifeguards are present at all times to ensure the safety of the children. We maintain a low instructor-to-student ratio to provide individual attention and make sure each child is supervised closely",
+    "collapseShow": ""
+  }
+]

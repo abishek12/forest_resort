@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+         "dataParent": "faqAccordion",
+        "accordionId": "headingOne",
+        "collapsedClass": "",
+        "dataTarget": "#collapseOne",
+        "ariaExpanded": "true",
+        "ariaControls": "collapseOne",
+        "title": "How long have you been in business?",
+        "text": "Bennings appetite disposed me an at subjects an. To no indulgence diminution so discovered mr apartments. Are off under folly death wrote cause her way spite. Plan upon yet way get cold spot its week.",
+        "collapseShow": "show"
+    },
+    {
+        "id": 2,
+         "dataParent": "faqAccordion",
+        "accordionId": "headingTwo",
+        "collapsedClass": "collapsed",
+        "dataTarget": "#collapseTwo",
+        "ariaExpanded": "false",
+        "ariaControls": "collapseTwo",
+        "title": "What is search engine optimization?",
+        "text": "Cennings appetite disposed me an at subjects an. To no indulgence diminution so discovered mr apartments. Are off under folly death wrote cause her way spite. Plan upon yet way get cold spot its week.",
+        "collapseShow": ""
+    },
+    {
+        "id": 3,
+         "dataParent": "faqAccordion",
+        "accordionId": "headingThree",
+        "collapsedClass": "collapsed",
+        "dataTarget": "#collapseThree",
+        "ariaExpanded": "false",
+        "ariaControls": "collapseThree",
+        "title": "Do i really need a website?",
+        "text": "Tennings appetite disposed me an at subjects an. To no indulgence diminution so discovered mr apartments. Are off under folly death wrote cause her way spite. Plan upon yet way get cold spot its week.",
+        "collapseShow": ""
+    }
+]

@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "title": "Campaign Tools",
+        "textFirst": "Customize templates and create",
+        "textLast": "unique campaigns",
+        "thumb": "11.png"
+    },
+    {
+        "id": 2,
+        "title": "User Communication",
+        "textFirst": "Reach goals on every",
+        "textLast": "communication channel ",
+        "thumb": "12.png"
+    }
+]

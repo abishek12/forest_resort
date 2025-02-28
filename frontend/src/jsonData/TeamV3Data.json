@@ -1,0 +1,66 @@
+[
+    {
+        "id": 1,
+        "bgThumb": "31.png",
+        "thumb": "12.jpg",
+        "memberLink": "team-details",
+        "name": "James Baker",
+        "position": "Marketing"
+    },
+    {
+        "id": 2,
+        "bgThumb": "31.png",
+        "thumb": "9.jpg",
+        "memberLink": "team-details",
+        "name": "Mir Siap",
+        "position": "Project Manager"
+    },
+    {
+        "id": 3,
+        "bgThumb": "31.png",
+        "thumb": "10.jpg",
+        "memberLink": "team-details",
+        "name": "Ryan Ricketts",
+        "position": "Marketing"
+    },
+    {
+        "id": 4,
+        "bgThumb": "31.png",
+        "thumb": "11.jpg",
+        "memberLink": "team-details",
+        "name": "James Baker",
+        "position": "Designer"
+    },
+    {
+        "id": 5,
+        "bgThumb": "31.png",
+        "thumb": "13.jpg",
+        "memberLink": "team-details",
+        "name": "James Baker",
+        "position": "Marketing"
+    },
+    {
+        "id": 6,
+        "bgThumb": "31.png",
+        "thumb": "14.jpg",
+        "memberLink": "team-details",
+        "name": "Dalton Grant",
+        "position": "Project Manager"
+    },
+    {
+        "id": 7,
+        "bgThumb": "31.png",
+        "thumb": "15.jpg",
+        "memberLink": "team-details",
+        "name": "Istiak Ahmed",
+        "position": "Marketing"
+    },
+    {
+        "id": 8,
+        "bgThumb": "31.png",
+        "thumb": "16.jpg",
+        "memberLink": "team-details",
+        "name": "Monas Lion",
+        "position": "Designer"
+    }
+]

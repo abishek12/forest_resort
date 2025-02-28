@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "thumb": "banner-3.jpg",
+        "serviceIcon": "flaticon-planning",
+        "serviceTitle": "Financial Planning",
+        "serviceText": "Continued at up zealously necessary breakfast. Surrounded sir motionless she end literature. Gay direction neglected.",
+        "btnText": "Learn More",
+        "btnLink": "services-details",
+        "btnIcon": "fa-solid fa-arrow-right"
+    },
+    {
+        "id": 2,
+        "thumb": "banner-3.jpg",
+        "serviceIcon": "flaticon-startup-6",
+        "serviceTitle": "Investment Planning",
+        "serviceText": "Continued at up zealously necessary breakfast. Surrounded sir motionless she end literature. Gay direction neglected.",
+        "btnText": "Learn More",
+        "btnLink": "services-details",
+        "btnIcon": "fa-solid fa-arrow-right"
+    },
+    {
+        "id": 3,
+        "thumb": "banner-3.jpg",
+        "serviceIcon": "flaticon-marketing-agent",
+        "serviceTitle": "Marketing Agent",
+        "serviceText": "Continued at up zealously necessary breakfast. Surrounded sir motionless she end literature. Gay direction neglected.",
+        "btnText": "Learn More",
+        "btnLink": "services-details",
+        "btnIcon": "fa-solid fa-arrow-right"
+    },
+    {
+        "id": 4,
+        "thumb": "banner-3.jpg",
+        "serviceIcon": "flaticon-secure-1",
+        "serviceTitle": "Saving & Investments",
+        "serviceText": "Continued at up zealously necessary breakfast. Surrounded sir motionless she end literature. Gay direction neglected.",
+        "btnText": "Learn More",
+        "btnLink": "services-details",
+        "btnIcon": "fa-solid fa-arrow-right"
+    },
+    {
+        "id": 5,
+        "thumb": "banner-3.jpg",
+        "serviceIcon": "flaticon-data-analysis-1",
+        "serviceTitle": "Markets Research",
+        "serviceText": "Continued at up zealously necessary breakfast. Surrounded sir motionless she end literature. Gay direction neglected.",
+        "btnText": "Learn More",
+        "btnLink": "services-details",
+        "btnIcon": "fa-solid fa-arrow-right"
+    },
+    {
+        "id": 6,
+        "thumb": "banner-3.jpg",
+        "serviceIcon": "flaticon-research-1",
+        "serviceTitle": "Report Analysis",
+        "serviceText": "Continued at up zealously necessary breakfast. Surrounded sir motionless she end literature. Gay direction neglected.",
+        "btnText": "Learn More",
+        "btnLink": "services-details",
+        "btnIcon": "fa-solid fa-arrow-right"
+    }
+]

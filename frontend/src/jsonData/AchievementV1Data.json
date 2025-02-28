@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "icon": "flaticon-startup-6",
+        "end": 1000,
+        "info1": "Customer Served",
+        "info2": "over 3 years"
+    },
+    {
+        "id": 2,
+        "icon": "flaticon-team",
+        "end": 5,
+        "info1": "Years of",
+        "info2": "Experience"
+    }
+]

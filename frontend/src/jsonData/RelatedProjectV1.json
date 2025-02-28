@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "thumb": "3.jpg",
+        "tag": "Marketing",
+        "title": "Photo shooting and editing",
+        "icon": "fas fa-arrow-right",
+        "delay": "300ms"
+    },
+    {
+        "id": 2,
+        "thumb": "2.jpg",
+        "tag": "Creative",
+        "title": "Quality in industrial design",
+        "icon": "fas fa-arrow-right",
+        "delay": "600ms"
+    }
+]
