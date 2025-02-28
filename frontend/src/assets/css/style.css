@@ -297,7 +297,45 @@ select:focus {
   -webkit-box-shadow: inherit;
   box-shadow: inherit;
 }
+<<<<<<< HEAD
+.common-header {
+  padding: 1rem 1rem;
+  font-weight: bold;
+  font-size: 33px;
+  letter-spacing: 0.05em;
+  display: grid;
+  place-items: center;
+  margin:0 auto;
+  border-radius: 50px;
+  background: linear-gradient(to right, #228c22, #59da59);
+  color: white;
+  white-space: nowrap; /* Prevents text from wrapping */
+}
 
+@media (min-width: 640px) {
+  .common-header {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 28px; /* Adjust font size for smaller screens */
+    width: 80%; /* Make it responsive on small screens */
+  }
+}
+
+@media (min-width: 768px) {
+  .common-header {
+    width: 60%; /* Further reduce width on medium screens */
+    font-size: 30px; /* Adjust font size for medium screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  .common-header {
+    
+  }
+}
+=======
+
+>>>>>>> 1b623ca2972a84a66c8d67f2e26d4e2af8aeff60
 ul {
   list-style-type: none;
 }

@@ -1,4 +1,12 @@
 import React from "react";
+<<<<<<< HEAD
+import {HeroParallax}from "../ui/aceternity_ui/parallax";
+import { ParallaxBackgroundItem } from "../../localData/ParallaxBackgroundItems";
+
+export function AboutParallax() {
+  return <HeroParallax products={ParallaxBackgroundItem}/>
+}
+=======
 import { HeroParallax } from "../ui/aceternity_ui/parallax";
 
 export function AboutParallax() {
@@ -43,3 +51,4 @@ export const products = [
     thumbnail: "/img/fsa_image/swim3.webp",
   },
 ];
+>>>>>>> 1b623ca2972a84a66c8d67f2e26d4e2af8aeff60
