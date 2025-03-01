@@ -4,7 +4,7 @@ import express from "express";
 import { listOffers } from "../controllers/GetOffers.js";
 import { createOffer } from "../controllers/CreateOffer.js";
 import { deleteOffer } from "../controllers/DeleteOffer.js";
-// import { updateBlogController } from "../controllers/UpdateBlogController.js";
+import { updateOfferController } from "../controllers/UpdateOffer.js";
 
 // authorized middleware
 // import { authenticateToken } from "../../../middleware/authenticateToken.js";
@@ -18,6 +18,6 @@ route
   .get("/", listOffers)
   .post("/", upload.single("featured_image"), createOffer)
   .delete("/:id/delete", deleteOffer)
-//   .put("/:id", updateBlogController);
+  .put("/:id", upload.single("featured_image"), updateOfferController);
 
 export default route;

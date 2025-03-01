@@ -38,7 +38,7 @@ export const updateOfferController = async (req, res) => {
     if (req.file) {
       // Delete previous image from Cloudinary
       if (offer.featured_image) {
-        const publicId = blog.featured_image.split("/").pop().split(".")[0];
+        const publicId = offer.featured_image.split("/").pop().split(".")[0];
         await cloudinary.uploader.destroy(`offer-featured-images/${publicId}`);
       }
 

@@ -13,6 +13,9 @@ export const AdminOffers = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState(null);
+  const [currentImage, setCurrentImage] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     user: "",
@@ -89,21 +92,45 @@ export const AdminOffers = () => {
     }
   };
 
-  const handleEdit = async (id) => {
-    if (window.confirm("Are you sure you want to edit this offer?")){
-      try{
-        setLoading(true);
-        await editOffer(id);
-        toast("Offer loaded for editing!");
-        fetchOffers();
-      } catch (err) {
-        toast("Failed to edit offer: " + err.message);
-      } finally {
-        setLoading(false);
-      }
-      }
+  const handleEdit = (id) => {
+    const offerToEdit = tags.find((offer) => offer._id === id);
+    if (offerToEdit) {
+      setSelectedOffer(offerToEdit);
+      setFormData({
+        title: offerToEdit.title,
+        status: offerToEdit.status,
+        featured_image: null,
+      });
+      setCurrentImage(offerToEdit.featured_image);
+      setShowEditModal(true);
     }
-  
+  };
+
+  const handleUpdate = async () => {
+    try {
+      setLoading(true);
+
+      // Prepare form data
+      const submissionData = new FormData();
+      submissionData.append("title", formData.title);
+      submissionData.append("status", formData.status);
+      submissionData.append("user", userInfo.userId);
+      if (formData.featured_image) {
+        submissionData.append("featured_image", formData.featured_image);
+      }
+
+      await editOffer(selectedOffer._id, submissionData);
+      toast("Offer updated successfully!");
+
+      fetchOffers();
+      setShowEditModal(false);
+      setFormData({ title: "", status: "draft", featured_image: null });
+    } catch (error) {
+      toast(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -114,6 +141,7 @@ export const AdminOffers = () => {
         Add Offer
       </button>
 
+      {/* Add Offer Modal */}
       {showModal && (
         <div className="modal fade show d-block" tabIndex="-1" role="dialog">
           <div className="modal-dialog" role="document">
@@ -186,6 +214,101 @@ export const AdminOffers = () => {
                   disabled={loading}
                 >
                   {loading ? "Saving..." : "Save Offer"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Offer Modal */}
+      {showEditModal && selectedOffer && (
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Edit Offer</h5>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={() => setShowEditModal(false)}
+                >
+                  &times;
+                </button>
+              </div>
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label className="form-label">Title</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="title"
+                    onChange={handleChange}
+                    value={formData.title}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">User</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={userInfo.fullname}
+                    readOnly
+                  />
+                </div>
+                <div className="row row-cols-2 mb-3">
+                  <div>
+                    <label className="form-label">Current Featured Image</label>
+                    {currentImage ? (
+                      <img
+                        src={currentImage}
+                        alt="Current Featured"
+                        className="img-fluid mb-3"
+                        style={{ maxWidth: "100%", height: "auto" }}
+                      />
+                    ) : (
+                      <p>No image available.</p>
+                    )}
+                  </div>
+                  <div>
+                    {" "}
+                    <label className="form-label">Featured Image</label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      name="featured_image"
+                      onChange={handleFileChange}
+                    />
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Status</label>
+                  <select
+                    className="form-control"
+                    name="status"
+                    onChange={handleChange}
+                    value={formData.status}
+                  >
+                    <option value="published">Published</option>
+                    <option value="draft">Draft</option>
+                  </select>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setShowEditModal(false)}
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleUpdate}
+                  disabled={loading}
+                >
+                  {loading ? "Updating..." : "Update Offer"}
                 </button>
               </div>
             </div>

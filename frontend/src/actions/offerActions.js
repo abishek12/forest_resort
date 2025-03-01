@@ -45,7 +45,7 @@ export const removeOffer = async (id, userInfo) => {
   }
 };
 
-export const editOffer = async (id, userInfo) => {
+export const editOffer = async (id, offerData) => {
   try {
     // const config = {
     //   headers: {
@@ -53,15 +53,22 @@ export const editOffer = async (id, userInfo) => {
     //     "Content-Type": "application/json",
     //   },
     // };
-    const response = await axios.put(`http://localhost:8888/api/offer/${id}/edit`);
-  } catch (error){
-    const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+    const { data } = await axios.put(
+      `http://localhost:8888/api/offer/${id}`,
+      offerData
+    );
+    return data;
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
     if (message === "Not authorized, token failed") {
       logout();
     }
     throw new Error(message);
   }
-}
+};
 
 export const createOffer = async (offerData) => {
   try {
