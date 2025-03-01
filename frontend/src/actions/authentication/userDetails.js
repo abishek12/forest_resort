@@ -2,16 +2,13 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { logout } from "./userLogout";
 
-export const getUserDetails = async () => {
+export const getUserDetails = async (id) => {
   try {
-    const response = await axios.get(
-      `http://localhost:8888/api/users/67a890ae259d39cf93d0fc3b`,
-      {
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //   },
-      }
-    );
+    const response = await axios.get(`http://localhost:8888/api/users/${id}`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+    });
 
     return response.data;
   } catch (error) {

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { v4 as uuid } from "uuid";
-import { FaEye, FaEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
-
-import { listUsers } from "../../../../actions/authentication/userList";
+import { IoCheckmarkDoneOutline } from "react-icons/io5";
+import {
+  listUsers,
+} from "../../../../actions/authentication/userList";
+import { deleteUser } from "../../../../actions/userActionsOrg";
+import { updateUserRole } from "../../../../actions/authentication/userProfile";
 import Loader from "../../../../components/Loader";
 import Message from "../../../../components/Message";
 import { dateTimeFormat } from "../../../../utils/date-time";
@@ -26,9 +28,6 @@ const User = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -41,7 +40,6 @@ const User = () => {
         setError(data.error);
       } else {
         setUsers(data);
-        console.log(users);
       }
       setLoading(false);
     } catch (err) {
@@ -50,8 +48,34 @@ const User = () => {
     }
   };
 
-  const handleStatusFilter = (role) => {
-    fetchUsers(role);
+  const handlePromoteToAdmin = async (userId) => {
+    try {
+      setLoading(true);
+      const response = await updateUserRole(userId, "admin");
+      if (response.message === "Role updated successfully") {
+        fetchUsers(); // Refresh user list
+      }
+      setLoading(false);
+    } catch (error) {
+      setError("Failed to update role");
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async (userId) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      try {
+        setLoading(true);
+        const response = await deleteUser(userId);
+        if (response.message === "User deleted successfully") {
+          fetchUsers(); // Refresh user list
+        }
+        setLoading(false);
+      } catch (error) {
+        setError("Failed to delete user");
+        setLoading(false);
+      }
+    }
   };
 
   return (
@@ -64,7 +88,7 @@ const User = () => {
         </label>
         <select
           className="form-select"
-          onChange={(e) => handleStatusFilter(e.target.value)}
+          onChange={(e) => fetchUsers(e.target.value)}
         >
           <option value="">All</option>
           <option value="admin">Admin</option>
@@ -92,10 +116,24 @@ const User = () => {
                 <td>{user.email}</td>
                 <td>{user.phone_no}</td>
                 <td>{dateTimeFormat(user.createdAt)}</td>
-                <td>
-                  <Link>
+                <td className="dt-cell-action">
+                  {/* Delete User */}
+                  <button
+                    className="btn mx-2"
+                    onClick={() => handleDeleteUser(user._id)}
+                  >
                     <MdDeleteOutline />
-                  </Link>
+                  </button>
+
+                  {/* Promote to Admin */}
+                  {!user.roles?.admin && (
+                    <button
+                      className="btn"
+                      onClick={() => handlePromoteToAdmin(user._id)}
+                    >
+                      <IoCheckmarkDoneOutline />
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

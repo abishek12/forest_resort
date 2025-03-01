@@ -1,17 +1,15 @@
 import React, { useEffect } from "react";
 // import { LinkContainer } from "react-router-bootstrap";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import { Table, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listUsers, deleteUser } from "../actions/userActions";
 import { Container } from "react-bootstrap";
-import { Icon } from '@iconify/react';
-// import checkIcon from '@iconify/icons-mdi/check';
-// import closeIcon from '@iconify/icons-mdi/close';
-// import editIcon from '@iconify/icons-mdi/pencil';
-// import trashIcon from '@iconify/icons-mdi/trash-can';
+import { Icon } from "@iconify/react";
+import { MdDeleteOutline } from "react-icons/md";
+import { IoCheckmarkDoneOutline } from "react-icons/io5";
 
 const UserListScreen = () => {
   const navigate = useNavigate();
@@ -83,12 +81,11 @@ const UserListScreen = () => {
                         <Icon icon="fa6-solid:pencil" />
                       </Button>
                     </Link>
-                    <Button
-                      variant="danger"
-                      className="btn-sm mr-5"
-                      onClick={() => deleteHandler(user._id)}
-                    >
-                      <Icon icon="fa6-solid:trash" />
+                    <Button variant="danger" className="btn mr-5">
+                      <MdDeleteOutline />
+                    </Button>
+                    <Button variant="danger" className="btn mr-5">
+                      <IoCheckmarkDoneOutline />
                     </Button>
                   </td>
                 </tr>
