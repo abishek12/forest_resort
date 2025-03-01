@@ -13,9 +13,14 @@ export const listAllUsers = async (req, res) => {
     // Offset calculation
     let offset = (page - 1) * limit;
 
-    let totalRecords = await User.countDocuments();
+    let filter = {};
+    if (req.query.role) {
+      filter[`roles.${req.query.role}`] = true;
+    }
 
-    const items = await User.find({}, { __v: 0, token: 0, password: 0 })
+    let totalRecords = await User.countDocuments(filter);
+
+    const items = await User.find(filter, { __v: 0, token: 0, password: 0 })
       .sort(sort)
       .skip(offset)
       .limit(limit);

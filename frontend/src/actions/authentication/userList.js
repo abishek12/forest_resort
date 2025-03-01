@@ -8,15 +8,22 @@ export const listUsers = async (
   keyword = "",
   page = 1,
   limit = 10,
-  sort = "desc"
+  sort = "desc",
+  role = ""
 ) => {
   try {
-
     // let config = {
     //   Authorization: `Bearer ${token}`,
     // };
 
-    const { data } = await axios.get(`http://localhost:8888/api/users`);
+    const { data } = await axios.get(`http://localhost:8888/api/users`, {
+      params: {
+        page,
+        limit,
+        sort,
+        role,
+      },
+    });
 
     return data.items;
   } catch (error) {

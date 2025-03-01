@@ -23,7 +23,6 @@ const User = () => {
   const dispatch = useDispatch();
 
   const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -31,34 +30,28 @@ const User = () => {
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setLoading(true);
-        const data = await listUsers("", 1, 10, "desc");
-        if (data.error) {
-          setError(data.error);
-        } else {
-          setUsers(data);
-          setFilteredUsers(data);
-        }
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
     fetchUsers();
   }, []);
 
-  const handleStatusFilter = (status) => {
-    if (status === "") {
-      setFilteredUsers(users);
-    } else {
-      setFilteredUsers(
-        users.filter((user) => user.role === status)
-      );
+  const fetchUsers = async (role = "") => {
+    try {
+      setLoading(true);
+      const data = await listUsers("", "", 1, 10, "desc", role);
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setUsers(data);
+        console.log(users);
+      }
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
     }
+  };
+
+  const handleStatusFilter = (role) => {
+    fetchUsers(role);
   };
 
   return (
@@ -66,7 +59,9 @@ const User = () => {
       <h1>Users</h1>
 
       <div className="filter-container col-3 mb-4">
-        <label htmlFor="" className="form-label">Status</label>
+        <label htmlFor="" className="form-label">
+          Status
+        </label>
         <select
           className="form-select"
           onChange={(e) => handleStatusFilter(e.target.value)}
@@ -76,7 +71,7 @@ const User = () => {
           <option value="subscriber">Subscriber</option>
         </select>
       </div>
-      
+
       {loading && <Loader />}
       {error && <Message variant="danger">{error}</Message>}
 
@@ -90,7 +85,7 @@ const User = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers?.map((user, index) => (
+            {users?.map((user, index) => (
               <tr key={uuid()}>
                 <td>{index + 1}</td>
                 <td>{user.fullname}</td>
