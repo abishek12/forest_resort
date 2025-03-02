@@ -47,7 +47,7 @@ const RegisterScreen = () => {
   return (
     <>
       <HeaderV1 />
-      <div className="register-page tw-flex tw-justify-center tw-item-center tw-h-fit tw-pt-10">
+      <div className="register-page tw-flex tw-justify-center tw-item-center tw-pt-10 tw-my-20">
         <div className="tw-bg-[#b1f0b4] tw-px-12 tw-w-[350px] md:tw-w-[500px] tw-rounded-md tw-pt-5 tw-mt-8">
           {" "}
           <Form
@@ -55,14 +55,14 @@ const RegisterScreen = () => {
             className="form-register"
             style={{ marginTop: "2em" }}
           >
-            <h3 className="tw-font-bold tw-text-4xl tw-w-full tw-text-center tw-pt-12">
+            <h3 className="tw-font-bold tw-text-4xl tw-w-full tw-text-center">
               Sign Up
             </h3>
 
             <div className="tw-p-2 tw-leading-2">
               <label className=" ">Full Name</label> <br></br>
               <input
-                className="tw-px-2 tw-w-full tw-rounded-lg tw-border-green-500"
+                className="tw-px-2 tw-w-full tw-rounded-2xl tw-border-green-500"
                 type="text"
                 placeholder="Full Name"
                 value={fullname}
@@ -73,7 +73,7 @@ const RegisterScreen = () => {
             <div className="tw-p-2 tw-leading-2 ">
               <label>Email Address</label> <br></br>
               <input
-                className="tw-px-2 tw-w-full tw-rounded-lg tw-border-green-500"
+                className="tw-px-2 tw-w-full tw-rounded-2xl tw-border-green-500"
                 type="email"
                 placeholder="Email"
                 value={email}
@@ -84,7 +84,7 @@ const RegisterScreen = () => {
             <div className="tw-p-2 tw-leading-2">
               <label>Phone Number</label> <br></br>
               <input
-                className="tw-px-2 tw-w-full tw-rounded-lg tw-border-green-500"
+                className="tw-px-2 tw-w-full tw-rounded-2xl tw-border-green-500"
                 type="text"
                 placeholder="Phone Number"
                 value={phoneNo}
@@ -95,7 +95,7 @@ const RegisterScreen = () => {
             <div className="tw-p-2 tw-leading-2">
               <label>Password</label> <br></br>
               <input
-                className="tw-px-2 tw-w-full tw-rounded-lg tw-border-green-500"
+                className="tw-px-2 tw-w-full tw-rounded-2xl tw-border-green-500"
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
@@ -118,12 +118,11 @@ const RegisterScreen = () => {
               </div>
             </div>
             <div className="tw-w-full tw-pt-4 tw-pb-4">
-              <button type="submit" className="register tw-bg-green-700">
+              <button type="submit" className="register tw-bg-[#02952A] tw-w-full tw-rounded-2xl">
                 <span>{loading ? "Registering..." : "Register"}</span>
               </button>
-              <div className="go-back-to-login tw-font-black">
+              <div className="go-back-to-login tw-font-black tw-flex tw-justify-center my-2">
                 <p>
-                  {" "}
                   Already have an account? <Link to="/login">Login</Link>
                 </p>
               </div>
