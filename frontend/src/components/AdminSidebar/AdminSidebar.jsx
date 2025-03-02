@@ -1,7 +1,6 @@
 import { useContext, useEffect, useRef } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
 import { LIGHT_THEME } from "../../constants/themeConstants";
-
 import {
   MdOutlineClose,
   MdOutlineLogout,
@@ -24,13 +23,23 @@ const AdminSidebar = ({ isOpen }) => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
-    navigate("/");
     dispatch(logout());
+    navigate("/");
   };
 
   const { theme } = useContext(ThemeContext);
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   const navbarRef = useRef(null);
+
+  // Retrieve user role from localStorage
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const userRole = userInfo?.role;
+
+  // Check if user is an admin
+  const isAdmin = userRole?.admin === true;
+
+  // Check if user is a subscriber
+  const isSubscriber = userRole?.subscriber === true;
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
@@ -63,114 +72,152 @@ const AdminSidebar = ({ isOpen }) => {
       <div className="sidebar-body">
         <div className="sidebar-menu">
           <ul className="menu-list">
-            <div style={{ marginTop: 20 }}>
-              <span className="menu-link-text">Posts</span>
-            </div>
-            <li className="menu-item">
-              <NavLink
-                to="/admin/blogs"
-                className={({ isActive }) =>
-                  isActive ? "menu-link active" : "menu-link"
-                }
-              >
-                <span className="menu-link-icon">
-                  <MdDocumentScanner size={20} />
-                </span>
-                <span className="menu-link-text">Blogs</span>
-              </NavLink>
-              <NavLink
-                to="/admin/category"
-                className={({ isActive }) =>
-                  isActive ? "menu-link active" : "menu-link"
-                }
-              >
-                <span className="menu-link-icon">
-                  <MdDocumentScanner size={20} />
-                </span>
-                <span className="menu-link-text">Categories</span>
-              </NavLink>
-              <NavLink
-                to="/admin/tag"
-                className={({ isActive }) =>
-                  isActive ? "menu-link active" : "menu-link"
-                }
-              >
-                <span className="menu-link-icon">
-                  <MdTag size={20} />
-                </span>
-                <span className="menu-link-text">Tags</span>
-              </NavLink>
-              <NavLink
-                to="/admin/users"
-                className={({ isActive }) =>
-                  isActive ? "menu-link active" : "menu-link"
-                }
-              >
-                <span className="menu-link-icon">
-                  <MdOutlinePeople size={20} />
-                </span>
-                <span className="menu-link-text">Users</span>
-              </NavLink>
-            </li>
-            <div style={{ marginTop: 20 }}>
-              <span className="menu-link-text">Contact Responses</span>
-            </div>
-            <li
-              className="menu-item"
-              style={{
-                marginTop: 10,
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <NavLink
-                to="/admin/contacts"
-                className={({ isActive }) =>
-                  isActive ? "menu-link active" : "menu-link"
-                }
-              >
-                <span className="menu-link-icon">
-                  <MdDescription size={20} />
-                </span>
-                <span className="menu-link-text">All Responses</span>
-              </NavLink>
-            </li>
-            <div style={{ marginTop: 20 }}>
-              <span className="menu-link-text">Booking</span>
-            </div>
-            <li
-              className="menu-item"
-              style={{
-                marginTop: 10,
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <NavLink
-                to="/admin/appointments"
-                className={({ isActive }) =>
-                  isActive ? "menu-link active" : "menu-link"
-                }
-              >
-                <span className="menu-link-icon">
-                  <MdDescription size={20} />
-                </span>
-                <span className="menu-link-text">All Bookings</span>
-              </NavLink>
-              <NavLink
-                to="/admin/offers"
-                className={({ isActive }) =>
-                  isActive ? "menu-link active" : "menu-link"
-                }
-              >
-                <span className="menu-link-icon">
-                  <BiSolidOffer size={20} />
-                </span>
-                <span className="menu-link-text">Offers</span>
-              </NavLink>
-            </li>
+            {/* Posts Section */}
+            {isAdmin && (
+              <>
+                <div style={{ marginTop: 20 }}>
+                  <span className="menu-link-text">Posts</span>
+                </div>
+                <li className="menu-item">
+                  <NavLink
+                    to="/user/blogs"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link active" : "menu-link"
+                    }
+                  >
+                    <span className="menu-link-icon">
+                      <MdDocumentScanner size={20} />
+                    </span>
+                    <span className="menu-link-text">Blogs</span>
+                  </NavLink>
+                  <NavLink
+                    to="/user/category"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link active" : "menu-link"
+                    }
+                  >
+                    <span className="menu-link-icon">
+                      <MdDocumentScanner size={20} />
+                    </span>
+                    <span className="menu-link-text">Categories</span>
+                  </NavLink>
+                  <NavLink
+                    to="/user/tag"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link active" : "menu-link"
+                    }
+                  >
+                    <span className="menu-link-icon">
+                      <MdTag size={20} />
+                    </span>
+                    <span className="menu-link-text">Tags</span>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* Users Section (Admin Only) */}
+            {isAdmin && (
+              <>
+                <div style={{ marginTop: 20 }}>
+                  <span className="menu-link-text">Users</span>
+                </div>
+                <li className="menu-item">
+                  <NavLink
+                    to="/user/users"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link active" : "menu-link"
+                    }
+                  >
+                    <span className="menu-link-icon">
+                      <MdOutlinePeople size={20} />
+                    </span>
+                    <span className="menu-link-text">Users</span>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* Contact Responses Section (Admin Only) */}
+            {isAdmin && (
+              <>
+                <div style={{ marginTop: 20 }}>
+                  <span className="menu-link-text">Contact Responses</span>
+                </div>
+                <li className="menu-item">
+                  <NavLink
+                    to="/user/contacts"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link active" : "menu-link"
+                    }
+                  >
+                    <span className="menu-link-icon">
+                      <MdDescription size={20} />
+                    </span>
+                    <span className="menu-link-text">All Responses</span>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* Booking Section (user Only) */}
+            {isAdmin && (
+              <>
+                <div style={{ marginTop: 20 }}>
+                  <span className="menu-link-text">Booking</span>
+                </div>
+                <li className="menu-item">
+                  <NavLink
+                    to="/user/appointments"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link active" : "menu-link"
+                    }
+                  >
+                    <span className="menu-link-icon">
+                      <MdDescription size={20} />
+                    </span>
+                    <span className="menu-link-text">All Bookings</span>
+                  </NavLink>
+                  <NavLink
+                    to="/user/offers"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link active" : "menu-link"
+                    }
+                  >
+                    <span className="menu-link-icon">
+                      <BiSolidOffer size={20} />
+                    </span>
+                    <span className="menu-link-text">Offers</span>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* Subscriber Section */}
+            {/* {isSubscriber && (
+              <>
+                <div style={{ marginTop: 20 }}>
+                  <span className="menu-link-text">Subscriber Menu</span>
+                </div>
+                <li className="menu-item">
+                  <NavLink
+                    to="/subscriber/dashboard"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link active" : "menu-link"
+                    }
+                  >
+                    <span className="menu-link-icon">
+                      <MdPageview size={20} />
+                    </span>
+                    <span className="menu-link-text">Dashboard</span>
+                  </NavLink>
+                </li>
+              </>
+            )} */}
           </ul>
         </div>
+
+        {/* Common Menu Items (Visible to All Roles) */}
         <div className="sidebar-menu sidebar-menu2">
           <ul className="menu-list">
             <li className="menu-item">
@@ -188,7 +235,7 @@ const AdminSidebar = ({ isOpen }) => {
             </li>
             <li className="menu-item">
               <NavLink
-                to="/admin/profile"
+                to="/user/profile"
                 className={({ isActive }) =>
                   isActive ? "menu-link active" : "menu-link"
                 }

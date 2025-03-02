@@ -124,15 +124,15 @@ const Routers = () => {
         <Route path="/activate-account" element={<ActivateAccount />} />
         <Route element={<BaseLayout />}>
           <Route
-            path="/admin/dashboard"
+            path="/user/dashboard"
             element={
               <PrivateRoute>
-                <AdminBlog />
+                <Dashboard />
               </PrivateRoute>
             }
           />
           <Route
-            path="/admin/category"
+            path="/user/category"
             element={
               <PrivateRoute>
                 <AdminCategory />
@@ -140,7 +140,7 @@ const Routers = () => {
             }
           />
           <Route
-            path="/admin/tag"
+            path="/user/tag"
             element={
               <PrivateRoute>
                 <AdminTag />
@@ -148,7 +148,7 @@ const Routers = () => {
             }
           />
           <Route
-            path="/admin/users"
+            path="/user/users"
             element={
               <PrivateRoute>
                 <User />
@@ -156,7 +156,7 @@ const Routers = () => {
             }
           />
           <Route
-            path="/admin/profile"
+            path="/user/profile"
             element={
               <PrivateRoute>
                 <ProfileScreen />
@@ -164,7 +164,7 @@ const Routers = () => {
             }
           />
           <Route
-            path="/admin/blogs"
+            path="/user/blogs"
             element={
               <PrivateRoute>
                 <AdminBlog />
@@ -174,7 +174,7 @@ const Routers = () => {
           />
           {/* <Route path="/admin/blogs/:pageNumber" element={<BlogListScreen />} exact /> */}
           <Route
-            path="/admin/blog/create"
+            path="/user/blog/create"
             element={
               <PrivateRoute>
                 <BlogCreateScreen />
@@ -182,7 +182,7 @@ const Routers = () => {
             }
           />
           <Route
-            path="/admin/blog/:id/edit"
+            path="/user/blog/:id/edit"
             element={
               <PrivateRoute>
                 <BlogEditScreen />
@@ -190,7 +190,7 @@ const Routers = () => {
             }
           />
           <Route
-            path="/admin/contacts"
+            path="/user/contacts"
             element={
               <PrivateRoute>
                 <AdminContact />
@@ -200,7 +200,7 @@ const Routers = () => {
           />
 
           <Route
-            path="/admin/appointments"
+            path="/user/appointments"
             element={
               <PrivateRoute>
                 <AdminAppointment />
@@ -209,7 +209,7 @@ const Routers = () => {
             exact
           />
           <Route
-            path="/admin/appointmentsviewed"
+            path="/user/appointmentsviewed"
             element={
               <PrivateRoute>
                 <AppointmentViewed />
@@ -218,11 +218,11 @@ const Routers = () => {
             exact
           />
           <Route
-            path="/admin/appointment/:id/view"
+            path="/user/appointment/:id/view"
             element={<AppointmentViewScreen />}
           />
           <Route
-            path="/admin/offers"
+            path="/user/offers"
             element={
               <PrivateRoute>
                 <AdminOffers />
