@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import BarChart from "./BarChart";
+import LineChart from "./LineChart";
 
 const Dashboard = () => {
-  // Retrieve user info from localStorage
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const userName = userInfo?.fullname || "User";
 
@@ -12,6 +13,41 @@ const Dashboard = () => {
       <p className="tw-text-lg tw-mb-6">
         You are now logged into the dashboard. Here's what you can do:
       </p>
+
+      {/* Statistics or Additional Info */}
+      <div className="tw-mt-8 mb-4">
+        <h2 className="tw-text-2xl tw-font-bold tw-mb-4">Quick Stats</h2>
+        <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-4">
+          <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
+            <p className="tw-text-gray-600">Total Blogs</p>
+            <p className="tw-text-2xl tw-font-bold">25</p>
+          </div>
+          <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
+            <p className="tw-text-gray-600">Total Users</p>
+            <p className="tw-text-2xl tw-font-bold">120</p>
+          </div>
+          <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
+            <p className="tw-text-gray-600">Active Offers</p>
+            <p className="tw-text-2xl tw-font-bold">5</p>
+          </div>
+          <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
+            <p className="tw-text-gray-600">Pending Tasks</p>
+            <p className="tw-text-2xl tw-font-bold">3</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Charts Section */}
+      <div className="tw-mt-8 my-4">
+        <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-6">
+          <div className="tw-p-6 tw-bg-white tw-rounded-lg tw-shadow-md">
+            <BarChart />
+          </div>
+          <div className="tw-p-6 tw-bg-white tw-rounded-lg tw-shadow-md">
+            <LineChart />
+          </div>{" "}
+        </div>
+      </div>
 
       {/* Quick Links */}
       <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
@@ -40,29 +76,6 @@ const Dashboard = () => {
             Update your profile and preferences.
           </p>
         </Link>
-      </div>
-
-      {/* Statistics or Additional Info */}
-      <div className="tw-mt-8">
-        <h2 className="tw-text-2xl tw-font-bold tw-mb-4">Quick Stats</h2>
-        <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-4">
-          <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
-            <p className="tw-text-gray-600">Total Blogs</p>
-            <p className="tw-text-2xl tw-font-bold">25</p>
-          </div>
-          <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
-            <p className="tw-text-gray-600">Total Users</p>
-            <p className="tw-text-2xl tw-font-bold">120</p>
-          </div>
-          <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
-            <p className="tw-text-gray-600">Active Offers</p>
-            <p className="tw-text-2xl tw-font-bold">5</p>
-          </div>
-          <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
-            <p className="tw-text-gray-600">Pending Tasks</p>
-            <p className="tw-text-2xl tw-font-bold">3</p>
-          </div>
-        </div>
       </div>
     </div>
   );

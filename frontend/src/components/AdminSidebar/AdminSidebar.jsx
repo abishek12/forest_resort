@@ -23,8 +23,8 @@ const AdminSidebar = ({ isOpen }) => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
-    navigate("/");
     dispatch(logout());
+    navigate("/");
   };
 
   const { theme } = useContext(ThemeContext);
@@ -80,7 +80,7 @@ const AdminSidebar = ({ isOpen }) => {
                 </div>
                 <li className="menu-item">
                   <NavLink
-                    to="/admin/blogs"
+                    to="/user/blogs"
                     className={({ isActive }) =>
                       isActive ? "menu-link active" : "menu-link"
                     }
@@ -91,7 +91,7 @@ const AdminSidebar = ({ isOpen }) => {
                     <span className="menu-link-text">Blogs</span>
                   </NavLink>
                   <NavLink
-                    to="/admin/category"
+                    to="/user/category"
                     className={({ isActive }) =>
                       isActive ? "menu-link active" : "menu-link"
                     }
@@ -102,7 +102,7 @@ const AdminSidebar = ({ isOpen }) => {
                     <span className="menu-link-text">Categories</span>
                   </NavLink>
                   <NavLink
-                    to="/admin/tag"
+                    to="/user/tag"
                     className={({ isActive }) =>
                       isActive ? "menu-link active" : "menu-link"
                     }
@@ -124,7 +124,7 @@ const AdminSidebar = ({ isOpen }) => {
                 </div>
                 <li className="menu-item">
                   <NavLink
-                    to="/admin/users"
+                    to="/user/users"
                     className={({ isActive }) =>
                       isActive ? "menu-link active" : "menu-link"
                     }
@@ -146,7 +146,7 @@ const AdminSidebar = ({ isOpen }) => {
                 </div>
                 <li className="menu-item">
                   <NavLink
-                    to="/admin/contacts"
+                    to="/user/contacts"
                     className={({ isActive }) =>
                       isActive ? "menu-link active" : "menu-link"
                     }
@@ -160,7 +160,7 @@ const AdminSidebar = ({ isOpen }) => {
               </>
             )}
 
-            {/* Booking Section (Admin Only) */}
+            {/* Booking Section (user Only) */}
             {isAdmin && (
               <>
                 <div style={{ marginTop: 20 }}>
@@ -168,7 +168,7 @@ const AdminSidebar = ({ isOpen }) => {
                 </div>
                 <li className="menu-item">
                   <NavLink
-                    to="/admin/appointments"
+                    to="/user/appointments"
                     className={({ isActive }) =>
                       isActive ? "menu-link active" : "menu-link"
                     }
@@ -179,7 +179,7 @@ const AdminSidebar = ({ isOpen }) => {
                     <span className="menu-link-text">All Bookings</span>
                   </NavLink>
                   <NavLink
-                    to="/admin/offers"
+                    to="/user/offers"
                     className={({ isActive }) =>
                       isActive ? "menu-link active" : "menu-link"
                     }
@@ -235,7 +235,7 @@ const AdminSidebar = ({ isOpen }) => {
             </li>
             <li className="menu-item">
               <NavLink
-                to="/admin/profile"
+                to="/user/profile"
                 className={({ isActive }) =>
                   isActive ? "menu-link active" : "menu-link"
                 }
