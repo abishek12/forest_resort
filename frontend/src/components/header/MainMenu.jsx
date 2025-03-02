@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { HashLink as Link } from "react-router-hash-link";
-import { useDispatch, useSelector } from "react-redux";
 
 const MainMenu = ({ isOpen, closeMenu, toggleSubMenu, toggleMegaMenu }) => {
+  const [userInfo, setUserInfo] = useState(null);
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  useEffect(() => {
+    const info = localStorage.getItem("userInfo");
+    setUserInfo(info);
+  }, []);
 
   return (
     <>
@@ -51,9 +53,7 @@ const MainMenu = ({ isOpen, closeMenu, toggleSubMenu, toggleMegaMenu }) => {
         <div className="tw-flex tw-flex-col sm:tw-hidden tw-text-center tw-mt-10 tw-space-y-4">
           <Link to="/services-details/1/#Reserve">Reserve</Link>
           {!userInfo && <Link to="/login">Login</Link>}
-          {userInfo && (
-            <Link to="/admin/dashboard">Dashboard</Link>
-          )}
+          {userInfo && <Link to="/admin/dashboard">Dashboard</Link>}
         </div>
       </div>
     </>

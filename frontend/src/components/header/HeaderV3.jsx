@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import MainMenu from "./MainMenu";
 import { HashLink as Link } from "react-router-hash-link";
 import HeaderLogoV1 from "./HeaderLogoV1";
-import { useSelector } from "react-redux";
 
 const HeaderV3 = ({ logoColor = false }) => {
   // Sticky Menu
   const [isSticky, setIsSticky] = useState(false);
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const info = localStorage.getItem("userInfo");
+      setUserInfo(info);
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,9 +87,7 @@ const HeaderV3 = ({ logoColor = false }) => {
                   <li className="button">
                     <Link to="/services-details/1/#Reserve">Reserve</Link>
                     {!userInfo && <Link to="/login">Login</Link>}
-                    {userInfo && userInfo.isAdmin && (
-                      <Link to="/admin/dashboard">Dashboard</Link>
-                    )}
+                    {userInfo && <Link to="/admin/dashboard">Dashboard</Link>}
                   </li>
                 </ul>
               </div>
