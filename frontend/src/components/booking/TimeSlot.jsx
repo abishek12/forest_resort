@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { convertDateTimeSlot } from "../../utils/date-time"; // Ensure this function correctly formats the date
+import { convertDateTimeSlot } from "../../utils/date-time";
 
 const TimeSlotReservation = () => {
   const availableSlots = [
@@ -26,12 +26,13 @@ const TimeSlotReservation = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
   const [date, setDate] = useState(new Date());
+  const currentTime = new Date();
 
   useEffect(() => {
     const fetchUnavailableSlots = async () => {
       try {
         setLoading(true);
-        const formattedDate = convertDateTimeSlot(date); // Format the date properly
+        const formattedDate = convertDateTimeSlot(date);
         console.log("Fetching unavailable slots for:", formattedDate);
 
         const response = await fetch(
@@ -42,19 +43,14 @@ const TimeSlotReservation = () => {
           const data = await response.json();
           const unavailableSlots = data.unavailableSlots || [];
 
-          // Convert API response into a formatted array of unavailable slots
           const formattedUnavailableSlots = unavailableSlots.map((slot) => {
-            const startTime = new Date(
-              `1970-01-01T${slot.start}:00`
-            ).toLocaleTimeString("en-US", {
+            const startTime = new Date(`1970-01-01T${slot.start}:00`).toLocaleTimeString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
               hour12: true,
             });
 
-            const endTime = new Date(
-              `1970-01-01T${slot.end}:00`
-            ).toLocaleTimeString("en-US", {
+            const endTime = new Date(`1970-01-01T${slot.end}:00`).toLocaleTimeString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
               hour12: true,
@@ -63,16 +59,12 @@ const TimeSlotReservation = () => {
             return `${startTime} - ${endTime}`;
           });
 
-          console.log("Blocked slots:", formattedUnavailableSlots);
-
-          // Update slot availability by comparing availableSlots and unavailableSlots
-          const updatedSlotsAvailability = availableSlots.reduce(
-            (acc, slot) => {
-              acc[slot] = !formattedUnavailableSlots.includes(slot); // Block unavailable slots
-              return acc;
-            },
-            {}
-          );
+          const updatedSlotsAvailability = availableSlots.reduce((acc, slot) => {
+            const slotTime = new Date(`1970-01-01T${slot.split(" - ")[0]}:00`);
+            const isPast = slotTime < currentTime;
+            acc[slot] = !formattedUnavailableSlots.includes(slot) && !isPast;
+            return acc;
+          }, {});
 
           setSlotsAvailability(updatedSlotsAvailability);
         } else {
@@ -93,52 +85,87 @@ const TimeSlotReservation = () => {
       if (selectedSlot) {
         setSlotsAvailability((prev) => ({
           ...prev,
-          [selectedSlot]: true, // Re-enable previously selected slot
+          [selectedSlot]: true,
         }));
       }
 
       setSelectedSlot(slot);
       setSlotsAvailability((prev) => ({
         ...prev,
-        [slot]: false, // Block the newly selected slot
+        [slot]: false,
       }));
       submitTime(slot);
     }
   };
 
+  const submitTime = (slot) => {
+    setSuccessMessage(`Successfully reserved ${slot}`);
+    setTimeout(() => setSuccessMessage(null), 1000);
+  };
+
   return (
-    <div>
-      <p className="tw-text-xl tw-text-black -tw-ml-10" style={{ fontFamily: "Poppins" }}>
+    <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
+      <p
+        className="tw-text-xl tw-text-black"
+        style={{ fontFamily: "Poppins", textAlign: "center", marginBottom: "20px" }}
+      >
         Select a time slot for your reservation:
       </p>
 
       <div
-        className="tw-grid tw-grid-cols-4 tw-text-sm tw-gap-1 -tw-translate-x-20"
-        style={{ fontFamily: "Poppins", width: "400px" }}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "10px",
+          fontFamily: "Poppins",
+          width: "100%",
+          margin: "0 auto",
+        }}
+        className="time-slot-grid"
       >
-        {availableSlots.map((slot, index) => (
-          <button
-            key={index}
-            onClick={() => handleSelectSlot(slot)}
-            disabled={!slotsAvailability[slot]} // Disable booked slots
-            style={{
-              backgroundColor: !slotsAvailability[slot]
-                ? "red" // Unavailable slots are red
-                : selectedSlot === slot
-                ? "#1E90FF" // Selected slot is blue
-                : "#B5DE4C", // Available slots are green
-              margin: "2px",
-              padding: "2px 2px",
-              cursor: !slotsAvailability[slot] ? "not-allowed" : "pointer",
-            }}
-          >
-            {slot}
-          </button>
-        ))}
+        {availableSlots.map((slot, index) => {
+          const slotTime = new Date(`1970-01-01T${slot.split(" - ")[0]}:00`);
+          const isPast = slotTime < currentTime;
+          return (
+            <button
+              key={index}
+              onClick={() => handleSelectSlot(slot)}
+              disabled={!slotsAvailability[slot] || isPast}
+              style={{
+                backgroundColor: !slotsAvailability[slot] ? "#FF4C4C" : isPast ? "#A9A9A9" : selectedSlot === slot ? "#1E90FF" : "#B5DE4C",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                padding: "10px",
+                cursor: !slotsAvailability[slot] || isPast ? "not-allowed" : "pointer",
+                textAlign: "center",
+                fontSize: "0.9rem",
+              }}
+            >
+              {slot}
+            </button>
+          );
+        })}
       </div>
 
-      {loading && <p>Loading...</p>}
-      {successMessage && <p>{successMessage}</p>}
+      {loading && <p style={{ textAlign: "center", marginTop: "20px" }}>Loading...</p>}
+      {successMessage && <p style={{ textAlign: "center", marginTop: "20px" }}>{successMessage}</p>}
+
+      <style>
+        {`
+          @media (max-width: 768px) {
+            .time-slot-grid {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          }
+
+          @media (max-width: 480px) {
+            .time-slot-grid {
+              grid-template-columns: repeat(1, 1fr);
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
