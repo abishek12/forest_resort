@@ -59,7 +59,7 @@ const MainMenu2 = ({ isOpen, closeMenu }) => {
         )}
         {userInfo && (
           <li>
-            <Link to="/admin/dashboard">Dashboard</Link>
+            <Link to="/user/dashboard">Dashboard</Link>
           </li>
         )}
       </ul>

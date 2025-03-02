@@ -53,7 +53,7 @@ const MainMenu = ({ isOpen, closeMenu, toggleSubMenu, toggleMegaMenu }) => {
         <div className="tw-flex tw-flex-col sm:tw-hidden tw-text-center tw-mt-10 tw-space-y-4">
           <Link to="/services-details/1/#Reserve">Reserve</Link>
           {!userInfo && <Link to="/login">Login</Link>}
-          {userInfo && <Link to="/admin/dashboard">Dashboard</Link>}
+          {userInfo && <Link to="/user/dashboard">Dashboard</Link>}
         </div>
       </div>
     </>

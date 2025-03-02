@@ -87,7 +87,7 @@ const HeaderV3 = ({ logoColor = false }) => {
                   <li className="button">
                     <Link to="/services-details/1/#Reserve">Reserve</Link>
                     {!userInfo && <Link to="/login">Login</Link>}
-                    {userInfo && <Link to="/admin/dashboard">Dashboard</Link>}
+                    {userInfo && <Link to="/user/dashboard">Dashboard</Link>}
                   </li>
                 </ul>
               </div>
