@@ -14,3 +14,12 @@ export function dateTimeFormat(createdAt) {
   const options = { year: "numeric", month: "long", day: "numeric" };
   return new Intl.DateTimeFormat("en-US", options).format(date);
 }
+
+export const convertDateTimeSlot = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  return `${year}-${month}-${day}`;
+};
