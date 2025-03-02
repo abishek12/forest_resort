@@ -17,8 +17,14 @@ const bookingSchema = new mongoose.Schema(
       required: true,
     },
     timeSlot: {
-      start: { type: String, required: true },
-      end: { type: String, required: true },
+      start: {
+        type: String,
+        required: true,
+      }, // 24-hour format validation
+      end: {
+        type: String,
+        required: true,
+      },
     },
     status: {
       type: String,

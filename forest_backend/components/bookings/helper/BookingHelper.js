@@ -6,12 +6,8 @@ export const bookingHelper = (data) => {
     user: Joi.string().required(),
     date: Joi.date().iso().required(),
     timeSlot: Joi.object({
-      start: Joi.string()
-        .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
-        .required(),
-      end: Joi.string()
-        .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
-        .required(),
+      start: Joi.string().required(),
+      end: Joi.string().required(),
     })
       .required()
       .custom((value, helpers) => {
