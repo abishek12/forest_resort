@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { listOffers } from "../../actions/offerActions";
 import OfferCard from "./OfferCard";
+import OfferShimmer from "./OfferShimmer";
 import { cn } from "../../utils/cn";
 
 export function OfferSection() {
@@ -34,7 +35,18 @@ export function OfferSection() {
         <div className="tw-relative">
           <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-2 md:tw-grid-cols-3 lg:tw-grid-cols-2 tw-gap-4 tw-border tw-rounded-md">
             {loading ? (
-              <p>Loading...</p>
+              <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-2 md:tw-grid-cols-3 lg:tw-grid-cols-2 tw-gap-4">
+                {Array(6)
+                  .fill(0)
+                  .map((_, index) => (
+                    <FeatureCard
+                      key={index}
+                      className="tw-col-span-1 tw-border-b lg:tw-col-span-1"
+                    >
+                      <OfferShimmer />
+                    </FeatureCard>
+                  ))}
+              </div>
             ) : error ? (
               <p className="tw-text-red-500">{error}</p>
             ) : (
@@ -48,8 +60,8 @@ export function OfferSection() {
                       loading="lazy"
                       src={offer.featured_image}
                       alt={offer.title}
-                      height={500}
-                      width={500}
+                      height={200}
+                      width={400}
                       className="tw-rounded-md"
                     />
                     <h3 className="tw-text-lg tw-font-semibold tw-mt-2">

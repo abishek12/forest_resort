@@ -4,9 +4,10 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5175",
   "http://localhost:8888",
-  "http://backend.forestsportsandrecreation.com/",
-  "https://backend.forestsportsandrecreation.com/",
-  "http://forestsportsandrecreation.com/"
+  "http://backend.forestsportsandrecreation.com",
+  "https://backend.forestsportsandrecreation.com",
+  "http://forestsportsandrecreation.com",
+  "https://forestsportsarena.netlify.app"
 ];
 
 export const corsOptions = {
@@ -18,5 +19,5 @@ export const corsOptions = {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  allowedHeader: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };

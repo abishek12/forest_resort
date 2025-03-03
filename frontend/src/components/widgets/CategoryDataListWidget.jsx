@@ -10,7 +10,7 @@ const CategoryDataListWidget = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:8888/api/category");
+        const response = await axios.get("/category");
 
         if (response.data && Array.isArray(response.data.items)) {
           setCategories(response.data.items);

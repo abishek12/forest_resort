@@ -91,7 +91,7 @@ const MyBlogContent = () => {
                     {item.content}
                   </p>
                   <Link
-                    to={`/blog/${item.slug}`} // Update with your blog detail route
+                    to={`/blog-single/${item._id}`}
                     className="tw-flex tw-items-center tw-text-[#1A7218F2] tw-mt-4 hover:tw-underline"
                   >
                     Read More
