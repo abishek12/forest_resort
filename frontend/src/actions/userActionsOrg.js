@@ -40,7 +40,7 @@ export const loginUser = (email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:8000/api/users/login",
+      "/users/login",
       { email, password },
       config
     );
@@ -83,7 +83,7 @@ export const register = (name, email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:8888/api/users",
+      "/users",
       { name, email, password },
       config
     );
@@ -127,7 +127,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.get(
-      `http://localhost:8888/api/users/${id}`,
+      `/users/${id}`,
       config
     );
 
@@ -170,7 +170,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     console.log(process.env.BASE_URL);
 
     const { data } = await axios.put(
-      `http://localhost:8888/api/users/profile`,
+      `/users/profile`,
       user,
       config
     );
@@ -207,7 +207,7 @@ export const listUsers = async () => {
     //   },
     // };
 
-    const response = await axios.get(`http://localhost:8888/api/users`, config);
+    const response = await axios.get(`/users`, config);
 
     // dispatch({
     //   type: USER_LIST_SUCCESS,

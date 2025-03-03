@@ -4,7 +4,7 @@ import { logout } from "./userLogout";
 
 export const getUserDetails = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:8888/api/users/${id}`, {
+    const response = await axios.get(`/users/${id}`, {
       //   headers: {
       //     Authorization: `Bearer ${token}`,
       //   },

@@ -17,7 +17,7 @@ export const registerUser = async (fullname, email, password, phone_no) => {
       }),
     };
     const response = await axios.post(
-      "http://localhost:8888/api/auth/register",
+      "/auth/register",
       { fullname, email, password, phone_no },
       config
     );

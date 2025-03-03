@@ -21,7 +21,7 @@ export const loginUser = (email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:8888/api/auth/login",
+      "/auth/login",
       { email, password },
       config
     );

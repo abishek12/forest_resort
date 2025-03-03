@@ -11,6 +11,8 @@ node_modules/*
 # Production environment variables
 .env.production.local
 
+.env
+
 # Development environment variables
 .env.local
 .env.development.local

@@ -9,7 +9,7 @@ export const listBlogs = async (
   q = ""
 ) => {
   try {
-    const { data } = await axios.get(`http://localhost:8888/api/blog`, {
+    const { data } = await axios.get(`/blog`, {
       params: {
         page,
         limit,
@@ -29,7 +29,7 @@ export const listBlogs = async (
 
 export const listBlogInfo = async (id) => {
   try {
-    const { data } = await axios.get(`http://localhost:8888/api/blog/${id}`);
+    const { data } = await axios.get(`/blog/${id}`);
     return data;
   } catch (error) {
     throw new Error(
@@ -47,7 +47,7 @@ export const removeBlog = async (id, userInfo) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    await axios.delete(`http://localhost:8888/api/blogs/${id}`, config);
+    await axios.delete(`/blogs/${id}`, config);
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -69,7 +69,7 @@ export const createBlog = async (blogData) => {
     //   },
     // };
     const { data } = await axios.post(
-      `http://localhost:8888/api/blog`,
+      `/blog`,
       blogData
     );
     return data;

@@ -9,7 +9,7 @@ export const listTags = async (
   status
 ) => {
   try {
-    const { data } = await axios.get(`http://localhost:8888/api/tag`, {
+    const { data } = await axios.get(`/tag`, {
       params: {
         page,
         limit,
@@ -34,7 +34,7 @@ export const removeTag = async (id) => {
     //     Authorization: `Bearer ${userInfo.token}`,
     //   },
     // };
-    await axios.delete(`http://localhost:8888/api/tag/${id}`);
+    await axios.delete(`/tag/${id}`);
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -55,7 +55,7 @@ export const createTag = async (tagData) => {
     //     Authorization: `Bearer ${userInfo.token}`,
     //   },
     // };
-    const { data } = await axios.post(`http://localhost:8888/api/tag`, tagData);
+    const { data } = await axios.post(`/tag`, tagData);
     return data;
   } catch (error) {
     const message =
@@ -78,36 +78,11 @@ export const updateTag = async (id, updateData) => {
     //   },
     // };
     const { data } = await axios.put(
-      `http://localhost:8888/api/tag/${id}`,
+      `/tag/${id}`,
       updateData
       // config
     );
     return data;
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    if (message === "Not authorized, token failed") {
-      logout();
-    }
-    throw new Error(message);
-  }
-};
-
-export const createBlogReview = async (blogId, review, userInfo) => {
-  try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-    await axios.post(
-      `http://localhost:8888/api/blogs/${blogId}/reviews`,
-      review,
-      config
-    );
   } catch (error) {
     const message =
       error.response && error.response.data.message

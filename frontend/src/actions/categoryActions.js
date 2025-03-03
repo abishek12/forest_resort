@@ -8,7 +8,7 @@ export const listCategory = async (
   sort = "desc"
 ) => {
   try {
-    const { data } = await axios.get(`http://localhost:8888/api/category`, {
+    const { data } = await axios.get(`/category`, {
       params: {
         page,
         limit,
@@ -32,7 +32,7 @@ export const removeCategory = async (id, userInfo) => {
     //     Authorization: `Bearer ${userInfo.token}`,
     //   },
     // };
-    await axios.delete(`http://localhost:8888/api/category/${id}`);
+    await axios.delete(`/category/${id}`);
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -54,7 +54,7 @@ export const createCategory = async (catData) => {
     //   },
     // };
     const { data } = await axios.post(
-      `http://localhost:8888/api/category`,
+      `/category`,
       catData
     );
     return data;
@@ -79,7 +79,7 @@ export const updateCategory = async (id, catdata) => {
     //   },
     // };
     const { data } = await axios.put(
-      `http://localhost:8888/api/category/${id}`,
+      `/category/${id}`,
       catdata,
     );
     return data;
