@@ -1,1 +1,1 @@
-export const myApi = "https://backend.forestsportsandrecreation.com/";
+export const myApi = "https://backend.forestsportsandrecreation.com/api";
