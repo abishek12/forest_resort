@@ -8,7 +8,7 @@ export const listOffers = async (
   sort = "desc"
 ) => {
   try {
-    const { data } = await axios.get(`http://localhost:8888/api/offer`, {
+    const { data } = await axios.get(`/offer`, {
       params: {
         page,
         limit,
@@ -32,7 +32,7 @@ export const removeOffer = async (id, userInfo) => {
     //     Authorization: `Bearer ${userInfo.token}`,
     //   },
     // };
-    await axios.delete(`http://localhost:8888/api/offer/${id}/delete`);
+    await axios.delete(`offer/${id}/delete`);
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -54,7 +54,7 @@ export const editOffer = async (id, offerData) => {
     //   },
     // };
     const { data } = await axios.put(
-      `http://localhost:8888/api/offer/${id}`,
+      `/offer/${id}`,
       offerData
     );
     return data;
@@ -80,7 +80,7 @@ export const createOffer = async (offerData) => {
       },
     };
     const { data } = await axios.post(
-      `http://localhost:8888/api/offer`,
+      `/offer`,
       offerData
     );
     return data;

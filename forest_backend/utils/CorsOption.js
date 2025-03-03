@@ -4,6 +4,9 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5175",
   "http://localhost:8888",
+  "http://backend.forestsportsandrecreation.com/",
+  "https://backend.forestsportsandrecreation.com/",
+  "http://forestsportsandrecreation.com/"
 ];
 
 export const corsOptions = {
