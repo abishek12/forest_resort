@@ -4,14 +4,17 @@ import { LIGHT_THEME } from "../../constants/themeConstants";
 import {
   MdOutlineClose,
   MdOutlineLogout,
-  MdDocumentScanner,
   MdOutlinePeople,
   MdPageview,
   MdOutlineSettings,
-  MdDescription,
   MdTag,
+  MdOutlineCategory,
+  MdOutlineGames,
 } from "react-icons/md";
+import { IoHomeOutline, IoTicketOutline } from "react-icons/io5";
 import { BiSolidOffer } from "react-icons/bi";
+import { TbLogs } from "react-icons/tb";
+import { BiMessageRoundedDots } from "react-icons/bi";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
 import { SidebarContext } from "../../context/SidebarContext";
@@ -76,6 +79,22 @@ const AdminSidebar = ({ isOpen }) => {
             {isAdmin && (
               <>
                 <div style={{ marginTop: 20 }}>
+                  <span className="menu-link-text">Dashboard</span>
+                </div>
+                <li className="menu-item">
+                  <NavLink
+                    to="/user/dashboard"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link active" : "menu-link"
+                    }
+                  >
+                    <span className="menu-link-icon">
+                      <IoHomeOutline size={20} />
+                    </span>
+                    <span className="menu-link-text">Home</span>
+                  </NavLink>
+                </li>
+                <div style={{ marginTop: 20 }}>
                   <span className="menu-link-text">Posts</span>
                 </div>
                 <li className="menu-item">
@@ -86,7 +105,7 @@ const AdminSidebar = ({ isOpen }) => {
                     }
                   >
                     <span className="menu-link-icon">
-                      <MdDocumentScanner size={20} />
+                      <TbLogs size={20} />
                     </span>
                     <span className="menu-link-text">Blogs</span>
                   </NavLink>
@@ -97,7 +116,7 @@ const AdminSidebar = ({ isOpen }) => {
                     }
                   >
                     <span className="menu-link-icon">
-                      <MdDocumentScanner size={20} />
+                      <MdOutlineCategory size={20} />
                     </span>
                     <span className="menu-link-text">Categories</span>
                   </NavLink>
@@ -152,7 +171,7 @@ const AdminSidebar = ({ isOpen }) => {
                     }
                   >
                     <span className="menu-link-icon">
-                      <MdDescription size={20} />
+                      <BiMessageRoundedDots size={20} />
                     </span>
                     <span className="menu-link-text">All Responses</span>
                   </NavLink>
@@ -174,7 +193,7 @@ const AdminSidebar = ({ isOpen }) => {
                     }
                   >
                     <span className="menu-link-icon">
-                      <MdDescription size={20} />
+                      <IoTicketOutline size={20} />
                     </span>
                     <span className="menu-link-text">All Bookings</span>
                   </NavLink>
@@ -185,7 +204,7 @@ const AdminSidebar = ({ isOpen }) => {
                     }
                   >
                     <span className="menu-link-icon">
-                      <BiSolidOffer size={20} />
+                      <MdOutlineGames size={20} />
                     </span>
                     <span className="menu-link-text">Services</span>
                   </NavLink>

@@ -138,7 +138,7 @@ const Appointment = () => {
                     </Badge>
                   </td>
                   <td className="dt-cell-action">
-                    <Link to={`/admin/appointment/${appointment._id}/view`}>
+                    <Link to={`/user/appointment/${appointment._id}/view`}>
                       <MdPreview />
                     </Link>
                     <Link onClick={() => viewedHandler(appointment._id)}>

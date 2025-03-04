@@ -7,7 +7,8 @@ const allowedOrigins = [
   "http://backend.forestsportsandrecreation.com",
   "https://backend.forestsportsandrecreation.com",
   "http://forestsportsandrecreation.com",
-  "https://forestsportsarena.netlify.app"
+  "https://forestsportsandrecreation.com",
+  "https://forestsportsarena.netlify.app",
 ];
 
 export const corsOptions = {

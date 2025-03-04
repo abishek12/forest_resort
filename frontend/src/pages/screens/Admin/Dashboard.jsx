@@ -68,7 +68,7 @@ const Dashboard = () => {
           <p className="tw-text-gray-600">View and manage user accounts.</p>
         </Link>
         <Link
-          to="/user/settings"
+          to="/user/profile"
           className="tw-p-6 tw-bg-white tw-rounded-lg tw-shadow-md tw-text-center hover:tw-shadow-lg tw-transition-shadow"
         >
           <h2 className="tw-text-xl tw-font-semibold tw-mb-2">Settings</h2>

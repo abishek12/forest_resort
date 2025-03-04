@@ -8,6 +8,7 @@ import { listBlogs, removeBlog } from "../../../../actions/blogActions";
 import Loader from "../../../../components/Loader";
 import Message from "../../../../components/Message";
 import { dateTimeFormat } from "../../../../utils/date-time";
+import { toast } from "react-toastify";
 
 const TABLE_HEADS = ["S.N", "Title", "Author", "Date", "Status", "Actions"];
 
@@ -36,8 +37,11 @@ const AdminBlog = () => {
   const handleRemoveBlog = async (id) => {
     if (window.confirm("Are you sure you want to delete this blog?")) {
       try {
-        await removeBlog(id, userInfo);
+        setLoading(true);
+        await removeBlog(id);
         setBlogs(blogs.filter((blog) => blog._id !== id));
+        toast("Deleted Successfully");
+        setLoading(false);
       } catch (err) {
         setError(err.message);
       }
@@ -50,7 +54,7 @@ const AdminBlog = () => {
       {loading && <Loader />}
       {error && <Message variant="danger">{error}</Message>}
 
-      <Link to="/admin/blog/create" className="btn">
+      <Link to="/user/blog/create" className="btn">
         Add Blogs
       </Link>
       <div className="data-table-diagram">
@@ -81,7 +85,7 @@ const AdminBlog = () => {
                     >
                       <MdDeleteOutline />
                     </Link>
-                    <Link to="#" className="">
+                    <Link to={`/user/blog/${blog._id}/edit`} className="me-2">
                       <FaEdit />
                     </Link>
                   </div>

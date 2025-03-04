@@ -6,6 +6,7 @@ import ReactQuill from "react-quill";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
+import Loader from "../../../../components/Loader";
 import FormContainer from "../../../../components/FormContainer";
 import { createBlog } from "../../../../actions/blogActions";
 import "./BlogCreateScreen.scss";
@@ -24,6 +25,7 @@ const BlogCreateScreen = () => {
   const [status, setStatus] = useState("draft");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [categories, setCategories] = useState([]);
   const [allTags, setAllTags] = useState([]);
@@ -51,12 +53,10 @@ const BlogCreateScreen = () => {
   useEffect(() => {
     const fetchCategoriesAndTags = async () => {
       try {
-        const categoryResponse = await axios.get(
-          "http://localhost:8888/api/category"
-        );
+        const categoryResponse = await axios.get("/category");
         setCategories(categoryResponse.data.items);
 
-        const tagResponse = await axios.get("http://localhost:8888/api/tag");
+        const tagResponse = await axios.get("/tag");
         setAllTags(tagResponse.data.items);
       } catch (error) {
         setError("Failed to fetch categories or tags.");
@@ -82,6 +82,7 @@ const BlogCreateScreen = () => {
     e.preventDefault();
     setUploading(true);
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append("title", title);
       formData.append("user", author);
@@ -98,12 +99,13 @@ const BlogCreateScreen = () => {
       await createBlog(formData);
 
       toast.success("Blog created successfully!");
-      navigate("/admin/blogs");
+      navigate("/user/blogs");
     } catch (error) {
       toast.error(error);
       setError(error);
     } finally {
       setUploading(false);
+      setLoading(false);
     }
   };
 
@@ -117,11 +119,13 @@ const BlogCreateScreen = () => {
 
   return (
     <>
-      <Link to="/admin/blogs" className="btn-bg mt-3 ml-5">
+      <Link to="/user/blogs" className="btn-bg mt-3 ml-5">
         Back
       </Link>
       <FormContainer>
         <h1 className="data-table-title">Create Blog</h1>
+        {loading && <Loader />}
+
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="title">
             <Form.Label className="form-item">Title</Form.Label>
@@ -199,7 +203,9 @@ const BlogCreateScreen = () => {
                     <button
                       type="button"
                       onClick={() =>
-                        setSelectedTags(selectedTags.filter((id) => id !== tagId))
+                        setSelectedTags(
+                          selectedTags.filter((id) => id !== tagId)
+                        )
                       }
                     >
                       ×

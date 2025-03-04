@@ -16,7 +16,7 @@ export const listUsers = async (
     //   Authorization: `Bearer ${token}`,
     // };
 
-    const { data } = await axios.get(`http://localhost:8888/api/users`, {
+    const { data } = await axios.get(`/users`, {
       params: {
         page,
         limit,

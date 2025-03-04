@@ -13,7 +13,7 @@ const Booking = () => {
 
   const fetchBookings = () => {
     axios
-      .get("http://localhost:5000/api/booking")
+      .get("/booking")
       .then((response) => {
         if (Array.isArray(response.data)) {
           setBookings(response.data);
@@ -26,7 +26,7 @@ const Booking = () => {
 
   const handleToggle = (id, currentStatus) => {
     axios
-      .put(`http://localhost:5000/api/booking/${id}/status`, {
+      .put(`/booking/${id}/status`, {
         isBooked: !currentStatus,
       })
       .then((response) => {
