@@ -39,7 +39,7 @@ const FrontComponent = () => {
                     </p>
                     <div>
                         <Link
-                            to="/contact-us#"
+                            to="/about-us#"
                         >
                             <button className="tw-mt-10 !tw-rounded-[5px] tw-font-bold text-[15px] tw-leading-[22.5px] !tw-bg-[#41E3EB] !tw-w-[155px] !tw-h-[50px] flex tw-justify-center tw-items-center">
                                 About Us

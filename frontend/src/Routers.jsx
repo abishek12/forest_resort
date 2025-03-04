@@ -56,6 +56,7 @@ import BookingTime from "./components/booking/BookingTime";
 import RegisterScreen from "./pages/screens/RegisterScreen";
 import User from "./pages/screens/Admin/User/User";
 import { AdminOffers } from "./pages/screens/Admin/Offers/AdminOffers";
+import { AdminService } from "./pages/screens/Admin/Services/AdminService";
 
 const Routers = () => {
   return (
@@ -208,6 +209,17 @@ const Routers = () => {
             }
             exact
           />
+
+          <Route
+            path="/user/service"
+            element={
+              <PrivateRoute>
+                <AdminService />
+              </PrivateRoute>
+            }
+            exact
+          />
+
           <Route
             path="/user/appointmentsviewed"
             element={

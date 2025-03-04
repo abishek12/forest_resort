@@ -179,6 +179,17 @@ const AdminSidebar = ({ isOpen }) => {
                     <span className="menu-link-text">All Bookings</span>
                   </NavLink>
                   <NavLink
+                    to="/user/service"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link active" : "menu-link"
+                    }
+                  >
+                    <span className="menu-link-icon">
+                      <BiSolidOffer size={20} />
+                    </span>
+                    <span className="menu-link-text">Services</span>
+                  </NavLink>
+                  <NavLink
                     to="/user/offers"
                     className={({ isActive }) =>
                       isActive ? "menu-link active" : "menu-link"

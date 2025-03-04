@@ -149,9 +149,8 @@ const StoryMD = () => {
           </p>
         </div>
       </section>
-
-      {/* Call-to-Action Section */}
-      <section className="bg-light py-5">
+      
+      {/* <section className="bg-light py-5">
         <div className="container text-center">
           <h2 className="fw-bold mb-4">Join Us on Our Journey</h2>
           <p className="lead mb-4">
@@ -162,7 +161,7 @@ const StoryMD = () => {
             View Careers
           </a>
         </div>
-      </section>
+      </section> */}
 
       <FooterV1 />
     </>
