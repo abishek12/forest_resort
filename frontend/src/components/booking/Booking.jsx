@@ -1,12 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Replace Next.js useRouter with React Router's useNavigate
+import React, { useState, useEffect, createContext } from "react";
+import { useNavigate } from "react-router-dom";
 import BookingForm from "../form/BookingForm";
 import BookingTime from "./BookingTime";
+
+
+export const ContextData = createContext(null);
 
 const Booking = () => {
   const [isQrVisible, setIsQrVisible] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const navigate = useNavigate(); // Use useNavigate for navigation
+  const [selectedDate, setSelectedDate] = useState({
+    start: { hour: "00", minute: "00", period: "PM" },
+    end: { hour: "00", minute: "00", period: "PM" },
+  });
+
+  const setSelectDateFunction = (startTime, endTime) => {
+    const [startClock, startPeriod] = startTime.trim().split(/\s+/);
+    const [startHour, startMinute] = startClock.split(":");
+    const [endClock, endPeriod] = endTime.trim().split(/\s+/);
+    const [endHour, endMinute] = endClock.split(":");
+
+    setSelectedDate((prev) => ({
+      ...prev,
+      start: { ...prev.start, hour: startHour, minute: startMinute, period: startPeriod },
+      end: { ...prev.end, hour: endHour, minute: endMinute, period: endPeriod },
+    }));
+  };
+
+  const contextValue = { selectedDate, setSelectDateFunction };
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userInfo");
@@ -16,7 +38,7 @@ const Booking = () => {
   }, []);
 
   const handleLoginRedirect = () => {
-    navigate("/login"); // Use navigate to redirect to the login page
+    navigate("/login");
   };
 
   if (!userInfo) {
@@ -39,22 +61,24 @@ const Booking = () => {
   }
 
   return (
-    <div
-      className="contact-area overflow-hidden default-padding"
-      style={{ backgroundImage: "url(/img/shape/map.png)" }}
-    >
-      <div className="shape-right-bottom"></div>
-      <div className="container">
-        <div className="row align-center">
-          <div className="col-tact-stye-one col-lg-8">
-            <BookingForm setIsQrVisible={setIsQrVisible} />
-          </div>
-          <div className="col-tact-stye-one col-lg-3 offset-lg-1 mt--80 mt-xs-50">
-            <BookingTime isQrVisible={isQrVisible} />
+    <ContextData.Provider value={contextValue}>
+      <div
+        className="contact-area overflow-hidden default-padding"
+        style={{ backgroundImage: "url(/img/shape/map.png)" }}
+      >
+        <div className="shape-right-bottom"></div>
+        <div className="container">
+          <div className="row align-center">
+            <div className="col-tact-stye-one col-lg-8">
+              <BookingForm setIsQrVisible={setIsQrVisible} />
+            </div>
+            <div className="col-tact-stye-one col-lg-3 offset-lg-1 mt--80 mt-xs-50">
+              <BookingTime isQrVisible={isQrVisible} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ContextData.Provider>
   );
 };
 
