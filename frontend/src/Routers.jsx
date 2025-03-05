@@ -47,9 +47,6 @@ import { AdminCategory } from "./pages/screens/Admin/Category/Category";
 import { AdminTag } from "./pages/screens/Admin/Tag/AdminTag";
 import Offer from "./components/offer/Offer";
 
-import AdminAppointment from "./pages/screens/Admin/Appointment/Appointment";
-import AppointmentViewed from "./pages/screens/Admin/Appointment/AppointmentViewed";
-import AppointmentViewScreen from "./pages/screens/Admin/Appointment/AppointmentViewScreen";
 import Service from "./pages/screens/Admin/Services/Service";
 import Booking from "./pages/screens/Admin/Bookings/Booking";
 import BookingTime from "./components/booking/BookingTime";
@@ -200,15 +197,7 @@ const Routers = () => {
             exact
           />
 
-          <Route
-            path="/user/appointments"
-            element={
-              <PrivateRoute>
-                <AdminAppointment />
-              </PrivateRoute>
-            }
-            exact
-          />
+          
 
           <Route
             path="/user/service"
@@ -220,19 +209,7 @@ const Routers = () => {
             exact
           />
 
-          <Route
-            path="/user/appointmentsviewed"
-            element={
-              <PrivateRoute>
-                <AppointmentViewed />
-              </PrivateRoute>
-            }
-            exact
-          />
-          <Route
-            path="/user/appointment/:id/view"
-            element={<AppointmentViewScreen />}
-          />
+          
           <Route
             path="/user/offers"
             element={
