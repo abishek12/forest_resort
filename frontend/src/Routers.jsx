@@ -48,12 +48,11 @@ import { AdminTag } from "./pages/screens/Admin/Tag/AdminTag";
 import Offer from "./components/offer/Offer";
 
 import Service from "./pages/screens/Admin/Services/Service";
-import Booking from "./pages/screens/Admin/Bookings/Booking";
-import BookingTime from "./components/booking/BookingTime";
 import RegisterScreen from "./pages/screens/RegisterScreen";
 import User from "./pages/screens/Admin/User/User";
 import { AdminOffers } from "./pages/screens/Admin/Offers/AdminOffers";
 import { AdminService } from "./pages/screens/Admin/Services/AdminService";
+import Appointment from "./pages/screens/Admin/Appointment/Appointment";
 
 const Routers = () => {
   return (
@@ -220,7 +219,7 @@ const Routers = () => {
             path="/user/booking"
             element={
               <PrivateRoute>
-                <Booking />
+                <Appointment />
               </PrivateRoute>
             }
             exact
