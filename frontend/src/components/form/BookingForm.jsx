@@ -205,7 +205,7 @@ const BookingForm = ({ setIsQrVisible }) => {
         return;
       }
       const response = await axios.post(
-        "http://localhost:8888/api/booking",
+        "/booking",
         bookingData,
         {
           headers: {

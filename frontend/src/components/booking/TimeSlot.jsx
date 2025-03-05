@@ -40,7 +40,7 @@ const TimeSlotReservation = () => {
         console.log("Fetching unavailable slots for:", formattedDate);
 
         const response = await fetch(
-          `http://localhost:8888/api/booking/unavailable-times?date=${formattedDate}&service=67a8af10655fb70f058f0f54`
+          `/booking/unavailable-times?date=${formattedDate}&service=67a8af10655fb70f058f0f54`
         );
 
         if (response.ok) {

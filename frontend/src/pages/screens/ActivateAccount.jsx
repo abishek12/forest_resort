@@ -28,7 +28,7 @@ const ActivateAccount = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:8888/api/auth/activate-account",
+        "/auth/activate-account",
         {
           token,
         }

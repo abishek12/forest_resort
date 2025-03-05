@@ -105,7 +105,7 @@ export const updateCategory = async (id, catdata) => {
     //   },
     // };
     const { data } = await axios.put(
-      `http://localhost:8888/api/category/${id}`,
+      `/category/${id}`,
       catdata
     );
     return data;

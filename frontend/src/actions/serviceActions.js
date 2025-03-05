@@ -116,7 +116,7 @@ export const createService = async (serviceData) => {
 export const updateCategory = async (id, catdata) => {
   try {
     const { data } = await axios.put(
-      `http://localhost:8888/api/category/${id}`,
+      `/category/${id}`,
       catdata
     );
     return data;

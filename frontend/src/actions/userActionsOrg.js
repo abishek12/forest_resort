@@ -282,7 +282,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `http://localhost:8888/api/users/${user._id}`,
+      `/users/${user._id}`,
       user,
       config
     );

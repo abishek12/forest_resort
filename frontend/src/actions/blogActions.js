@@ -91,7 +91,7 @@ export const updateBlog = async (blog, userInfo) => {
       },
     };
     const { data } = await axios.put(
-      `http://localhost:8888/api/blogs/${blog._id}`,
+      `/blogs/${blog._id}`,
       blog,
       config
     );
