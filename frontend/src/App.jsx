@@ -25,7 +25,7 @@ import axios from "axios";
 import { myApi } from "./config/api";
 
 function App() {
-  axios.defaults.baseURL = "http://localhost:8888/api";
+  axios.defaults.baseURL = myApi;
   //  Preloader
   const [isLoading, setIsLoading] = useState(true);
 

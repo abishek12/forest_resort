@@ -40,7 +40,7 @@ export const registerUser = async (req, res) => {
     const newUser = new User(value);
     await newUser.save();
 
-    const activationUrl = `http://localhost:5173/activate-account?token=${activationToken}`;
+    const activationUrl = `https://forestsportsandrecreation.com/activate-account?token=${activationToken}`;
     sendActivationEmail(value.email, activationUrl);
 
     return res
