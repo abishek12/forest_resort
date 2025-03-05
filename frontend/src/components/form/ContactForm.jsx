@@ -2,31 +2,48 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import BoxReveal from "../ui/magic_ui/box-reveal";
 import { Button, Form } from "react-bootstrap";
-
 import { createContact } from "../../actions/contactActions";
 
 const ContactForm = () => {
   const [fullname, setName] = useState("");
+  const [subject, setSubject] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [phoneNo, setPhoneNo] = useState("");
+  const [loading, setLoading] = useState(false);  // To manage loading state
+  const [error, setError] = useState(null);  // To manage error state
 
   const handleForm = async (event) => {
     event.preventDefault();
+    
+    // Start the loading process
+    setLoading(true);
+    setError(null);  // Clear any previous errors
 
     try {
-      let response = await createContact({ fullname, email, phoneNo, message });
+      let response = await createContact({
+        fullname,
+        subject,
+        email,
+        message,
+      });
+
+      // Check if the response was successful
       if (response.status === 201) {
         toast.success("Thanks For Your Message");
         setName("");
         setEmail("");
         setSubject("");
         setMessage("");
-        setPhoneNo("");
+      } else {
+        throw new Error("Something went wrong while submitting the form.");
       }
     } catch (error) {
-      toast.error(error);
-      console.log(`Error: ${error}`);
+      // Handle any errors that occur
+      setError(error.message);  // Set the error state
+      toast.error(`Error: ${error.message}`);  // Display the error toast
+    } finally {
+      // Reset loading state after form submission attempt
+      setLoading(false);
     }
   };
 
@@ -54,7 +71,7 @@ const ContactForm = () => {
               </div>
             </div>
           </Form.Group>
-       <div className="container">
+          <div className="container">
             <div className="row">
               <div className="col-md-6">
                 <div className="form-group">
@@ -75,12 +92,12 @@ const ContactForm = () => {
                 <div className="form-group">
                   <Form.Control
                     className="form-control"
-                    id="phoneNo"
-                    name="phoneNo"
-                    placeholder="Phone Number*"
-                    type="number"
-                    onChange={(e) => setPhoneNo(e.target.value)}
+                    id="subject"
+                    name="subject"
+                    placeholder="Subject*"
+                    type="text"
                     autoComplete="off"
+                    onChange={(e) => setSubject(e.target.value)}
                     required
                   />
                   <span className="alert-error"></span>
@@ -107,14 +124,24 @@ const ContactForm = () => {
 
           <div className="row">
             <div className="col-lg-12">
-              <button type="submit" className="tw-bg-[#02952A] tw-rounded-full tw-px-4">
-                Send Message <i className="fa fa-paper-plane"></i>
-                </button>
+              <button
+                type="submit"
+                className="tw-bg-[#02952A] tw-rounded-full tw-px-4"
+                disabled={loading}  // Disable the button when loading
+              >
+                {loading ? "Sending..." : "Send Message"}{" "}
+                {loading && <i className="fa fa-spinner fa-spin"></i>} {/* Display spinner */}
+              </button>
             </div>
           </div>
-          <div className="col-lg-12 alert-notification">
-            <div id="message" className="alert-msg"></div>
-          </div>
+          
+          {error && (
+            <div className="col-lg-12">
+              <div className="alert alert-danger">
+                {error}  {/* Show error message if there is one */}
+              </div>
+            </div>
+          )}
         </Form>
       </div>
     </>

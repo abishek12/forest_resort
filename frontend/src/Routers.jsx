@@ -197,8 +197,6 @@ const Routers = () => {
             exact
           />
 
-          
-
           <Route
             path="/user/service"
             element={
@@ -209,7 +207,6 @@ const Routers = () => {
             exact
           />
 
-          
           <Route
             path="/user/offers"
             element={
@@ -219,8 +216,15 @@ const Routers = () => {
             }
             exact
           />
-          <Route path="/admin/service" element={<Service />} />
-          <Route path="/admin/booking" element={<Booking />} />
+          <Route
+            path="/user/booking"
+            element={
+              <PrivateRoute>
+                <Booking />
+              </PrivateRoute>
+            }
+            exact
+          />
         </Route>
 
         <Route path="*" element={<Error404 />}></Route>

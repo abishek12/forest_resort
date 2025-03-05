@@ -187,7 +187,7 @@ const AdminSidebar = ({ isOpen }) => {
                 </div>
                 <li className="menu-item">
                   <NavLink
-                    to="/user/appointments"
+                    to="/user/booking"
                     className={({ isActive }) =>
                       isActive ? "menu-link active" : "menu-link"
                     }
