@@ -15,7 +15,7 @@ const ParallaxIndex = lazy(() => import('../../components/parallaxComponent/Para
 const Home1 = () => {
   return (
     <div style={{ backgroundColor: "#d2f6d2" }}>
-      {/* <HeaderV1 headerClass="dark" /> */}
+      {/* <HeaderV3 is a navbar headerClass="dark" /> */}
       <HeaderV3 />
       <motion.div
         initial={{ opacity: 0 }}

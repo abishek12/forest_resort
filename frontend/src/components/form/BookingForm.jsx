@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
+import { ContextData } from "../booking/Booking";
+import { jwtDecode } from "jwt-decode";
 
 import BoxReveal from "../ui/magic_ui/box-reveal";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -11,9 +13,12 @@ import "react-datepicker/dist/react-datepicker.css";
 // import { USER_LOGIN_DETAILS } from "../../constants/userConstants";
 
 const BookingForm = ({ setIsQrVisible }) => {
+
+  const { selectedDate } = useContext(ContextData); //consumecontenxt,
   /**
    * use of redux to retrive user information
    */
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -21,10 +26,11 @@ const BookingForm = ({ setIsQrVisible }) => {
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
+  // const [userName, setUserName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [phone, setPhone] = useState("");
+  // const [message, setMessage] = useState("");
+  const [userId, setUserId] = useState('')
   const [service, setService] = useState("");
 
   const [transactionId, setTransactionId] = useState("");
@@ -35,19 +41,50 @@ const BookingForm = ({ setIsQrVisible }) => {
 
   const [loading, setLoading] = useState(false);
 
+  //default times in time picking section in the form
   const [startTime, setStartTime] = useState({
-    hour: "09",
-    minute: "00",
-    period: "AM",
+    hour: '00',
+    minute: '00',
+    period: 'PM',
   });
   const [endTime, setEndTime] = useState({
-    hour: "10",
-    minute: "00",
-    period: "AM",
+    hour: '00',
+    minute: '00',
+    period: 'PM',
   });
 
+  // console.log("User Info before decode:", userInfo);
+  // console.log("User ID before decode:", userInfo?.userId);
+  //consuming context, we change the default value to contextData values
+  useEffect(() => {
+    setStartTime({
+      hour: selectedDate.start.hour,
+      minute: selectedDate.start.minute,
+      period: selectedDate.start.period,
+    });
+    setEndTime({
+      hour: selectedDate.end.hour,
+      minute: selectedDate.end.minute,
+      period: selectedDate.end.period,
+    });
+  }, [selectedDate])
+
+  // Decoding the JWT to extract user information
+  useEffect(() => {
+    if (userInfo?.accessToken) {
+      const decodedToken = jwtDecode(userInfo.accessToken);
+      //  console.log('userInfo after decode:',decodedToken);
+      //  console.log('useInfo ID after decode',decodedToken.userId)
+      setUserId(decodedToken.userId)
+      // Now you can use the decoded information, for example:
+
+    }
+  }, [userInfo]);
+  console.log('userId', userId);
+
+
   const dispatch = useDispatch();
-  
+
   const handleDateChange = (selectedDate) => {
     setDate(selectedDate);
   };
@@ -58,31 +95,6 @@ const BookingForm = ({ setIsQrVisible }) => {
     setTimeout(() => {
       setShowBookingBtn(true);
     }, 1000);
-  };
-
-  const handleTimeChange = (e, type) => {
-    const { name, value } = e.target;
-    if (type === "start") {
-      setStartTime((prev) => ({ ...prev, [name]: value }));
-    } else {
-      setEndTime((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const get24HourTime = (time) => {
-    let hour = parseInt(time.hour, 10);
-    const minute = time.minute;
-    const period = time.period;
-
-    let adjustedHour = hour;
-    if (period === "PM" && hour !== 12) {
-      adjustedHour += 12;
-    }
-    if (period === "AM" && hour === 12) {
-      adjustedHour = 0;
-    }
-
-    return { hour: adjustedHour, minute };
   };
 
   const handleServiceChange = (event) => {
@@ -120,7 +132,21 @@ const BookingForm = ({ setIsQrVisible }) => {
       setChildren(children - 1);
     }
   };
+  const get24HourTime = (time) => {
+    let hour = parseInt(time.hour, 10);
+    const minute = time.minute;
+    const period = time.period;
 
+    let adjustedHour = hour;
+    if (period === "PM" && hour !== 12) {
+      adjustedHour += 12;
+    }
+    if (period === "AM" && hour === 12) {
+      adjustedHour = 0;
+    }
+
+    return { hour: adjustedHour, minute };
+  };
   const handleForm = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -148,12 +174,13 @@ const BookingForm = ({ setIsQrVisible }) => {
       setLoading(false);
       return;
     }
+
     try {
-      const startTimeFormatted = `${startTime.hour}:${startTime.minute}`;
-      const endTimeFormatted = `${endTime.hour}:${endTime.minute}`;
+      const startTimeFormatted = `${startTime.hour}:${startTime.minute} ${startTime.period}`;
+      const endTimeFormatted = `${endTime.hour}:${endTime.minute} ${endTime.period}`;
       const bookingData = {
         service: "67a8af10655fb70f058f0f54",
-        user: `${userInfo.userId}`,
+        user: userId,
         date,
         timeSlot: {
           start: startTimeFormatted,
@@ -165,14 +192,18 @@ const BookingForm = ({ setIsQrVisible }) => {
           status: "pending",
         },
         persons: {
-         adult: adults,
-         children
+          adult: adults,
+          children
         }
       };
 
-      console.log(startTime);
-      console.log(endTime);
+      // console.log("Booking data:", bookingData);
+      // console.log("Before sending:", JSON.stringify(bookingData, null, 2));
 
+      if (!userId) {
+        toast.error("Error: User ID is missing!");
+        return;
+      }
       const response = await axios.post(
         "http://localhost:8888/api/booking",
         bookingData,
@@ -290,90 +321,9 @@ const BookingForm = ({ setIsQrVisible }) => {
             </div>
 
             <div className="form-group">
-              <label className="tw-font-bold">TIME</label>
-              <div className="time-inputs">
-                <label>Start Time:</label>
-                <div className="time-inputs">
-                  <select
-                    name="hour"
-                    value={startTime.hour}
-                    onChange={(e) => handleTimeChange(e, "start")}
-                  >
-                    {Array.from({ length: 12 }, (_, i) => {
-                      const hour = i + 1;
-                      return (
-                        <option
-                          key={hour}
-                          value={hour.toString().padStart(2, "0")}
-                        >
-                          {hour.toString().padStart(2, "0")}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <span>:</span>
-                  <select
-                    name="minute"
-                    value={startTime.minute}
-                    onChange={(e) => handleTimeChange(e, "start")}
-                  >
-                    {["00", "15", "30", "45"].map((minute) => (
-                      <option key={minute} value={minute}>
-                        {minute}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    name="period"
-                    value={startTime.period}
-                    onChange={(e) => handleTimeChange(e, "start")}
-                  >
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                  </select>
-                </div>
-
-                <label>End Time: </label>
-                <div className="time-inputs">
-                  <select
-                    name="hour"
-                    value={endTime.hour}
-                    onChange={(e) => handleTimeChange(e, "end")}
-                  >
-                    {Array.from({ length: 12 }, (_, i) => {
-                      const hour = i + 1;
-                      return (
-                        <option
-                          key={hour}
-                          value={hour.toString().padStart(2, "0")}
-                        >
-                          {hour.toString().padStart(2, "0")}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <span>:</span>
-                  <select
-                    name="minute"
-                    value={endTime.minute}
-                    onChange={(e) => handleTimeChange(e, "end")}
-                  >
-                    {["00", "15", "30", "45"].map((minute) => (
-                      <option key={minute} value={minute}>
-                        {minute}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    name="period"
-                    value={endTime.period}
-                    onChange={(e) => handleTimeChange(e, "end")}
-                  >
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                  </select>
-                </div>
-              </div>
+              <p className="tw-font-bold">TIME</p>
+              <p className='tw-font-bold'>Start Time:<span className="tw-ml-3  tw-font-medium">{`${startTime.hour}:${startTime.minute} ${startTime.period}`}</span></p>
+              <p className='tw-font-bold'>Start Time:<span className="tw-ml-3 tw-font-medium">{`${endTime.hour}:${endTime.minute} ${endTime.period}`}</span></p>
             </div>
           </div>
 
@@ -442,8 +392,6 @@ const BookingForm = ({ setIsQrVisible }) => {
             </div>
           </div>
         </div>
-
-        
 
         <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-gap-8 tw-pb-6">
           <div className="tw-flex tw-place-items-center tw-gap-2">
@@ -530,6 +478,36 @@ const BookingForm = ({ setIsQrVisible }) => {
     </div>
   );
 };
-
-
 export default BookingForm;
+
+// const handleTimeChange = (e, type) => {
+//   const { name, value } = e.target;
+//   if (type === "start") {
+//     setStartTime((prevStartTime) => {
+//       const newStartTime = {
+//         ...prevStartTime,
+//         [name]: value,
+//       };
+
+//       const startTimeString = `${newStartTime.hour}:${newStartTime.minute} ${newStartTime.period}`;
+
+//       return newStartTime;
+//     });
+//   } else {
+
+//     setEndTime((prevEndTime) => {
+//       const newEndTime = {
+//         ...prevEndTime,
+//         [name]: value,
+//       };
+
+//       const endTimeString = `${newEndTime.hour}:${newEndTime.minute} ${newEndTime.period}`;
+
+//       return newEndTime;
+//     });
+//   }
+// };
+
+
+
+

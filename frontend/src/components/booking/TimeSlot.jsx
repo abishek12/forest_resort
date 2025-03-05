@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { convertDateTimeSlot } from "../../utils/date-time";
-
+import { ContextData } from "./Booking";
 const TimeSlotReservation = () => {
+
+  //consume context
+  const { setSelectDateFunction } = useContext(ContextData);
+
   const availableSlots = [
     "06:00 AM - 07:00 AM",
     "07:00 AM - 08:00 AM",
@@ -101,6 +105,12 @@ const TimeSlotReservation = () => {
   const submitTime = (slot) => {
     setSuccessMessage(`Successfully reserved ${slot}`);
     setTimeout(() => setSuccessMessage(null), 1000);
+
+    //from here i am sending slot by splitting to the setSelectDateFunction
+    //it will be go to contextdata and change the contextValue, the context value is consumed by form and change the 
+    //date in time picker
+    const [start, end] = slot.split('-');
+    setSelectDateFunction(start, end)
   };
 
   return (
