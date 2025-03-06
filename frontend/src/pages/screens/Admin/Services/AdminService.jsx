@@ -145,10 +145,10 @@ export const AdminService = () => {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
-      setFormData({ ...formData, images: files }); // If files are selected
+      setFormData({ ...formData, images: files }); 
     } else {
-      const imageUrl = e.target.value; // If a URL is input
-      setFormData({ ...formData, images: [imageUrl] }); // Add URL to images array
+      const imageUrl = e.target.value; 
+      setFormData({ ...formData, images: [imageUrl] }); 
     }
   };
   
@@ -159,10 +159,10 @@ export const AdminService = () => {
       setLoading(true);
   
       const submissionData = new FormData();
-      submissionData.append("name", formData.name); // Make sure formData.name is populated
+      submissionData.append("name", formData.name);
       submissionData.append("description", formData.description);
-      submissionData.append("type", formData.type); // Make sure formData.type is populated
-      submissionData.append("price", formData.price); // Make sure formData.price is populated
+      submissionData.append("type", formData.type); 
+      submissionData.append("price", formData.price); 
   
       submissionData.append("futsal[courtSize]", formData.futsal.courtSize);
       submissionData.append("futsal[surfaceType]", formData.futsal.surfaceType);

@@ -43,7 +43,7 @@ const BackComponent = ({ products }) => {
     return (
         <div ref={ref}>
             <HeroExperience />
-            <div className="tw-pb-20 mb-60 tw-overflow-hidden">
+            <div className="tw-pb-20 mb-60 tw-overflow-hidden tw-relative ">
 
                 <FrontComponent />
                 <motion.div
