@@ -24,9 +24,7 @@ export const registerUser = async (fullname, email, password, phone_no) => {
 
     return response;
   } catch (error) {
-    let errorMessage = error.message;
-    if (error.res && error.res.data && error.res.data.message) {
-      errorMessage = error.res.data.message;
-    }
+    console.log(error);
+    throw error;
   }
 };

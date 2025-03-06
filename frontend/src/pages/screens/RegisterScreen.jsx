@@ -32,7 +32,7 @@ const RegisterScreen = () => {
         navigate("/login");
       } else {
         toast.error(
-          response.data?.message || "Registration failed. Please try again."
+          response?.data?.message || "Registration failed. Please try again."
         );
       }
     } catch (err) {
@@ -118,7 +118,10 @@ const RegisterScreen = () => {
               </div>
             </div>
             <div className="tw-w-full tw-pt-4 tw-pb-4">
-              <button type="submit" className="register tw-bg-[#02952A] tw-w-full tw-rounded-2xl">
+              <button
+                type="submit"
+                className="register tw-bg-[#02952A] tw-w-full tw-rounded-2xl"
+              >
                 <span>{loading ? "Registering..." : "Register"}</span>
               </button>
               <div className="go-back-to-login tw-font-black tw-flex tw-justify-center my-2">
