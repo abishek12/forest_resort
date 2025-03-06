@@ -27,6 +27,32 @@ export const listBlogs = async (
   }
 };
 
+export const listHomeBlogs = async (
+  keyword = "",
+  page = 1,
+  limit = 3,
+  sort = "desc",
+  q = ""
+) => {
+  try {
+    const { data } = await axios.get(`/blog`, {
+      params: {
+        page,
+        limit,
+        sort,
+        q,
+      },
+    });
+    return data.items;
+  } catch (error) {
+    throw new Error(
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    );
+  }
+};
+
 export const listBlogInfo = async (id) => {
   try {
     const { data } = await axios.get(`/blog/${id}`);

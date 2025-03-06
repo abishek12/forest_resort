@@ -1,4 +1,5 @@
 import Arrow from '../../assets/icons/Arrow.svg';
+import { dateTimeFormat } from '../../utils/date-time';
 
 export function SingleBlog3d({ id, image, title, date, author }) {
   return (
@@ -19,7 +20,7 @@ export function SingleBlog3d({ id, image, title, date, author }) {
       >
         <div>
           <p className="tw-font-bold tw-text-[15px] tw-leading-[10px] tw-tracking-[0.05em] tw-opacity-85">{author}</p>
-          <p className="tw-font-semibold tw-text-[12px] tw-leading-[10px] tw-tracking-[0.05em] tw-opacity-70">{date}</p>
+          <p className="tw-font-semibold tw-text-[12px] tw-leading-[10px] tw-tracking-[0.05em] tw-opacity-70">{dateTimeFormat(date)}</p>
         </div>
         <div>
           <p className="tw-font-bold tw-text-[16px] tw-leading-[25px] tw-tracking-[0.02em]">{title}</p>
