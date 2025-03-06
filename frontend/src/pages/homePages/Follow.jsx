@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "react-modal-image";
+import { Link } from "react-router-dom";
 
 const Follow = () => {
   const pics = [
@@ -23,7 +24,10 @@ const Follow = () => {
   return (
     <section className="default-padding tw-px-4 sm:tw-px-6 md:tw-px-8 lg:tw-px-[75px]">
       <p className="tw-font-bold tw-text-[18px] sm:tw-text-[20px] lg:tw-text-[22px] tw-leading-[25px] tracking-[0.02em] tw-mb-6 sm:tw-mb-8 lg:tw-mb-10">
-        Follow @forest_sports_arena
+        Follow
+        <Link to="https://www.instagram.com/forest_sports_arena/">
+          @forest_sports_arena
+        </Link>
       </p>
       <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 md:tw-grid-cols-4 lg:tw-grid-cols-5 tw-gap-2 sm:tw-gap-3 md:tw-gap-4">
         {pics.map((items, index) => (

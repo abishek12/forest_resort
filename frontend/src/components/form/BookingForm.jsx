@@ -323,7 +323,7 @@ const BookingForm = ({ setIsQrVisible }) => {
             <div className="form-group">
               <p className="tw-font-bold">TIME</p>
               <p className='tw-font-bold'>Start Time:<span className="tw-ml-3  tw-font-medium">{`${startTime.hour}:${startTime.minute} ${startTime.period}`}</span></p>
-              <p className='tw-font-bold'>Start Time:<span className="tw-ml-3 tw-font-medium">{`${endTime.hour}:${endTime.minute} ${endTime.period}`}</span></p>
+              <p className='tw-font-bold'>End Time:<span className="tw-ml-3 tw-font-medium">{`${endTime.hour}:${endTime.minute} ${endTime.period}`}</span></p>
             </div>
           </div>
 
