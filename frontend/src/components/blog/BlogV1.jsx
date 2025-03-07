@@ -6,31 +6,6 @@ import { fadeInCards } from "../../utils/fadeInAnimation";
 
 import { listHomeBlogs } from "../../actions/blogActions";
 
-const staticBlog = [
-  {
-    id: "0",
-    img: "/img/fsa_image/futsal.webp",
-    author: "Prakash Poudel",
-    date: "25 April, 2024",
-    title: "⚽ Experience the Thrill of an Exciting Futsal Match Together! 🏅",
-  },
-  {
-    id: "1",
-    img: "/img/fsa_image/offer1.png",
-    author: "Prakash Poudel",
-    date: "25 April, 2024",
-    title:
-      "Enjoy our exclusive summer offers and make the most of your time! 🌳",
-  },
-  {
-    id: "2",
-    img: "/img/fsa_image/futsal.webp",
-    author: "Prakash Poudel",
-    date: "25 April, 2024",
-    title: "⚽ Experience the Thrill of an Exciting Futsal Match Together! 🏅",
-  },
-];
-
 const BlogV1 = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -51,8 +26,6 @@ const BlogV1 = () => {
 
     fetchBlogs();
   }, []);
-
-  console.log('home',data)
 
   return (
     <>
@@ -82,11 +55,11 @@ const BlogV1 = () => {
                 className="tw-w-full tw-flex tw-justify-center"
               >
                 <SingleBlog3d
-                  image={item.featured_image} 
+                  image={item.featured_image}
                   author={item.user.fullname}
-                  date={item.createdAt} 
-                  title={item.title} 
-                  id={item._id} 
+                  date={item.createdAt}
+                  title={item.title}
+                  id={item._id}
                 />
               </motion.div>
             ))}
