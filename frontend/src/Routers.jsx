@@ -53,6 +53,7 @@ import User from "./pages/screens/Admin/User/User";
 import { AdminOffers } from "./pages/screens/Admin/Offers/AdminOffers";
 import { AdminService } from "./pages/screens/Admin/Services/AdminService";
 import Appointment from "./pages/screens/Admin/Appointment/Appointment";
+import AppointmentViewScreen from "./pages/screens/Admin/Appointment/AppointmentViewScreen";
 
 const Routers = () => {
   return (
@@ -220,6 +221,15 @@ const Routers = () => {
             element={
               <PrivateRoute>
                 <Appointment />
+              </PrivateRoute>
+            }
+            exact
+          />
+          <Route
+            path="/user/booking/:id/view"
+            element={
+              <PrivateRoute>
+                <AppointmentViewScreen />
               </PrivateRoute>
             }
             exact
