@@ -44,7 +44,8 @@ const WhyChooseUsV2 = () => {
               </div>
               <div className="col-xl-7 offset-xl-1 text-end">
                 <div className="choose-us-style-two-thumb">
-                  <div className="since-box tw-px-10 -tw-translate-y-8">
+                  <div className="since-box tw-px-10 -tw-translate-y-8 ">
+                    <div className=" xl:tw-mt-[-10px] xl:tw-ml-[-50px] lg:tw-mt-[-450px] lg:tw-ml-[500px] md:tw-mt-[-420px] md:tw-ml-[150px] max-sm:tw-mt-[-420px] max-sm:tw-ml-[40px]">
                     <p className="tw-text-xl tw-font-bold">
                       We are dedicated to serving you
                     </p>
@@ -56,9 +57,10 @@ const WhyChooseUsV2 = () => {
                     >
                       Since 2020
                     </h2>
+                    </div>
                   </div>
                   <img
-                    className="tw-w-[600px] tw-h-[350px] -tw-translate-y-4 max-sm:tw-w-[]"
+                    className="tw-w-[600px] tw-h-[350px] -tw-translate-y-4 xl:!tw-w-fit xl:!tw-mt-[10px] xl:!tw-ml-[10px] lg:!tw-w-[480px] lg:!tw-mt-[-10px] lg:tw-ml-[380px] md:!tw-w-[360px] md:tw-ml-[150px] md:tw-mt-[-40px] max-sm:!tw-w-[390px] max-sm:tw-mt-[320px]"
                     loading="lazy"
                     src="/img/fsa_image/swim-about.png"
                     alt="Image Not Found"
