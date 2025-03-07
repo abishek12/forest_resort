@@ -43,8 +43,10 @@ const TimeSlotReservation = () => {
           `/booking/unavailable-times?date=${formattedDate}&service=67a8af10655fb70f058f0f54`
         );
 
-        if (response.ok) {
-          const data = await response.json();
+        console.log("asdasdasd ",response)
+
+        if (response.status==200) {
+          const data = response.data;
           const unavailableSlots = data.unavailableSlots || [];
 
           const formattedUnavailableSlots = unavailableSlots.map((slot) => {

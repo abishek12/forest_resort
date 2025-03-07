@@ -9,10 +9,10 @@ const AboutV2 = () => {
   return (
     <>
       <div className="about-style-two-area default-padding tw-bg-white">
-        <div className="container ">
+        <div className="container tw-flex">
           <div className="row ">
             <div className="col-lg-6 about-style-two">
-              <div className="about-two-thumb tw-relative">
+              <div className="about-two-thumb tw-relative xl:tw-w-[550px] xl:tw-h-[500px] lg:tw-w-[450px] md:tw-w-[520px] md:tw-h-[320px] max-sm:tw-w-[250px] max-sm:tw-h-[200px]">
                 <motion.div
                   variants={fadeInAnimationVariantsImg}
                   initial="initial"
@@ -26,10 +26,10 @@ const AboutV2 = () => {
                     alt="Image Not Found"
                   />
                 </motion.div>
-                <div className="experience ">
+                <div className="experience xl:!tw-top-[60px] xl:tw-m-[0px] xl:tw-left-[380px] lg:!tw-top-[-340px] lg:tw-m-[80px] lg:tw-left-[200px] md:!tw-top-[-250px] md:tw-m-[150px] md:tw-left-[300px] max-sm:!tw-top-[-225px] max-sm:tw-m-[45px] max-sm:tw-left-[150px] max-sm:!tw-py-[25px]">
                   <h2>
                     <strong
-                      className="tw-translate-x-10"
+                      className="tw-translate-x-10 xl:tw-text-8xl lg:tw-text-sm lg:tw-leading-[70px] md:tw-text-sm md:tw-leading-[90px] max-sm:tw-leading-[40px]"
                       style={{
                         fontFamily: "Poppins",
                       }}
@@ -39,18 +39,15 @@ const AboutV2 = () => {
                     Years of Service
                   </h2>
                 </div>
-                <div className="bar-chart tw-absolute -tw-right-10 tw-bottom-0">
+                <div className="bar-chart tw-absolute -tw-right-10 tw-bottom-0 xl:tw-w-fit lg:tw-w-[100px] md:tw-w-[100px] max-sm:tw-w-[95px] xl:tw-top-[320px] xl:tw-left-[480px] xl:tw-h-[40%] lg:tw-top-[233px] lg:tw-left-[390px] md:tw-top-[385px] md:tw-left-[540px] max-sm:tw-top-[82px] max-sm:tw-left-[260px]">
                   <div className="bar bar1"></div>
                   <div className="bar bar2"></div>
                   <div className="bar bar3"></div>
                 </div>
               </div>
             </div>
-            <div className="col-lg-6 about-style-two pl-50 pl-md-15 pl-xs-15 mt-60 mt-xs-40 tw-translate-x-8">
+            <div className="col-lg-6 about-style-two pl-50 pl-md-15 pl-xs-15 mt-60 mt-xs-40 tw-translate-x-8 xl:tw-w-[550px] xl:tw-h-fit lg:tw-w-[480px] lg:tw-mt-[30px] md:tw-w-full max-sm:tw-w-[400px] max-sm:tw-mt-[100px] md:tw-mt-[280px]">
               <div className="about-two-info">
-                {/* <h4 className="sub-title">
-                  <BoxReveal>About Us</BoxReveal>
-                </h4> */}
                 <h2 className="title">
                   <div>
                     <p className="tw-text-black tw-text-2xl tw-font-bold -tw-mb-1">
@@ -82,7 +79,7 @@ const AboutV2 = () => {
                     and discover a place where you can thrive and connect.
                   </BoxReveal>
                 </p>
-                <div className="about-grid-info">
+                <div className="about-grid-info lg:tw-ml-[px] max-sm:!tw-ml-[40px]">
                   <Link className="btn-round-animation" to="/services#">
                     Discover More <i className="fa-solid fa-arrow-right"></i>
                   </Link>
