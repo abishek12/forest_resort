@@ -138,11 +138,8 @@ const Appointment = () => {
                     </Badge>
                   </td>
                   <td className="dt-cell-action">
-                    <Link to={`/admin/appointment/${appointment._id}/view`}>
+                    <Link to={`/user/booking/${appointment._id}/view`}>
                       <MdPreview />
-                    </Link>
-                    <Link onClick={() => viewedHandler(appointment._id)}>
-                      <HiThumbUp />
                     </Link>
                     <Link
                       onClick={() => handlePaymentClick(appointment.payment)}

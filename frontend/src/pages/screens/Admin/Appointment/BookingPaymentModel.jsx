@@ -2,6 +2,18 @@ import React from "react";
 import { Modal } from "react-bootstrap";
 
 const PaymentModal = ({ show, onHide, paymentData }) => {
+  const handleAccept = () => {
+    // Handle accept logic here
+    console.log("Payment accepted");
+    onHide(); // Close the modal after action
+  };
+
+  const handleReject = () => {
+    // Handle reject logic here
+    console.log("Payment rejected");
+    onHide(); // Close the modal after action
+  };
+
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -25,9 +37,39 @@ const PaymentModal = ({ show, onHide, paymentData }) => {
         )}
       </Modal.Body>
       <Modal.Footer>
-        <button className="btn btn-secondary" onClick={onHide}>
-          Close
-        </button>
+        <div className="d-flex justify-content-between w-100">
+          {paymentData?.status === "pending" ? (
+            <>
+              <button className="btn btn-success me-2" onClick={handleAccept}>
+                Accept
+              </button>
+              {/* <button className="btn btn-danger me-2" onClick={handleReject}>
+                Reject
+              </button> */}
+            </>
+          ) : (
+            <button
+              className={`btn ${
+                paymentData?.status === "success"
+                  ? "btn-success"
+                  : paymentData?.status === "reject"
+                  ? "btn-danger"
+                  : "btn-secondary"
+              }`}
+              disabled
+            >
+              {paymentData?.status === "success"
+                ? "Success"
+                : paymentData?.status === "reject"
+                ? "Rejected"
+                : "Status"}
+            </button>
+          )}
+
+          <button className="btn btn-secondary" onClick={onHide}>
+            Close
+          </button>
+        </div>
       </Modal.Footer>
     </Modal>
   );

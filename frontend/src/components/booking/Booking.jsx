@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import BookingForm from "../form/BookingForm";
 import BookingTime from "./BookingTime";
 
-
 export const ContextData = createContext(null);
 
 const Booking = () => {
@@ -22,7 +21,12 @@ const Booking = () => {
 
     setSelectedDate((prev) => ({
       ...prev,
-      start: { ...prev.start, hour: startHour, minute: startMinute, period: startPeriod },
+      start: {
+        ...prev.start,
+        hour: startHour,
+        minute: startMinute,
+        period: startPeriod,
+      },
       end: { ...prev.end, hour: endHour, minute: endMinute, period: endPeriod },
     }));
   };
@@ -43,14 +47,27 @@ const Booking = () => {
 
   if (!userInfo) {
     return (
-      <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-screen">
-        <div className="tw-bg-white tw-shadow-md tw-rounded-lg tw-p-6 tw-text-center">
-          <h2 className="tw-text-xl tw-font-semibold tw-mb-4">Login Required</h2>
-          <p className="tw-text-gray-600 tw-mb-4">
-            You need to log in to book a time slot.
+      <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-screen tw-bg-gray-50">
+        <div className="tw-bg-white tw-shadow-lg tw-rounded-xl tw-p-8 tw-max-w-md tw-text-center tw-transition-all tw-hover:shadow-xl">
+          {/* Illustration */}
+          <img
+            src="/img/booking/reserve.svg"
+            alt="Booking Illustration"
+            className="tw-w-72 tw-h-64 tw-mx-auto tw-mb-6"
+          />
+
+          {/* Message */}
+          <h2 className="tw-text-2xl tw-font-bold tw-text-gray-800 tw-mb-3">
+            To Book, Please Login
+          </h2>
+          <p className="tw-text-gray-600 tw-mb-6">
+            You need to log in to book a time slot. Don't have an account? Sign
+            up now!
           </p>
+
+          {/* Login Button */}
           <button
-            className="tw-bg-blue-500 tw-text-white tw-py-2 tw-px-4 tw-rounded tw-hover:bg-blue-700"
+            className="tw-bg-blue-500 tw-text-white tw-py-2 tw-px-6 tw-rounded-lg tw-font-semibold tw-transition-all tw-hover:bg-blue-600 tw-hover:shadow-md tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-blue-500 tw-focus:ring-offset-2"
             onClick={handleLoginRedirect}
           >
             Go to Login

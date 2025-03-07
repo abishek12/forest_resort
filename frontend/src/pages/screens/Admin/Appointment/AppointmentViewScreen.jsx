@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useParams, NavLink } from "react-router-dom";
-
 import { dateTimeFormat } from "../../../../utils/date-time";
 import Message from "../../../../components/Message";
 import Loader from "../../../../components/Loader";
 import { listAppointmentInfo } from "../../../../actions/appointmentActions";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AppointmentViewScreen = () => {
   const { id } = useParams();
   const [appointment, setAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  console.log(appointment);
+  const [cancelLoading, setCancelLoading] = useState(false);
+  const [cancelError, setCancelError] = useState(null);
+  const [cancelSuccess, setCancelSuccess] = useState(false);
 
   useEffect(() => {
     const fetchAppointmentDetails = async () => {
@@ -30,8 +33,37 @@ const AppointmentViewScreen = () => {
     fetchAppointmentDetails();
   }, [id]);
 
+  const handleCancelBooking = async () => {
+    if (window.confirm("Are you sure you want to cancel this booking?")) {
+      try {
+        setCancelLoading(true);
+        setCancelError(null);
+        setCancelSuccess(false);
+
+        const response = await axios.patch(`booking/${id}/cancel`);
+
+        if (response.status === 200) {
+          setCancelSuccess(true);
+          setAppointment((prev) => ({
+            ...prev,
+            payment: { ...prev.payment, status: "cancelled" },
+          }));
+          toast.success("Booking cancelled successfully!");
+        } else {
+          throw new Error("Failed to cancel booking");
+        }
+      } catch (err) {
+        setCancelError(err.message || "An error occurred while canceling the booking");
+        toast.error(err.message || "An error occurred while canceling the booking");
+      } finally {
+        setCancelLoading(false);
+      }
+    }
+  };
+
   return (
     <>
+      <ToastContainer position="top-right" autoClose={3000} />
       <NavLink to="/admin/appointments" className="btn-bg mt-3 ml-5">
         Back
       </NavLink>
@@ -89,7 +121,7 @@ const AppointmentViewScreen = () => {
                 </div>
               </div>
             </div>
-            <div class="card-footer">
+            <div className="card-footer">
               Count: {appointment.persons.children + appointment.persons.adult}
             </div>
           </div>
@@ -135,6 +167,29 @@ const AppointmentViewScreen = () => {
               </div>
             </div>
           </div>
+
+          {/* Cancel Booking Button */}
+          {appointment.status !== "cancelled" && (
+            <div className="mt-4 text-center">
+              <button
+                className="btn btn-danger"
+                onClick={handleCancelBooking} 
+                disabled={cancelLoading}
+              >
+                {cancelLoading ? "Cancelling..." : "Cancel Booking"}
+              </button>
+              {cancelError && (
+                <Message variant="danger" className="mt-3">
+                  {cancelError}
+                </Message>
+              )}
+              {cancelSuccess && (
+                <Message variant="success" className="mt-3">
+                  Booking cancelled successfully!
+                </Message>
+              )}
+            </div>
+          )}
         </div>
       )}
     </>
