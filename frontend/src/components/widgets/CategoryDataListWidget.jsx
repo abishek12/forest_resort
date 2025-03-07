@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { HashLink as Link } from "react-router-hash-link";
+
+const CategoryShimmer = () => (
+  <div className="tw-mb-4 tw-bg-gray-300 tw-rounded-md tw-h-6 tw-w-3/4 animate-pulse"></div>
+);
 
 const CategoryDataListWidget = () => {
   const [categories, setCategories] = useState([]);
@@ -27,10 +30,24 @@ const CategoryDataListWidget = () => {
 
     fetchCategories();
   }, []);
-  
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="sidebar-item category">
+        <div className="relative mb-2">
+          <p className="mb-1 tw-text-2xl text-black tw-font-bold">Category List</p>
+          <svg width="22%" height="2" border="2px" className="absolute">
+            <line x2="100%" y2="100%" stroke="#1A7218F2" strokeWidth="5" />
+          </svg>
+        </div>
+        <div className="sidebar-info mt-2 tw-text-black">
+          {/* Shimmer Loading Effect for Categories */}
+          <CategoryShimmer />
+          <CategoryShimmer />
+          <CategoryShimmer />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -40,15 +57,15 @@ const CategoryDataListWidget = () => {
   return (
     <div className="sidebar-item category">
       <div className="relative mb-2">
-      <p className="mb-1 tw-text-2xl text-black tw-font-bold">Category List</p>
-          <svg width="22%" height="2" border="2px" className="absolute">
-            <line x2="100%" y2="100%" stroke="#1A7218F2" strokeWidth="5" />
-          </svg>
+        <p className="mb-1 tw-text-2xl text-black tw-font-bold">Category List</p>
+        <svg width="22%" height="2" border="2px" className="absolute">
+          <line x2="100%" y2="100%" stroke="#1A7218F2" strokeWidth="5" />
+        </svg>
       </div>
       <div className="sidebar-info mt-2 tw-text-black">
         <ul>
           {categories.map((category) => (
-            <li key={category.id || category.slug}> {category.title}</li>
+            <li key={category.id || category.slug}>{category.title}</li>
           ))}
         </ul>
       </div>

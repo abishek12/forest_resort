@@ -1,22 +1,15 @@
 import React from "react";
-import HeaderV5 from "../../components/header/HeaderV5";
-import BreadCrumb from "../../components/breadCrumb/BreadCrumb";
 import FooterV1 from "../../components/footer/FooterV1";
 import ContactV1Reverse from "../../components/contact/ContactV1Reverse";
 import HeaderV1 from "../../components/header/HeaderV1";
-import ContactV1 from "../../components/contact/ContactV1";
 import { MdHome } from "react-icons/md";
 import { BiSolidRightArrow } from "react-icons/bi";
+import AppComingSoon from "../../components/appcomingsoon/AppComingSoon";
 
 const ContactUs = () => {
   return (
     <>
       <HeaderV1 />
-      {/* <BreadCrumb
-        breadCrumb="contact-us"
-        title1="Get in touch with us"
-        bottomSpace="pb-0"
-      /> */}
       <div className="tw-text-[#D2EDD6] text-sm mb-4 tw-pt-[150px] tw-py-5 flex items-center space-x-2">
         <span className="tw-font-semibold text-black tw-flex items-center tw-translate-x-14">
           <MdHome className="tw-text-3xl tw-translate-y-3 -tw-translate-x-6" />
@@ -65,16 +58,7 @@ const ContactUs = () => {
           referrerPolicy="no-referrer-when-downgrade"
         ></iframe>
       </section>
-      <div className="tw-flex tw-justify-center">
-        <p
-          className="app tw-flex tw-justify-center tw-font-bold tw-text-[#FFFFFF] tw-py-3 tw-rounded-full mt-5 tw-w-[204px]"
-          style={{
-            background: "linear-gradient(to right, #1A7218 34%, #B5DE4C 100%)",
-          }}
-        >
-          Forest Arena App
-        </p>
-      </div>
+      <AppComingSoon />
       <FooterV1 />
     </>
   );

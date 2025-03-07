@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
+import AppComingSoon from "../../components/appcomingsoon/AppComingSoon";
 
 const StoryMD = () => {
   return (
@@ -110,7 +111,7 @@ const StoryMD = () => {
                 pagination={{ clickable: true }}
                 modules={[Pagination, Navigation]}
                 className="mySwiper"
-                style={{ height: "300px" }} 
+                style={{ height: "300px" }}
               >
                 <SwiperSlide>
                   <img
@@ -149,7 +150,7 @@ const StoryMD = () => {
           </p>
         </div>
       </section>
-      
+
       {/* <section className="bg-light py-5">
         <div className="container text-center">
           <h2 className="fw-bold mb-4">Join Us on Our Journey</h2>
@@ -162,6 +163,8 @@ const StoryMD = () => {
           </a>
         </div>
       </section> */}
+
+      <AppComingSoon />
 
       <FooterV1 />
     </>

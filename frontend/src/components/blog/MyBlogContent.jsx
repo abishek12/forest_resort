@@ -8,6 +8,8 @@ import { listBlogs } from "../../actions/blogActions";
 import { toast } from "react-toastify";
 import { dateTimeFormat } from "../../utils/date-time";
 import "../../assets/css/SearchWidget.css";
+import BlogComponentShimmer from "./BlogCompomentShimmer";
+import AppComingSoon from "../appcomingsoon/AppComingSoon";
 
 const MyBlogContent = () => {
   const [blogs, setBlogs] = useState([]);
@@ -56,76 +58,71 @@ const MyBlogContent = () => {
 
         <div className="md:tw-col-span-9">
           <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
-            {blogs.map((item, index) => (
-              <div
-                className="tw-rounded-lg tw-bg-white tw-shadow-md tw-overflow-hidden"
-                key={index}
-              >
-                <div className="tw-p-4">
-                  <img
-                    src={item.featured_image}
-                    alt="Blog"
-                    className="tw-w-full tw-h-48 sm:tw-h-56 lg:tw-h-64 tw-object-cover"
-                  />
-                  <h3 className="tw-mt-4 tw-text-xl tw-font-bold">
-                    {item.title}
-                  </h3>
-                  <div className="tw-relative tw-mb-4">
-                    <p className="tw-text-sm tw-text-black tw-font-bold">
-                      {dateTimeFormat(item.createdAt)}
-                    </p>
-                    <svg
-                      width="100%"
-                      height="2"
-                      className="tw-absolute tw-bottom-0 tw-left-0"
-                    >
-                      <line
-                        x2="100%"
-                        y2="100%"
-                        stroke="#1A7218F2"
-                        strokeWidth="2"
-                      />
-                    </svg>
-                  </div>
-                  <p className="tw-text-black tw-line-clamp-3">
-                    {item.content}
-                  </p>
-                  <Link
-                    to={`/blog-single/${item._id}`}
-                    className="tw-flex tw-items-center tw-text-[#1A7218F2] tw-mt-4 hover:tw-underline"
+            {loading
+              ? Array.from({ length: 6 }).map((_, index) => (
+                  <BlogComponentShimmer key={index} />
+                ))
+              : blogs.map((item, index) => (
+                  <div
+                    className="tw-rounded-lg tw-bg-white tw-shadow-md tw-overflow-hidden"
+                    key={index}
                   >
-                    Read More
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      className="tw-ml-1"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M1 8a.5.5 0 0 1 .5-.5h10.793L8.146 3.354a.5.5 0 1 1 .708-.708l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 1 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
+                    <div className="tw-p-4">
+                      <img
+                        src={item.featured_image}
+                        alt="Blog"
+                        className="tw-w-full tw-h-48 sm:tw-h-56 lg:tw-h-64 tw-object-cover"
                       />
-                    </svg>
-                  </Link>
-                </div>
-              </div>
-            ))}
+                      <h3 className="tw-mt-4 tw-text-xl tw-font-bold">
+                        {item.title}
+                      </h3>
+                      <div className="tw-relative tw-mb-4">
+                        <p className="tw-text-sm tw-text-black tw-font-bold">
+                          {dateTimeFormat(item.createdAt)}
+                        </p>
+                        <svg
+                          width="100%"
+                          height="2"
+                          className="tw-absolute tw-bottom-0 tw-left-0"
+                        >
+                          <line
+                            x2="100%"
+                            y2="100%"
+                            stroke="#1A7218F2"
+                            strokeWidth="2"
+                          />
+                        </svg>
+                      </div>
+                      <p className="tw-text-black tw-line-clamp-3">
+                        {item.content}
+                      </p>
+                      <Link
+                        to={`/blog-single/${item._id}`}
+                        className="tw-flex tw-items-center tw-text-[#1A7218F2] tw-mt-4 hover:tw-underline"
+                      >
+                        Read More
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          className="tw-ml-1"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M1 8a.5.5 0 0 1 .5-.5h10.793L8.146 3.354a.5.5 0 1 1 .708-.708l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 1 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
+                          />
+                        </svg>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
           </div>
         </div>
       </div>
 
-      <div className="tw-flex tw-justify-center tw-mt-8">
-        <p
-          className="tw-font-semibold tw-text-white tw-py-3 tw-rounded-full tw-w-[204px] tw-text-center"
-          style={{
-            background: "linear-gradient(to right, #1A7218, #B5DE4C)",
-          }}
-        >
-          Forest Arena App
-        </p>
-      </div>
+      <AppComingSoon />
     </div>
   );
 };
