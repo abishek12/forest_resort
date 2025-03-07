@@ -3,6 +3,7 @@ import HeaderV1 from "../header/HeaderV1";
 
 import { OfferSection } from "./OfferSection2";
 import { Breadcrumb } from "../widgets/Breadcrumb";
+import AppComingSoon from "../appcomingsoon/AppComingSoon";
 
 const Offer = () => {
   return (
@@ -12,6 +13,9 @@ const Offer = () => {
         <Breadcrumb page="Offers" />
       </div>
       <OfferSection />
+      <div className="tw-mt-8">
+      <AppComingSoon/>
+      </div>
       <FooterV1 />
     </>
   );

@@ -8,6 +8,7 @@ import { listBlogs } from "../../actions/blogActions";
 import { toast } from "react-toastify";
 import { dateTimeFormat } from "../../utils/date-time";
 import "../../assets/css/SearchWidget.css";
+import AppComingSoon from "../appcomingsoon/AppComingSoon";
 
 const MyBlogContent = () => {
   const [blogs, setBlogs] = useState([]);
@@ -115,17 +116,9 @@ const MyBlogContent = () => {
           </div>
         </div>
       </div>
-
-      <div className="tw-flex tw-justify-center tw-mt-8">
-        <p
-          className="tw-font-semibold tw-text-white tw-py-3 tw-rounded-full tw-w-[204px] tw-text-center"
-          style={{
-            background: "linear-gradient(to right, #1A7218, #B5DE4C)",
-          }}
-        >
-          Forest Arena App
-        </p>
-      </div>
+     <div className="tw-mt-8">
+     <AppComingSoon/>
+     </div>
     </div>
   );
 };

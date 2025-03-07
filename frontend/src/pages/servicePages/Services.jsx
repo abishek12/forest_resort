@@ -10,6 +10,7 @@ import FooterV1 from '../../components/footer/FooterV1';
 import HeaderV5 from '../../components/header/HeaderV5';
 import HeaderV1 from '../../components/header/HeaderV1';
 import ServicesV2Grid from '../../components/services/ServicesV2Grid';
+import AppComingSoon from '../../components/appcomingsoon/AppComingSoon';
 
 const Services = () => {
     return (
@@ -23,6 +24,7 @@ const Services = () => {
             {/* <PriceV1 priceClass="default-padding bg-gray" /> */}
             {/* <TestimonialV1 /> */}
             {/* <ProcessV1 processClass="default-padding" /> */}
+            <AppComingSoon/>
             <FooterV1 />
         </>
     );

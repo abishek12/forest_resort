@@ -52,10 +52,7 @@ const BookingForm = ({ setIsQrVisible }) => {
     minute: '00',
     period: 'PM',
   });
-
-  // console.log("User Info before decode:", userInfo);
-  // console.log("User ID before decode:", userInfo?.userId);
-  //consuming context, we change the default value to contextData values
+  
   useEffect(() => {
     setStartTime({
       hour: selectedDate.start.hour,
@@ -196,9 +193,6 @@ const BookingForm = ({ setIsQrVisible }) => {
           children
         }
       };
-
-      // console.log("Booking data:", bookingData);
-      // console.log("Before sending:", JSON.stringify(bookingData, null, 2));
 
       if (!userId) {
         toast.error("Error: User ID is missing!");
@@ -479,34 +473,6 @@ const BookingForm = ({ setIsQrVisible }) => {
   );
 };
 export default BookingForm;
-
-// const handleTimeChange = (e, type) => {
-//   const { name, value } = e.target;
-//   if (type === "start") {
-//     setStartTime((prevStartTime) => {
-//       const newStartTime = {
-//         ...prevStartTime,
-//         [name]: value,
-//       };
-
-//       const startTimeString = `${newStartTime.hour}:${newStartTime.minute} ${newStartTime.period}`;
-
-//       return newStartTime;
-//     });
-//   } else {
-
-//     setEndTime((prevEndTime) => {
-//       const newEndTime = {
-//         ...prevEndTime,
-//         [name]: value,
-//       };
-
-//       const endTimeString = `${newEndTime.hour}:${newEndTime.minute} ${newEndTime.period}`;
-
-//       return newEndTime;
-//     });
-//   }
-// };
 
 
 

@@ -10,6 +10,7 @@ import { TestimonialMarquee } from "../../components/testimonial/TestimonialAnim
 
 import { MdHome } from "react-icons/md";
 import { BiSolidRightArrow } from "react-icons/bi";
+import AppComingSoon from "../../components/appcomingsoon/AppComingSoon";
 
 const AboutUs = () => {
   return (
@@ -52,15 +53,16 @@ const AboutUs = () => {
       {/* <TestimonialV2/> */}
       <TestimonialMarquee />
 
-      <div className="tw-flex tw-justify-center">
-        <p
+      <div className="">
+        {/* <p
           className="app tw-flex tw-justify-center tw-font-bold tw-text-[#FFFFFF] tw-py-3 tw-rounded-full mt-5 tw-w-[204px]"
           style={{
             background: "linear-gradient(to right, #1A7218 34%, #B5DE4C 100%)",
           }}
         >
           Forest Arena App
-        </p>
+        </p> */}
+        <AppComingSoon/>
       </div>
 
       <FooterV1 />
