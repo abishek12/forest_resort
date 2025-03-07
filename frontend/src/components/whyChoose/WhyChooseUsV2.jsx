@@ -7,7 +7,7 @@ const WhyChooseUsV2 = () => {
     <>
       <div className=" choose-us tw-bg-white tw-pb-2 tw-w-full">
         <div
-          className="choose-us-style-two-area default-padding text-light md:tw-mx-24 tw-mb-10 md:tw-mb-32 
+          className="choose-us-style-two-area default-padding text-light xl:tw-mx-24 lg:tw-mx-12 md:tw-mx-12 max-sm:tw-mx-6 tw-mb-10 md:tw-mb-32 
       tw-bg-gradient-to-r tw-from-[#299029] tw-to-[#96d397] -tw-translate-x-5"
         >
           <div className="container tw-mx-auto tw-px-4">
@@ -15,12 +15,12 @@ const WhyChooseUsV2 = () => {
               <div className="col-xl-4 col-lg-5 col-md-12">
                 <div className="choose-us-style-two">
                   <h2 className="title mb-50">
-                    <p className="tw-text-2xl tw-font-extrabold tw-px-10 -tw-translate-y-8">
+                    <p className="tw-text-2xl tw-font-extrabold tw-px-10 -tw-translate-y-8 lg:tw-ml-[-10px] md:tw-text-xl md:tw-ml-[-250px] max-sm:tw-text-sm max-sm:tw-ml-[-40px]">
                       Have fun with your friends and family
                     </p>
                   </h2>
                   <ul
-                    className="check-list-item tw-translate-x-10 tw-translate-y-10 tw-text-sm"
+                    className="check-list-item tw-translate-x-10 tw-translate-y-10 tw-text-sm md:tw-w-[350px] md:tw-h-[350px] xl:!tw-ml-[-20px] lg:!tw-ml-[-120px] md:!tw-ml-[-250px] max-sm:tw-w-[350px] max-sm:tw-h-[350px]"
                     style={{
                       fontFamily: "Poppins",
                     }}
@@ -58,7 +58,7 @@ const WhyChooseUsV2 = () => {
                     </h2>
                   </div>
                   <img
-                    className="tw-w-[600px] tw-h-[350px] -tw-translate-y-4"
+                    className="tw-w-[600px] tw-h-[350px] -tw-translate-y-4 max-sm:tw-w-[]"
                     loading="lazy"
                     src="/img/fsa_image/swim-about.png"
                     alt="Image Not Found"

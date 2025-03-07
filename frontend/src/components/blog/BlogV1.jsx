@@ -52,6 +52,8 @@ const BlogV1 = () => {
     fetchBlogs();
   }, []);
 
+  console.log('home',data)
+
   return (
     <>
       <div className="blog-area home-blog default-padding bottom-less">

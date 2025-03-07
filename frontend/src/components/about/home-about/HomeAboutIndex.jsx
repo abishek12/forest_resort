@@ -7,7 +7,7 @@ const HomeAboutIndex = () => {
     return (
         <section className='default-padding tw-px-[75px]'>
             <div className='tw-flex tw-justify-between tw-w-full tw-max-h-[759px] tw-gap-5' >
-                <div className='tw-text-center tw-w-[640px] tw-flex tw-flex-col tw-gap-4 '>
+                <div className='tw-text-center tw-w-[640px] tw-flex tw-flex-col tw-gap-4'>
                     <div className='tw-w-full tw-h-[640px] tw-overflow-hidden tw-shadow-lg tw-rounded-md '>
                         <img src={futsal1} alt="futsal" className='tw-w-full tw-h-full tw-object-cover hover:tw-scale-105 tw-transition' />
                     </div>
