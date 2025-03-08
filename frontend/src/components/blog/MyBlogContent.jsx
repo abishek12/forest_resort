@@ -121,8 +121,9 @@ const MyBlogContent = () => {
           </div>
         </div>
       </div>
-
-      <AppComingSoon />
+     <div className="tw-mt-8">
+     <AppComingSoon/>
+     </div>
     </div>
   );
 };
