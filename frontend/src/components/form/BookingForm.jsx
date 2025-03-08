@@ -10,14 +10,9 @@ import { jwtDecode } from "jwt-decode";
 import BoxReveal from "../ui/magic_ui/box-reveal";
 import { IoMdArrowDropdown } from "react-icons/io";
 import "react-datepicker/dist/react-datepicker.css";
-// import { USER_LOGIN_DETAILS } from "../../constants/userConstants";
 
 const BookingForm = ({ setIsQrVisible }) => {
-
   const { selectedDate } = useContext(ContextData); //consumecontenxt,
-  /**
-   * use of redux to retrive user information
-   */
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -26,11 +21,7 @@ const BookingForm = ({ setIsQrVisible }) => {
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  // const [userName, setUserName] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [phone, setPhone] = useState("");
-  // const [message, setMessage] = useState("");
-  const [userId, setUserId] = useState('')
+  const [userId, setUserId] = useState("");
   const [service, setService] = useState("");
 
   const [transactionId, setTransactionId] = useState("");
@@ -43,19 +34,16 @@ const BookingForm = ({ setIsQrVisible }) => {
 
   //default times in time picking section in the form
   const [startTime, setStartTime] = useState({
-    hour: '00',
-    minute: '00',
-    period: 'PM',
+    hour: "00",
+    minute: "00",
+    period: "PM",
   });
   const [endTime, setEndTime] = useState({
-    hour: '00',
-    minute: '00',
-    period: 'PM',
+    hour: "00",
+    minute: "00",
+    period: "PM",
   });
 
-  // console.log("User Info before decode:", userInfo);
-  // console.log("User ID before decode:", userInfo?.userId);
-  //consuming context, we change the default value to contextData values
   useEffect(() => {
     setStartTime({
       hour: selectedDate.start.hour,
@@ -67,21 +55,17 @@ const BookingForm = ({ setIsQrVisible }) => {
       minute: selectedDate.end.minute,
       period: selectedDate.end.period,
     });
-  }, [selectedDate])
+  }, [selectedDate]);
 
   // Decoding the JWT to extract user information
   useEffect(() => {
     if (userInfo?.accessToken) {
       const decodedToken = jwtDecode(userInfo.accessToken);
-      //  console.log('userInfo after decode:',decodedToken);
-      //  console.log('useInfo ID after decode',decodedToken.userId)
-      setUserId(decodedToken.userId)
+      setUserId(decodedToken.userId);
       // Now you can use the decoded information, for example:
-
     }
   }, [userInfo]);
-  console.log('userId', userId);
-
+  console.log("userId", userId);
 
   const dispatch = useDispatch();
 
@@ -175,6 +159,12 @@ const BookingForm = ({ setIsQrVisible }) => {
       return;
     }
 
+    if (paidAmount < 300) {
+      toast.error("Amount should not be less than 300");
+      setLoading(false);
+      return;
+    }
+
     try {
       const startTimeFormatted = `${startTime.hour}:${startTime.minute} ${startTime.period}`;
       const endTimeFormatted = `${endTime.hour}:${endTime.minute} ${endTime.period}`;
@@ -193,26 +183,19 @@ const BookingForm = ({ setIsQrVisible }) => {
         },
         persons: {
           adult: adults,
-          children
-        }
+          children,
+        },
       };
-
-      // console.log("Booking data:", bookingData);
-      // console.log("Before sending:", JSON.stringify(bookingData, null, 2));
 
       if (!userId) {
         toast.error("Error: User ID is missing!");
         return;
       }
-      const response = await axios.post(
-        "/booking",
-        bookingData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post("/booking", bookingData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       console.log(response.data);
 
       if (response.status === 201) {
@@ -322,8 +305,14 @@ const BookingForm = ({ setIsQrVisible }) => {
 
             <div className="form-group">
               <p className="tw-font-bold">TIME</p>
-              <p className='tw-font-bold'>Start Time:<span className="tw-ml-3  tw-font-medium">{`${startTime.hour}:${startTime.minute} ${startTime.period}`}</span></p>
-              <p className='tw-font-bold'>End Time:<span className="tw-ml-3 tw-font-medium">{`${endTime.hour}:${endTime.minute} ${endTime.period}`}</span></p>
+              <p className="tw-font-bold">
+                Start Time:
+                <span className="tw-ml-3  tw-font-medium">{`${startTime.hour}:${startTime.minute} ${startTime.period}`}</span>
+              </p>
+              <p className="tw-font-bold">
+                End Time:
+                <span className="tw-ml-3 tw-font-medium">{`${endTime.hour}:${endTime.minute} ${endTime.period}`}</span>
+              </p>
             </div>
           </div>
 
@@ -479,35 +468,3 @@ const BookingForm = ({ setIsQrVisible }) => {
   );
 };
 export default BookingForm;
-
-// const handleTimeChange = (e, type) => {
-//   const { name, value } = e.target;
-//   if (type === "start") {
-//     setStartTime((prevStartTime) => {
-//       const newStartTime = {
-//         ...prevStartTime,
-//         [name]: value,
-//       };
-
-//       const startTimeString = `${newStartTime.hour}:${newStartTime.minute} ${newStartTime.period}`;
-
-//       return newStartTime;
-//     });
-//   } else {
-
-//     setEndTime((prevEndTime) => {
-//       const newEndTime = {
-//         ...prevEndTime,
-//         [name]: value,
-//       };
-
-//       const endTimeString = `${newEndTime.hour}:${newEndTime.minute} ${newEndTime.period}`;
-
-//       return newEndTime;
-//     });
-//   }
-// };
-
-
-
-
