@@ -7966,6 +7966,56 @@ ul.social-link li a {
   line-height: 40px;
 }
 
+/* RATINGS */
+
+.rating {
+  font-size: 24px;
+  color: gold;
+}
+
+.star {
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.star.active {
+  color: gold;
+}
+
+.rating-text {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+}
+
+.ratings-bar {
+  margin-top: 10px;
+}
+
+.rating-row {
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.bar-container {
+  width: 100%;
+  height: 15px;
+  background-color: hsl(0, 4%, 95%);
+  margin-left: 12px;
+  position: relative;
+}
+
+.bar {
+  height: 100%;
+  background-color: #4caf50;
+}
+
+span {
+  font-size: 15px;
+}
+
 /* ============================================================== 
     # Feature
 =================================================================== */
