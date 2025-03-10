@@ -1,101 +1,287 @@
-import React, { useState, useEffect, createContext } from "react";
-import { useNavigate } from "react-router-dom";
-import BookingForm from "../form/BookingForm";
-import BookingTime from "./BookingTime";
-
-export const ContextData = createContext(null);
+import React, { useState, useEffect } from "react";
+import { CiClock1, CiMail, CiPhone } from "react-icons/ci";
+import { FaRegUser } from "react-icons/fa";
+import { motion } from "framer-motion";
+import "../../assets/css/booking.css";
 
 const Booking = () => {
-  const [isQrVisible, setIsQrVisible] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
-  const [selectedDate, setSelectedDate] = useState({
-    start: { hour: "00", minute: "00", period: "PM" },
-    end: { hour: "00", minute: "00", period: "PM" },
-  });
-
-  const setSelectDateFunction = (startTime, endTime) => {
-    const [startClock, startPeriod] = startTime.trim().split(/\s+/);
-    const [startHour, startMinute] = startClock.split(":");
-    const [endClock, endPeriod] = endTime.trim().split(/\s+/);
-    const [endHour, endMinute] = endClock.split(":");
-
-    setSelectedDate((prev) => ({
-      ...prev,
-      start: {
-        ...prev.start,
-        hour: startHour,
-        minute: startMinute,
-        period: startPeriod,
-      },
-      end: { ...prev.end, hour: endHour, minute: endMinute, period: endPeriod },
-    }));
-  };
-
-  const contextValue = { selectedDate, setSelectDateFunction };
-  const navigate = useNavigate();
+  const [dates, setDates] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [activeStep, setActiveStep] = useState(0);
+  const [rating, setRating] = useState(0);
+  const [feedback, setFeedback] = useState("");
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("userInfo");
-    if (storedUser) {
-      setUserInfo(JSON.parse(storedUser));
-    }
+    const getDates = () => {
+      let today = new Date();
+      let datesArray = [];
+      for (let i = 0; i < 7; i++) {
+        let date = new Date(today);
+        date.setDate(today.getDate() + i); // Adding days to today's date
+        datesArray.push(date); // Store the date object
+      }
+      setDates(datesArray);
+    };
+
+    getDates();
   }, []);
 
-  const handleLoginRedirect = () => {
-    navigate("/login");
+  const handleDateClick = (date) => {
+    setSelectedDate(date);
   };
 
-  if (!userInfo) {
-    return (
-      <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-screen tw-bg-gray-50">
-        <div className="tw-bg-white tw-shadow-lg tw-rounded-xl tw-p-8 tw-max-w-md tw-text-center tw-transition-all tw-hover:shadow-xl">
-          {/* Illustration */}
-          <img
-            src="/img/booking/reserve.svg"
-            alt="Booking Illustration"
-            className="tw-w-72 tw-h-64 tw-mx-auto tw-mb-6"
-          />
+  const formatDate = (date) => {
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const day = days[date.getDay()]; 
+    const dateNumber = String(date.getDate()).padStart(2, "0");
+    return { day, dateNumber };
+  };
 
-          {/* Message */}
-          <h2 className="tw-text-2xl tw-font-bold tw-text-gray-800 tw-mb-3">
-            To Book, Please Login
-          </h2>
-          <p className="tw-text-gray-600 tw-mb-6">
-            You need to log in to book a time slot. Don't have an account? Sign
-            up now!
-          </p>
+  const handleNext = () => {
+    setActiveStep((prevStep) => prevStep + 1);
+  };
 
-          {/* Login Button */}
-          <button
-            className="tw-bg-blue-500 tw-text-white tw-py-2 tw-px-6 tw-rounded-lg tw-font-semibold tw-transition-all tw-hover:bg-blue-600 tw-hover:shadow-md tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-blue-500 tw-focus:ring-offset-2"
-            onClick={handleLoginRedirect}
-          >
-            Go to Login
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const handleBack = () => {
+    setActiveStep((prevStep) => prevStep - 1);
+  };
+
+  const handleRatingChange = (newValue) => {
+    setRating(newValue);
+  };
+
+  const handleFeedbackChange = (event) => {
+    setFeedback(event.target.value);
+  };
+
+  const handleSubmitFeedback = () => {
+    alert("Thank you for your feedback!");
+    setFeedback("");
+    setRating(0);
+  };
+
+  // Animation variants for date cards
+  const dateCardVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    hover: { scale: 1.05, transition: { duration: 0.2 } },
+    selected: { scale: 1.1, backgroundColor: "#6c757d", color: "#fff" },
+  };
+
+  const steps = ["Basic Details", "Time Slots", "Confirmation"];
+
+  const getStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return (
+          <div className="card p-4 mt-4">
+            <h4>Personal Details</h4>
+            <hr className="border border-secondary border-1 opacity-10 mb-4" />
+            <div className="row mb-4">
+              <div className="col-lg-4 col-md-12 col-sm-12">
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <FaRegUser />
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="Abishek Khanal"
+                    readOnly
+                  />
+                </div>
+              </div>
+              <div className="col-lg-4 col-md-6 col-sm-12">
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <CiMail />
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="abishekkhanal2056@gmail.com"
+                    readOnly
+                  />
+                </div>
+              </div>
+              <div className="col-lg-4 col-md-6 col-sm-12">
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <CiPhone />
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="9841998678"
+                    readOnly
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case 1:
+        return (
+          <div className="card p-4">
+            <p className="h4 mb-4">Select Slot</p>
+            <div className="row mb-4">
+              {dates.map((date, index) => {
+                const { day, dateNumber } = formatDate(date);
+                const isSelected =
+                  selectedDate &&
+                  date.toDateString() === selectedDate.toDateString();
+
+                return (
+                  <div className="col-lg-2 col-md-3 col-sm-4 mb-2" key={index}>
+                    <motion.div
+                      className={`card p-2 text-center ${
+                        isSelected ? "bg-secondary text-light" : ""
+                      }`}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleDateClick(date)}
+                      variants={dateCardVariants}
+                      initial="initial"
+                      animate="animate"
+                      whileHover="hover"
+                      whileTap="selected"
+                    >
+                      <p className="mb-1">{day}</p>
+                      <p>{dateNumber}</p>
+                    </motion.div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      case 2:
+        return (
+          <div className="card p-4 mt-4">
+            <h4>Confirmation</h4>
+            <hr className="border border-secondary border-1 opacity-10 mb-4" />
+            <p>Please confirm your booking details.</p>
+            <div className="row">
+              <p className="col-6">Futsal</p>
+              <p className="col-6 text-end">Rs. 1200</p>
+            </div>
+            <div className="row">
+              <p className="col-6">Advance Amount</p>
+              <p className="col-6 text-success text-end">Rs. 300</p>
+            </div>
+            <hr className="border border-secondary border-1 opacity-10 mb-2" />
+            <div className="row">
+              <p className="col-6">Remaining Amt.</p>
+              <p className="col-6 text-danger text-end">Rs. 900</p>
+            </div>
+            <div className="row mt-4">
+              <p className="col-12">
+                <CiClock1 />
+                {selectedDate ? selectedDate.toLocaleString() : "Select a date"}
+              </p>
+            </div>
+          </div>
+        );
+      default:
+        return "Unknown step";
+    }
+  };
 
   return (
-    <ContextData.Provider value={contextValue}>
-      <div
-        className="contact-area overflow-hidden default-padding"
-        style={{ backgroundImage: "url(/img/shape/map.png)" }}
-      >
-        <div className="shape-right-bottom"></div>
-        <div className="container">
-          <div className="row align-center">
-            <div className="col-tact-stye-one col-lg-8">
-              <BookingForm setIsQrVisible={setIsQrVisible} />
+    <>
+      <div className="m-5">
+        {/* Custom Stepper */}
+        <div className="stepper">
+          {steps.map((label, index) => (
+            <div
+              key={label}
+              className={`step ${index === activeStep ? "active" : ""}`}
+            >
+              <div className="step-circle">{index + 1}</div>
+              <div className="step-label">{label}</div>
             </div>
-            <div className="col-tact-stye-one col-lg-3 offset-lg-1 mt--80 mt-xs-50">
-              <BookingTime isQrVisible={isQrVisible} />
+          ))}
+        </div>
+
+        <div className="row">
+          <div className="col-lg-8 col-md-7 col-sm-12">
+            {getStepContent(activeStep)}
+            <div className="mt-4">
+              <button
+                className="btn btn-secondary"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+              >
+                Back
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={handleNext}
+                style={{ marginLeft: "10px" }}
+              >
+                {activeStep === steps.length - 1 ? "Finish" : "Next"}
+              </button>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-5 col-sm-12">
+            <div className="card p-4">
+              <h4>Booking Details</h4>
+              <hr className="border border-secondary border-1 opacity-10 mb-2" />
+              <p className="text-black-50">Packages / Test Added</p>
+              <div className="row">
+                <p className="col-6">Futsal</p>
+                <p className="col-6 text-end">Rs. 1200</p>
+              </div>
+              <div className="row">
+                <p className="col-6">Advance Amount</p>
+                <p className="col-6 text-success text-end">Rs. 300</p>
+              </div>
+              <hr className="border border-secondary border-1 opacity-10 mb-2" />
+              <div className="row">
+                <p className="col-6">Remaining Amt.</p>
+                <p className="col-6 text-danger text-end">Rs. 900</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Rating and Feedback Section */}
+        <div className="row mt-4">
+          <div className="col-lg-6 col-md-6 col-sm-12">
+            <div className="card p-4">
+              <h4>Rate Your Experience</h4>
+              <div className="rating">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    className={`star ${star <= rating ? "active" : ""}`}
+                    onClick={() => handleRatingChange(star)}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-6 col-md-6 col-sm-12">
+            <div className="card p-4">
+              <h4>Customer Feedback</h4>
+              <textarea
+                rows={4}
+                className="form-control"
+                value={feedback}
+                onChange={handleFeedbackChange}
+                placeholder="Share your feedback..."
+              />
+              <button
+                className="btn btn-primary mt-3"
+                onClick={handleSubmitFeedback}
+              >
+                Submit Feedback
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </ContextData.Provider>
+    </>
   );
 };
 
