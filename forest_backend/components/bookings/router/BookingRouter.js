@@ -8,6 +8,10 @@ import {
 import { createBooking } from "../controllers/CreateBookingController.js";
 import { cancelBooking } from "../controllers/CancelBookingController.js";
 import { deleteBooking } from "../controllers/DeleteBookingController.js";
+import {
+  updateBookingStatus,
+  updatePaymentStatus,
+} from "../controllers/UpdateBookingStatus.js";
 
 const route = express.Router();
 
@@ -17,6 +21,8 @@ route
   .get("/:slugs", getBooking)
   .post("/", createBooking)
   .patch("/:id/cancel", cancelBooking)
+  .put("/:id/status", updateBookingStatus)
+  .put("/:id/payment-status", updatePaymentStatus)
   .delete("/:id/delete", deleteBooking);
 
 export default route;
