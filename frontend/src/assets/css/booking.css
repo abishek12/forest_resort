@@ -1,0 +1,49 @@
+.stepper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+  }
+  
+  .step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-weight: bold;
+  }
+  
+  .step.active .step-circle {
+    background-color: #6c757d;
+    color: #fff;
+  }
+  
+  .step-label {
+    font-size: 14px;
+    color: #6c757d;
+  }
+  
+  /* Rating Styles */
+  .rating {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .star {
+    font-size: 24px;
+    cursor: pointer;
+    color: #e0e0e0;
+  }
+  
+  .star.active {
+    color: #ffc107;
+  }
