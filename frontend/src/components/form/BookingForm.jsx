@@ -229,7 +229,7 @@ const BookingForm = ({ setIsQrVisible }) => {
   };
 
   return (
-    <div className="contact-form-style-one" id="Reserve">
+    <div className="contact-form-style-one tw-left-[-30px]" id="Reserve">
       <h4 className="sub-title">
         <BoxReveal>Need relaxation?</BoxReveal>
       </h4>

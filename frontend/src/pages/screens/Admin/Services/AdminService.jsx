@@ -12,6 +12,7 @@ export const AdminService = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [error, setError] = useState(null);
 
@@ -67,7 +68,7 @@ export const AdminService = () => {
 
   const handleEdit = (id) => {
     const serviceToEdit = services.find((service) => service._id === id);
-    // console.log(serviceToEdit);
+    setSelectedService(serviceToEdit);
     if (serviceToEdit) {
       setFormData({
         name: serviceToEdit.name,
@@ -80,23 +81,25 @@ export const AdminService = () => {
       });
       setShowEditModal(true);
     } else {
-        console.log("Service not found");
-      }
+      console.log("Service not found");
+    }
   };
-  
-  useEffect(() => {
-    // console.log("Form Data Updated:", formData);
-  }, [formData]);
-  
+
+  useEffect(() => {}, [formData]);
 
   const handleUpdate = async () => {
     try {
       setLoading(true);
+      // Create a new FormData object
       const submissionData = new FormData();
+
+      // Append basic fields
       submissionData.append("name", formData.name);
       submissionData.append("description", formData.description);
       submissionData.append("type", formData.type);
       submissionData.append("price", formData.price);
+
+      // Append nested fields
       submissionData.append("futsal[courtSize]", formData.futsal.courtSize);
       submissionData.append("futsal[surfaceType]", formData.futsal.surfaceType);
       submissionData.append(
@@ -108,17 +111,26 @@ export const AdminService = () => {
         formData.availability.contact
       );
 
+      // Append images
       formData.images.forEach((image) => {
         submissionData.append("images", image);
       });
 
-      await editService(formData._id, submissionData);
+      // Call the API to update the service
+      await editService(selectedService._id, submissionData);
+
+      // Handle the response
       toast("Service updated successfully!");
+
+      // Optionally, you can refetch the service or close the modal
       fetchService();
       setShowEditModal(false);
     } catch (error) {
-      toast(error.message);
+      // Handle errors
+      console.error("Error during service update:", error);
+      toast(error.message || "An error occurred while updating the service.");
     } finally {
+      // Reset loading state
       setLoading(false);
     }
   };
@@ -145,35 +157,40 @@ export const AdminService = () => {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
-      setFormData({ ...formData, images: files }); 
+      setFormData({ ...formData, images: files });
     } else {
-      const imageUrl = e.target.value; 
-      setFormData({ ...formData, images: [imageUrl] }); 
+      const imageUrl = e.target.value;
+      setFormData({ ...formData, images: [imageUrl] });
     }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-  
+
       const submissionData = new FormData();
       submissionData.append("name", formData.name);
       submissionData.append("description", formData.description);
-      submissionData.append("type", formData.type); 
-      submissionData.append("price", formData.price); 
-  
+      submissionData.append("type", formData.type);
+      submissionData.append("price", formData.price);
+
       submissionData.append("futsal[courtSize]", formData.futsal.courtSize);
       submissionData.append("futsal[surfaceType]", formData.futsal.surfaceType);
-      submissionData.append("availability[address]", formData.availability.address);
-      submissionData.append("availability[contact]", formData.availability.contact);
-  
+      submissionData.append(
+        "availability[address]",
+        formData.availability.address
+      );
+      submissionData.append(
+        "availability[contact]",
+        formData.availability.contact
+      );
+
       // Add images if any
       formData.images.forEach((image) => {
         submissionData.append("images", image);
       });
-  
+
       await createService(formData); // Assuming this sends to your API
       toast("Service created successfully!");
       fetchService();
@@ -184,7 +201,6 @@ export const AdminService = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <>
@@ -324,6 +340,128 @@ export const AdminService = () => {
           </div>
         )}
 
+        {/* Edit Service Modal */}
+        {showEditModal && selectedService && (
+          <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Edit Service</h5>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => setShowEditModal(false)}
+                  >
+                    &times;
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form>
+                    <div className="mb-3">
+                      <label className="form-label">Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Description</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Price</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        name="price"
+                        value={formData.price}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Court Size</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="courtSize"
+                        value={formData.futsal.courtSize}
+                        onChange={(e) => handleNestedChange(e, "futsal")}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Surface Type</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="surfaceType"
+                        value={formData.futsal.surfaceType}
+                        onChange={(e) => handleNestedChange(e, "futsal")}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Address</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="address"
+                        value={formData.availability.address}
+                        onChange={(e) => handleNestedChange(e, "availability")}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Contact</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="contact"
+                        value={formData.availability.contact}
+                        onChange={(e) => handleNestedChange(e, "availability")}
+                      />
+                    </div>
+                    <div className=" mb-3">
+                      <div>
+                        <label className="form-label">New Images</label>
+                        <input
+                          type="file"
+                          className="form-control"
+                          name="images"
+                          onChange={handleFileChange}
+                          multiple
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setShowEditModal(false)}
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleUpdate}
+                    disabled={loading}
+                  >
+                    {loading ? "Updating..." : "Update Service"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Services Table */}
         <div className="table-responsive">
           <table className="table table-striped table-bordered">
@@ -346,7 +484,6 @@ export const AdminService = () => {
                   <td>{service.type}</td>
                   <td>{service.price}</td>
 
-                  
                   <td className="tw-space-x-2">
                     <button
                       className="btn edit-btn"
@@ -371,5 +508,3 @@ export const AdminService = () => {
     </>
   );
 };
-
-

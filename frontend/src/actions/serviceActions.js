@@ -1,30 +1,3 @@
-// import axios from "axios";
-// import { logout } from "./authentication/userLogout";
-
-// export const listService = async (
-//     keyword = "",
-//     page = 1,
-//     limit = 10,
-//     sort = "desc"
-//  ) => {
-//     try {
-//         const data = await axios.get(`/services`, {
-//             params: {
-//                 page,
-//                 limit,
-//                 sort,
-//               },
-//      } );
-//      console.log("MyData: ", data);
-//      return data.items;
-//     } catch (error) {
-//         throw new Error(
-//             error.response && error.response.data.message 
-//             ? error.response.data.message : error.message
-//         );
-//     }
-// };
-
 import axios from "axios";
 import { logout } from "./authentication/userLogout";
 
@@ -54,7 +27,7 @@ export const listService = async (
 
 export const removeService = async (id) => {
   try {
-    await axios.delete(`services/${id}/delete`);
+    await axios.delete(`services/${id}`);
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -67,12 +40,14 @@ export const removeService = async (id) => {
   }
 };
 
+//edit services
 export const editService = async (id, serviceData) => {
   try {
-    const { data } = await axios.put(
-      `/services/${id}`,
-      serviceData
-    );
+    const { data } = await axios.put(`/services/${id}`, serviceData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return data;
   } catch (error) {
     const message =
@@ -95,10 +70,7 @@ export const createService = async (serviceData) => {
         "Content-Type": "multipart/form-data",
       },
     };
-    const { data } = await axios.post(
-      `/services`,
-      serviceData
-    );
+    const { data } = await axios.post(`/services`, serviceData);
     return data;
   } catch (error) {
     console.log(error);
@@ -115,10 +87,7 @@ export const createService = async (serviceData) => {
 
 export const updateCategory = async (id, catdata) => {
   try {
-    const { data } = await axios.put(
-      `/category/${id}`,
-      catdata
-    );
+    const { data } = await axios.put(`/category/${id}`, catdata);
     return data;
   } catch (error) {
     const message =
@@ -131,4 +100,3 @@ export const updateCategory = async (id, catdata) => {
     throw new Error(message);
   }
 };
-
