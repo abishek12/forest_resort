@@ -96,7 +96,6 @@ const Appointment = () => {
             <option value="confirmed">Confirmed</option>
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
-
           </select>
         </div>
 
@@ -142,7 +141,12 @@ const Appointment = () => {
                       <MdPreview />
                     </Link>
                     <Link
-                      onClick={() => handlePaymentClick(appointment.payment)}
+                      onClick={() =>
+                        handlePaymentClick({
+                          id: appointment._id,
+                          info: appointment.payment,
+                        })
+                      }
                     >
                       <MdPayment />
                     </Link>

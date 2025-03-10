@@ -13,9 +13,9 @@ const AppointmentViewScreen = () => {
   const [appointment, setAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [cancelLoading, setCancelLoading] = useState(false);
-  const [cancelError, setCancelError] = useState(null);
-  const [cancelSuccess, setCancelSuccess] = useState(false);
+  const [statusLoading, setStatusLoading] = useState(false);
+  const [statusError, setStatusError] = useState(null);
+  const [statusSuccess, setStatusSuccess] = useState(false);
 
   useEffect(() => {
     const fetchAppointmentDetails = async () => {
@@ -33,30 +33,38 @@ const AppointmentViewScreen = () => {
     fetchAppointmentDetails();
   }, [id]);
 
-  const handleCancelBooking = async () => {
-    if (window.confirm("Are you sure you want to cancel this booking?")) {
-      try {
-        setCancelLoading(true);
-        setCancelError(null);
-        setCancelSuccess(false);
+  const handleStatusUpdate = async (newStatus) => {
+    const statusMessages = {
+      confirmed: "Are you sure you want to confirm this booking?",
+      completed: "Are you sure you want to mark this booking as completed?",
+      cancelled: "Are you sure you want to cancel this booking?",
+    };
 
-        const response = await axios.patch(`booking/${id}/cancel`);
+    if (window.confirm(statusMessages[newStatus])) {
+      try {
+        setStatusLoading(true);
+        setStatusError(null);
+        setStatusSuccess(false);
+
+        const response = await axios.put(`booking/${id}/status`, {
+          status: newStatus,
+        });
 
         if (response.status === 200) {
-          setCancelSuccess(true);
+          setStatusSuccess(true);
           setAppointment((prev) => ({
             ...prev,
-            payment: { ...prev.payment, status: "cancelled" },
+            status: newStatus,
           }));
-          toast.success("Booking cancelled successfully!");
+          toast.success(`Booking ${newStatus} successfully!`);
         } else {
-          throw new Error("Failed to cancel booking");
+          throw new Error(`Failed to update booking status to ${newStatus}`);
         }
       } catch (err) {
-        setCancelError(err.message || "An error occurred while canceling the booking");
-        toast.error(err.message || "An error occurred while canceling the booking");
+        setStatusError(err.message || `An error occurred while updating the booking status to ${newStatus}`);
+        toast.error(err.message || `An error occurred while updating the booking status to ${newStatus}`);
       } finally {
-        setCancelLoading(false);
+        setStatusLoading(false);
       }
     }
   };
@@ -64,7 +72,7 @@ const AppointmentViewScreen = () => {
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
-      <NavLink to="/admin/appointments" className="btn-bg mt-3 ml-5">
+      <NavLink to="/user/booking" className="btn-bg mt-3 ml-5">
         Back
       </NavLink>
 
@@ -158,7 +166,7 @@ const AppointmentViewScreen = () => {
                     </div>
                     <div className="col">
                       <h4>Status</h4>
-                      <p className="badge text-bg-secondary">
+                      <p className={`badge text-bg-${appointment.status === "cancelled" ? "danger" : appointment.status === "confirmed" ? "success" : "secondary"}`}>
                         {appointment.payment.status}
                       </p>
                     </div>
@@ -168,28 +176,48 @@ const AppointmentViewScreen = () => {
             </div>
           </div>
 
-          {/* Cancel Booking Button */}
-          {appointment.status !== "cancelled" && (
-            <div className="mt-4 text-center">
+          {/* Buttons for Status Updates */}
+          <div className="mt-4 text-center">
+            {appointment.status === "pending" && (
+              <>
+                <button
+                  className="btn btn-success me-2"
+                  onClick={() => handleStatusUpdate("confirmed")}
+                  disabled={statusLoading}
+                >
+                  {statusLoading ? "Confirming..." : "Confirm Booking"}
+                </button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleStatusUpdate("cancelled")}
+                  disabled={statusLoading}
+                >
+                  {statusLoading ? "Cancelling..." : "Cancel Booking"}
+                </button>
+              </>
+            )}
+
+            {appointment.status === "confirmed" && (
               <button
-                className="btn btn-danger"
-                onClick={handleCancelBooking} 
-                disabled={cancelLoading}
+                className="btn btn-primary"
+                onClick={() => handleStatusUpdate("completed")}
+                disabled={statusLoading}
               >
-                {cancelLoading ? "Cancelling..." : "Cancel Booking"}
+                {statusLoading ? "Completing..." : "Complete Booking"}
               </button>
-              {cancelError && (
-                <Message variant="danger" className="mt-3">
-                  {cancelError}
-                </Message>
-              )}
-              {cancelSuccess && (
-                <Message variant="success" className="mt-3">
-                  Booking cancelled successfully!
-                </Message>
-              )}
-            </div>
-          )}
+            )}
+
+            {statusError && (
+              <Message variant="danger" className="mt-3">
+                {statusError}
+              </Message>
+            )}
+            {statusSuccess && (
+              <Message variant="success" className="mt-3">
+                Booking status updated successfully!
+              </Message>
+            )}
+          </div>
         </div>
       )}
     </>
