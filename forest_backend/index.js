@@ -41,6 +41,7 @@ import router from "./routes/ApiRoute.js";
 app.use("/api", router);
 
 app.listen(PORT, () => {
+  console.log(process.env.DB_URI);
   console.log(`Server is loading at: ${PORT}`);
 });
 

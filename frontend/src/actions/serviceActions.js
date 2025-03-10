@@ -63,6 +63,7 @@ export const editService = async (id, serviceData) => {
 
 export const createService = async (serviceData) => {
   try {
+    console.log(serviceData);
     // pass userInfo in params in function
     const config = {
       headers: {
@@ -70,7 +71,7 @@ export const createService = async (serviceData) => {
         "Content-Type": "multipart/form-data",
       },
     };
-    const { data } = await axios.post(`/services`, serviceData);
+    const { data } = await axios.post(`/services`, serviceData, config);
     return data;
   } catch (error) {
     console.log(error);
