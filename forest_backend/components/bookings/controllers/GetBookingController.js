@@ -107,19 +107,19 @@ export const getUnavailableTimeSlots = async (req, res) => {
     const { date, service } = req.query;
 
     if (!date || !service) {
-      return res
-        .status(400)
-        .json({ message: "Date and service ID are required" });
+      return res.status(400).json({ message: "Date and service ID are required" });
     }
 
     // Find all bookings for the selected date and service
     const bookings = await Booking.find({ date, service }, "timeSlot");
 
-    // Extract booked time slots
-    const unavailableSlots = bookings.map((booking) => ({
-      start: booking.timeSlot.start,
-      end: booking.timeSlot.end,
-    }));
+    // Extract valid booked time slots
+    const unavailableSlots = bookings
+      .filter(booking => booking.timeSlot?.slot && booking.timeSlot?.period) // Ensure data exists
+      .map(booking => ({
+        slot: booking.timeSlot.slot,
+        period: booking.timeSlot.period
+      }));
 
     return res.status(200).json({
       message: "success",
@@ -130,3 +130,4 @@ export const getUnavailableTimeSlots = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
