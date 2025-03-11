@@ -6,8 +6,8 @@ export const bookingHelper = (data) => {
     user: Joi.string().required(),
     date: Joi.date().iso().required(),
     timeSlot: Joi.object({
-      start: Joi.string().required(),
-      end: Joi.string().required(),
+      slot: Joi.string().required(),
+      period: Joi.string().required(),
     })
       .required()
       .custom((value, helpers) => {

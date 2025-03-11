@@ -17,12 +17,13 @@ const bookingSchema = new mongoose.Schema(
       required: true,
     },
     timeSlot: {
-      start: {
+      slot: {
         type: String,
-        required: true,
-      }, // 24-hour format validation
-      end: {
+        required: true, // Example: "08:00-09:00"
+      },
+      period: {
         type: String,
+        enum: ["AM", "PM"],
         required: true,
       },
     },
