@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   CiClock1,
   CiMail,
@@ -12,6 +13,7 @@ import { FaPersonSwimming } from "react-icons/fa6";
 import { TbPlayFootball } from "react-icons/tb";
 
 import { FaRegUser } from "react-icons/fa";
+import { IoMdArrowDropdown } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
 import "../../assets/css/booking.css";
 
@@ -24,6 +26,15 @@ const Booking = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState("am");
   const [selectedService, setSelectedService] = useState("FUTSAL");
+  const [isReferenceNoVisible, setIsReferenceNoVisible] = useState(false);
+
+  const [adults, setAdults] = useState(1); // Set default values for adults and children
+  const [children, setChildren] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [unavailableSlots, setUnavailableSlots] = useState([]);
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [updatedSlots, setUpdatedSlots] = useState([]);
 
   const [ratingsCount, setRatingsCount] = useState({
     5: 10,
@@ -52,8 +63,34 @@ const Booking = () => {
     getDates();
   }, []);
 
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const increaseGuests = (type) => {
+    if (type === "adults") {
+      setAdults(adults + 1);
+    } else if (type === "children") {
+      setChildren(children + 1); 
+    }
+  };
+
+  const decreaseGuests = (type) => {
+    if (type === "adults" && adults > 0) {
+      setAdults(adults - 1); 
+    } else if (type === "children" && children > 0) {
+      setChildren(children - 1); 
+    }
+  };
+
+  const closeDropdown = () => {
+    setIsOpen(false); 
+  };
+
   const handleDateClick = (date) => {
     setSelectedDate(date);
+    fetchUnavailableSlots(date);
   };
 
   const handleTimeClick = (time) => {
@@ -67,6 +104,14 @@ const Booking = () => {
     return { day, dateNumber };
   };
 
+  // const formattedDate = (date) => {
+  //   const year = (date.getFullYear());
+  //   const month = String(date.getMonth() + 1).padStart(2, "0");
+  //   const day = String(date.getDay()).padStart(2, "0");
+  //   return `${year}-${month}-${day}`;
+  // }
+  // console.log(formattedDate);
+
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1);
   };
@@ -79,7 +124,7 @@ const Booking = () => {
     setRating(newValue);
     setRatingsCount((prevState) => ({
       ...prevState,
-      [newValue]: prevState[newValue] + 1, // Increment the count for the selected rating
+      [newValue]: prevState[newValue] + 1,
     }));
   };
 
@@ -121,6 +166,92 @@ const Booking = () => {
     ],
   };
 
+  //unavailable timeslots
+  const fetchUnavailableSlots = async (selectedDate) => {
+    try{
+      selectedDate = selectedDate.toISOString().split('T')[0];
+      const response = await axios.get(`/booking/unavailable-times?date=${selectedDate}&service=67a8af10655fb70f058f0f54`);
+      if(response.data.message === "success"){
+        setUnavailableSlots(response.data.unavailableSlots);
+      } else{
+        console.error("Unable to fetch slots!");
+      }
+    } catch (error) {
+      console.error("Unable to fetch unavailable slots: ", error);
+    }
+  };
+
+  const isTimeUnavailable = (time) => {
+    return unavailableSlots.some(slot => {
+      const slotStart = slot.start;
+      const slotEnd = slot.end;
+
+      return time >= slotStart && time < slotEnd;
+    })
+  }
+
+  const getEndTime = (startTime) => {
+    // Calculating end time based on selected start time
+    const [hours, minutes] = startTime.split(":").map(Number);
+    const endHour = (hours + 1) % 24;
+    const endMinutes = ("00");
+    return `${endHour.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
+  };
+
+  const handleBookingSubmit = async () => {
+    if (!selectedDate || !selectedTime) {
+      alert("Please select a date and time");
+      return;
+    }
+
+    setIsReferenceNoVisible(true);
+
+    /**
+     * Date Conversion
+     *  -> Current Date is in Thu Mar 11, 2024 -> Make it as 2024-03-11
+     *  -> Time Slot : Start : 08:00 PM End: 09:00 PM
+     */
+  
+    const bookingData = {
+      service: "67a8af10655fb70f058f0f54",
+      user: "67c019abb6d78a672f417901",  
+      date: selectedDate, 
+      timeSlot: {
+        start: selectedTime, 
+        end: getEndTime(selectedTime), 
+      },
+      payment: {
+        reference: "PAY12345XYZ",  
+        amount: 500,  
+        status: "pending",
+      },
+      persons: {
+        children: children,
+        adult: adults,
+      }, 
+    };
+
+    console.log(bookingData);
+  
+    // try {
+    //   const response = await axios.post("/booking", bookingData, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
+  
+    //   if (response.data.success) {
+    //     alert("Booking successful!");
+    //     // Optionally reset states or redirect the user
+    //   } else {
+    //     alert("Booking failed: " + response.data.message);
+    //   }
+    // } catch (error) {
+    //   console.error("Error creating booking:", error);
+    //   alert("Something went wrong, please try again.");
+    // }
+  };
+  
   const handlePeriodToggle = (period) => {
     setSelectedPeriod(period);
   };
@@ -365,6 +496,8 @@ const Booking = () => {
                 </div>
                 <div className="row mb-2">
                   {timeSlots[selectedPeriod].map((time, index) => {
+                    // checking unavailable times
+                    const isUnavailable = isTimeUnavailable(time);
                     const isSelected = selectedTime === time;
                     return (
                       <>
@@ -375,9 +508,9 @@ const Booking = () => {
                           <motion.div
                             className={`time-slot-card text-center ${
                               isSelected ? "bg-secondary text-light" : ""
-                            }`}
-                            onClick={() => handleTimeClick(time)}
-                            style={{ cursor: "pointer" }}
+                            } ${isUnavailable ? "tw-bg-red-500 text-light cursor-not-allowed" : ""}`}
+                            onClick={!isUnavailable ? () => handleTimeClick(time) : undefined}
+                            style={{ cursor: isUnavailable ? "not-allowed" : "pointer" }}
                             variants={dateCardVariants}
                             initial="initial"
                             animate="animate"
@@ -401,7 +534,68 @@ const Booking = () => {
                 <p>{selectedDate.toLocaleDateString()}</p>
               </div>
             )}
-          </div>
+            <div className="tw-relative">
+              <div className="tw-font-bold border mt-4 tw-rounded-md px-2 py-2" onClick={toggleDropdown}>
+                <h3>Please, select the numbers of Adults and Children!</h3>
+                <div className="border tw-bg-green-200 tw-w-fit px-2">
+                  <IoMdArrowDropdown className="tw-inline-block" size={20} />
+                {adults} adults, {children} children
+                </div>
+                
+              </div>
+              {isOpen && (
+                <div className="tw-absolute tw-bg-gray-100 tw-rounded-md tw-border tw-border-black tw-p-4 tw-w-[210px] tw-z-50">
+                  <div className="tw-flex tw-items-center tw-justify-between tw-py-2">
+                    <label htmlFor="Adults">Adults</label>
+                    <div className="tw-flex tw-pb-1">
+                      <button
+                        className="reserveBtns"
+                        onClick={() => decreaseGuests("adults")}
+                      >
+                        -
+                      </button>
+                      <span className="tw-px-4 tw-flex tw-place-items-center">
+                        {adults}
+                      </span>
+                      <button
+                        className="reserveBtns"
+                        onClick={() => increaseGuests("adults")}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  <div className="tw-flex tw-place-items-center tw-justify-between tw-py-2 ">
+                    <label htmlFor="Children">Children</label>
+                    <div className="tw-flex tw-pb-1">
+                      <button
+                        className="reserveBtns"
+                        onClick={() => decreaseGuests("children")}
+                      >
+                        -
+                      </button>
+                      <span className="tw-px-4 tw-flex tw-place-items-center tw-text-center ">
+                        {children}
+                      </span>
+                      <button
+                        className="reserveBtns"
+                        onClick={() => increaseGuests("children")}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  <button
+                    onClick={closeDropdown}
+                    className="reserveBtns tw-pt-2 tw-w-full "
+                  >
+                    Done
+                  </button>
+                </div>
+              )}
+              <span className="alert-error"></span>
+            </div>
+           </div>
         );
 
       case 3:
@@ -447,10 +641,10 @@ const Booking = () => {
                 <CiCalendar className="tw-text-xl tw-text-gray-600" />
                 <p className="tw-text-gray-700">
                   {selectedDate
-                    ? selectedDate.toLocaleDateString("en-US", {
-                        weekday: "long",
+                    ? selectedDate.toLocaleDateString("en-CA", {
+                        
                         year: "numeric",
-                        month: "long",
+                        month: "numeric",
                         day: "numeric",
                       })
                     : "Select a date"}
@@ -503,7 +697,7 @@ const Booking = () => {
             >
               <button
                 className="tw-w-full tw-bg-blue-500 tw-text-white tw-py-3 tw-px-6 tw-rounded-lg tw-font-semibold hover:tw-bg-blue-600 tw-transition-colors"
-                onClick={() => alert("Booking confirmed!")}
+                onClick={() => handleBookingSubmit("Booking confirmed!")}
               >
                 Confirm Booking
               </button>
