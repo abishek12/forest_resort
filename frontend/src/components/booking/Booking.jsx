@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { CiClock1, CiMail, CiPhone } from "react-icons/ci";
+import {
+  CiClock1,
+  CiMail,
+  CiPhone,
+  CiCreditCard1,
+  CiWallet,
+  CiCalendar,
+} from "react-icons/ci";
+import { MdSports } from "react-icons/md";
+import { FaPersonSwimming } from "react-icons/fa6";
+import { TbPlayFootball } from "react-icons/tb";
+
 import { FaRegUser } from "react-icons/fa";
-import { easeInOut, motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import "../../assets/css/booking.css";
 
 const Booking = () => {
@@ -184,36 +195,109 @@ const Booking = () => {
         return (
           <>
             <div className="p-4">
-              <p className="h4 text-black pb-4">
+              <p className="h4 text-black pb-4 tw-font-sans tw-font-bold">
                 Please, choose the service you want!
               </p>
-              <motion.div className="tw-flex"
-              style={{ cursor: "pointer" }}
-              >
-                <div
-                  className={`px-2 cursor-pointer tw-text-2xl border ${
-                    selectedService === "SWIMMING" ? " text-primary" : ""
+              <motion.div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+                {/* SWIMMING Card */}
+                <motion.div
+                  className={`px-2 cursor-pointer tw-text-2xl border-2 rounded-lg relative overflow-hidden ${
+                    selectedService === "SWIMMING"
+                      ? "border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100"
+                      : "border-gray-200 bg-gray-50"
                   }`}
                   onClick={() => handleServiceClick("SWIMMING")}
-                  
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.15)",
+                    rotate: selectedService === "SWIMMING" ? 0 : 1, // Slight tilt on hover
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                 >
-                  SWIMMING
-                  <img src="/img/shape/swimm.jpg"
-                       className=" tw-h-[250px] tw-w-[280px]"
-                  />
-                  
-                </div>
-                <div
-                  className={` px-2 cursor-pointer tw-text-2xl border tw-ml-2 ${
-                    selectedService === "FUTSAL" ? "text-primary" : ""
+                  {selectedService === "SWIMMING" && (
+                    <motion.div
+                      className="tw-absolute tw-top-2 tw-right-2 tw-bg-blue-500 tw-text-white tw-p-2 tw-rounded-full"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      ✓
+                    </motion.div>
+                  )}
+                  <FaPersonSwimming className="tw-text-4xl tw-mb-2 tw-text-blue-500" />
+                  <p className="tw-font-bold tw-text-3xl tw-text-gray-800">
+                    SWIMMING
+                  </p>
+                  <p className="tw-text-sm tw-text-gray-600 tw-mb-4">
+                    Relax and enjoy our state-of-the-art swimming pool.
+                  </p>
+                  <div className="tw-relative tw-h-[250px] tw-w-full tw-rounded-lg tw-overflow-hidden">
+                    <img
+                      src="/img/shape/swimm.jpg"
+                      className="tw-h-full tw-w-full tw-object-cover"
+                      alt="Swimming Pool"
+                    />
+                    {selectedService === "SWIMMING" && (
+                      <motion.div
+                        className="tw-absolute tw-inset-0 tw-bg-black/10 tw-rounded-lg"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </div>
+                </motion.div>
+
+                {/* FUTSAL Card */}
+                <motion.div
+                  className={`px-2 cursor-pointer tw-text-2xl border-2 rounded-lg relative overflow-hidden ${
+                    selectedService === "FUTSAL"
+                      ? "border-green-500 bg-gradient-to-br from-green-50 to-green-100"
+                      : "border-gray-200 bg-gray-50"
                   }`}
                   onClick={() => handleServiceClick("FUTSAL")}
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.15)",
+                    rotate: selectedService === "FUTSAL" ? 0 : -1, // Slight tilt on hover
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                 >
-                  FUTSAL
-                  <img src="/img/shape/footsaal.jpg "
-                       className=" tw-h-[250px] tw-w-[280px]"
-                  />
-                </div>
+                  {selectedService === "FUTSAL" && (
+                    <motion.div
+                      className="tw-absolute tw-top-2 tw-right-2 tw-bg-green-500 tw-text-white tw-p-2 tw-rounded-full"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      ✓
+                    </motion.div>
+                  )}
+                  <TbPlayFootball className="tw-text-4xl tw-mb-2 tw-text-green-500" />
+                  <p className="tw-font-bold tw-text-3xl tw-text-gray-800">
+                    FUTSAL
+                  </p>
+                  <p className="tw-text-sm tw-text-gray-600 tw-mb-4">
+                    Enjoy a thrilling game of futsal with friends.
+                  </p>
+                  <div className="tw-relative tw-h-[250px] tw-w-full tw-rounded-lg tw-overflow-hidden">
+                    <img
+                      src="/img/shape/footsaal.jpg"
+                      className="tw-h-full tw-w-full tw-object-cover"
+                      alt="Futsal Court"
+                    />
+                    {selectedService === "FUTSAL" && (
+                      <motion.div
+                        className="tw-absolute tw-inset-0 tw-bg-black/10 tw-rounded-lg"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </div>
+                </motion.div>
               </motion.div>
             </div>
           </>
@@ -322,53 +406,108 @@ const Booking = () => {
 
       case 3:
         return (
-          <div className="card p-4 mt-4">
-            <h4>Confirmation</h4>
-            <hr className="border border-secondary border-1 opacity-10 mb-4" />
-            <p>Please confirm your booking details.</p>
-            <div className="row">
-              <p className="col-6">Futsal</p>
-              <p className="col-6 text-end">Rs. 1200</p>
+          <div className="card p-4 mt-4 tw-bg-white tw-rounded-lg tw-shadow-md">
+            <h4 className="tw-text-2xl tw-font-bold tw-text-gray-800 tw-mb-4">
+              Confirmation
+            </h4>
+            <hr className="tw-border tw-border-gray-200 tw-mb-4" />
+            <p className="tw-text-gray-600 tw-mb-6">
+              Please confirm your booking details.
+            </p>
+
+            {/* Booking Details */}
+            <div className="tw-space-y-4 tw-mb-6">
+              <div className="tw-flex tw-justify-between tw-items-center">
+                <div className="tw-flex tw-items-center tw-gap-2">
+                  <MdSports className="tw-text-xl tw-text-gray-600" />
+                  <p className="tw-text-gray-700">Futsal</p>
+                </div>
+                <p className="tw-text-gray-800 tw-font-semibold">Rs. 1200</p>
+              </div>
+              <div className="tw-flex tw-justify-between tw-items-center">
+                <div className="tw-flex tw-items-center tw-gap-2">
+                  <CiCreditCard1 className="tw-text-xl tw-text-gray-600" />
+                  <p className="tw-text-gray-700">Advance Amount</p>
+                </div>
+                <p className="tw-text-green-600 tw-font-semibold">Rs. 300</p>
+              </div>
+              <hr className="tw-border tw-border-gray-200" />
+              <div className="tw-flex tw-justify-between tw-items-center">
+                <div className="tw-flex tw-items-center tw-gap-2">
+                  <CiWallet className="tw-text-xl tw-text-gray-600" />
+                  <p className="tw-text-gray-700">Remaining Amount</p>
+                </div>
+                <p className="tw-text-red-600 tw-font-semibold">Rs. 900</p>
+              </div>
             </div>
-            <div className="row">
-              <p className="col-6">Advance Amount</p>
-              <p className="col-6 text-success text-end">Rs. 300</p>
-            </div>
-            <hr className="border border-secondary border-1 opacity-10 mb-2" />
-            <div className="row">
-              <p className="col-6">Remaining Amt.</p>
-              <p className="col-6 text-danger text-end">Rs. 900</p>
-            </div>
-            <div className="row mt-4">
-              <p className="col-12">
-                <CiClock1 />
-                {selectedDate ? selectedDate.toLocaleString() : "Select a date"}
-              </p>
-              <p>
-                {" "}
-                {selectedTime
-                  ? selectedTime.toLocaleString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: true,
-                    })
-                  : "Select a time"}
-              </p>
-            </div>
-            <div className="qr-code tw-bg-zinc-200 tw-rounded-lg tw-px-2 tw-py-2">
-              <div className="tw-flex tw-flex-col tw-items-center ">
-                <h3 className="tw-font-bold text-black">Make your Payment</h3>
-                <p className="text-black">
-                  Hello! Please scan the QR-Code to make payment.
+
+            {/* Date and Time */}
+            <div className="tw-mb-6">
+              <div className="tw-flex tw-items-center tw-gap-2 tw-mb-2">
+                <CiCalendar className="tw-text-xl tw-text-gray-600" />
+                <p className="tw-text-gray-700">
+                  {selectedDate
+                    ? selectedDate.toLocaleDateString("en-US", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                    : "Select a date"}
                 </p>
               </div>
-              <div className="tw-flex tw-justify-center mb-2">
-                <img
-                  src="https://placehold.co/600x400"
-                  className=" tw-w-[50%]"
-                ></img>
+              <div className="tw-flex tw-items-center tw-gap-2">
+                <CiClock1 className="tw-text-xl tw-text-gray-600" />
+                <p className="tw-text-gray-700">
+                  {selectedTime
+                    ? selectedTime.toLocaleString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })
+                    : "Select a time"}
+                </p>
               </div>
             </div>
+
+            {/* QR Code Section */}
+            <motion.div
+              className="tw-bg-[#F7F7F7] tw-rounded-lg tw-p-4 tw-shadow-sm"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="tw-flex tw-flex-col tw-items-center tw-gap-2">
+                <h3 className="tw-text-xl tw-font-bold tw-text-gray-800">
+                  Make Your Payment
+                </h3>
+                <p className="tw-text-gray-600 tw-text-center">
+                  Hello! Please scan the QR code below to complete your payment.
+                </p>
+                <div className="tw-mt-4 tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-inner">
+                  <img
+                    src="https://placehold.co/600x400"
+                    alt="QR Code"
+                    className="tw-w-48 tw-h-48 tw-object-contain"
+                  />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Confirmation Button */}
+            <motion.div
+              className="tw-mt-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <button
+                className="tw-w-full tw-bg-blue-500 tw-text-white tw-py-3 tw-px-6 tw-rounded-lg tw-font-semibold hover:tw-bg-blue-600 tw-transition-colors"
+                onClick={() => alert("Booking confirmed!")}
+              >
+                Confirm Booking
+              </button>
+            </motion.div>
           </div>
         );
       default:
@@ -382,19 +521,32 @@ const Booking = () => {
         {/* Custom Stepper */}
         <div className="stepper">
           {steps.map((label, index) => (
-            <div
-              key={label}
+            <motion.div
               className={`step ${index === activeStep ? "active" : ""}`}
+              key={label}
+              initial={{ scale: 1 }}
+              animate={{ scale: index === activeStep ? 1.1 : 1 }}
+              transition={{ duration: 0.3 }}
             >
               <div className="step-circle">{index + 1}</div>
               <div className="step-label">{label}</div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         <div className="row">
           <div className="col-lg-8 col-md-7 col-sm-12">
-            {getStepContent(activeStep)}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStep}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                {getStepContent(activeStep)}
+              </motion.div>
+            </AnimatePresence>
             <div className="mt-4">
               <button
                 className="btn btn-secondary"
