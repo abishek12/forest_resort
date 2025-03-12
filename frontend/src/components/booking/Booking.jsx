@@ -478,7 +478,7 @@ const Booking = () => {
                 <h3>Select Time</h3>
                 <div className="mb-4 tw-space-x-2">
                   <button
-                    className={`btn ${
+                    className={` btn ${
                       selectedPeriod === "am" ? "btn-primary" : "btn-secondary"
                     }`}
                     onClick={() => handlePeriodToggle("am")}
