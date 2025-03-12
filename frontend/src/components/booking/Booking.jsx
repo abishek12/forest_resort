@@ -16,37 +16,28 @@ import { FaRegUser } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
 import "../../assets/css/booking.css";
+import BookingRating from "./BookingRating";
+import ReviewForm from "./ReviewForm";
+import BookingDetails from "./BookingDetails";
 
 const Booking = () => {
   const [dates, setDates] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
-  const [rating, setRating] = useState(0);
-  const [feedback, setFeedback] = useState("");
+
+
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState("am");
   const [selectedService, setSelectedService] = useState("FUTSAL");
   const [isReferenceNoVisible, setIsReferenceNoVisible] = useState(false);
 
-  const [adults, setAdults] = useState(1); // Set default values for adults and children
+  const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
   const [unavailableSlots, setUnavailableSlots] = useState([]);
   const [availableSlots, setAvailableSlots] = useState([]);
   const [updatedSlots, setUpdatedSlots] = useState([]);
-
-  const [ratingsCount, setRatingsCount] = useState({
-    5: 10,
-    4: 8,
-    3: 6,
-    2: 4,
-    1: 2,
-  });
-  const totalRatings = Object.values(ratingsCount).reduce(
-    (acc, count) => acc + count,
-    0
-  );
 
   useEffect(() => {
     const getDates = () => {
@@ -61,8 +52,8 @@ const Booking = () => {
     };
 
     getDates();
+    
   }, []);
-
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -72,20 +63,20 @@ const Booking = () => {
     if (type === "adults") {
       setAdults(adults + 1);
     } else if (type === "children") {
-      setChildren(children + 1); 
+      setChildren(children + 1);
     }
   };
 
   const decreaseGuests = (type) => {
     if (type === "adults" && adults > 0) {
-      setAdults(adults - 1); 
+      setAdults(adults - 1);
     } else if (type === "children" && children > 0) {
-      setChildren(children - 1); 
+      setChildren(children - 1);
     }
   };
 
   const closeDropdown = () => {
-    setIsOpen(false); 
+    setIsOpen(false);
   };
 
   const handleDateClick = (date) => {
@@ -104,14 +95,6 @@ const Booking = () => {
     return { day, dateNumber };
   };
 
-  // const formattedDate = (date) => {
-  //   const year = (date.getFullYear());
-  //   const month = String(date.getMonth() + 1).padStart(2, "0");
-  //   const day = String(date.getDay()).padStart(2, "0");
-  //   return `${year}-${month}-${day}`;
-  // }
-  // console.log(formattedDate);
-
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1);
   };
@@ -120,28 +103,7 @@ const Booking = () => {
     setActiveStep((prevStep) => prevStep - 1);
   };
 
-  const handleRatingChange = (newValue) => {
-    setRating(newValue);
-    setRatingsCount((prevState) => ({
-      ...prevState,
-      [newValue]: prevState[newValue] + 1,
-    }));
-  };
 
-  const handleFeedbackChange = (event) => {
-    setFeedback(event.target.value);
-  };
-
-  const handleSubmitFeedback = () => {
-    alert("Thank you for your feedback!");
-    setFeedback("");
-    setRating(0);
-  };
-
-  const calculatePercentage = (count) => {
-    if (totalRatings === 0) return 0;
-    return (count / totalRatings) * 100;
-  };
 
   const timeSlots = {
     am: [
@@ -168,12 +130,14 @@ const Booking = () => {
 
   //unavailable timeslots
   const fetchUnavailableSlots = async (selectedDate) => {
-    try{
-      selectedDate = selectedDate.toISOString().split('T')[0];
-      const response = await axios.get(`/booking/unavailable-times?date=${selectedDate}&service=67a8af10655fb70f058f0f54`);
-      if(response.data.message === "success"){
+    try {
+      selectedDate = selectedDate.toISOString().split("T")[0];
+      const response = await axios.get(
+        `/booking/unavailable-times?date=${selectedDate}&service=67a8af10655fb70f058f0f54`
+      );
+      if (response.data.message === "success") {
         setUnavailableSlots(response.data.unavailableSlots);
-      } else{
+      } else {
         console.error("Unable to fetch slots!");
       }
     } catch (error) {
@@ -182,20 +146,22 @@ const Booking = () => {
   };
 
   const isTimeUnavailable = (time) => {
-    return unavailableSlots.some(slot => {
+    return unavailableSlots.some((slot) => {
       const slotStart = slot.start;
       const slotEnd = slot.end;
 
       return time >= slotStart && time < slotEnd;
-    })
-  }
+    });
+  };
 
   const getEndTime = (startTime) => {
     // Calculating end time based on selected start time
     const [hours, minutes] = startTime.split(":").map(Number);
     const endHour = (hours + 1) % 24;
-    const endMinutes = ("00");
-    return `${endHour.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
+    const endMinutes = "00";
+    return `${endHour.toString().padStart(2, "0")}:${endMinutes
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   const handleBookingSubmit = async () => {
@@ -211,35 +177,35 @@ const Booking = () => {
      *  -> Current Date is in Thu Mar 11, 2024 -> Make it as 2024-03-11
      *  -> Time Slot : Start : 08:00 PM End: 09:00 PM
      */
-  
+
     const bookingData = {
       service: "67a8af10655fb70f058f0f54",
-      user: "67c019abb6d78a672f417901",  
-      date: selectedDate, 
+      user: "67c019abb6d78a672f417901",
+      date: selectedDate,
       timeSlot: {
-        start: selectedTime, 
-        end: getEndTime(selectedTime), 
+        start: selectedTime,
+        end: getEndTime(selectedTime),
       },
       payment: {
-        reference: "PAY12345XYZ",  
-        amount: 500,  
+        reference: "PAY12345XYZ",
+        amount: 500,
         status: "pending",
       },
       persons: {
         children: children,
         adult: adults,
-      }, 
+      },
     };
 
     console.log(bookingData);
-  
+
     // try {
     //   const response = await axios.post("/booking", bookingData, {
     //     headers: {
     //       "Content-Type": "application/json",
     //     },
     //   });
-  
+
     //   if (response.data.success) {
     //     alert("Booking successful!");
     //     // Optionally reset states or redirect the user
@@ -251,7 +217,7 @@ const Booking = () => {
     //   alert("Something went wrong, please try again.");
     // }
   };
-  
+
   const handlePeriodToggle = (period) => {
     setSelectedPeriod(period);
   };
@@ -479,17 +445,17 @@ const Booking = () => {
                 <div className="mb-4 tw-space-x-2">
                   <button
                     className={`btn ${
-                      selectedPeriod === "am" ? "btn-primary" : "btn-secondary"
+                      selectedPeriod === "AM" ? "btn-primary" : "btn-secondary"
                     }`}
-                    onClick={() => handlePeriodToggle("am")}
+                    onClick={() => handlePeriodToggle("AM")}
                   >
                     AM
                   </button>
                   <button
                     className={`btn ${
-                      selectedPeriod === "pm" ? "btn-primary" : "btn-secondary"
+                      selectedPeriod === "PM" ? "btn-primary" : "btn-secondary"
                     }`}
-                    onClick={() => handlePeriodToggle("pm")}
+                    onClick={() => handlePeriodToggle("PM")}
                   >
                     PM
                   </button>
@@ -508,9 +474,19 @@ const Booking = () => {
                           <motion.div
                             className={`time-slot-card text-center ${
                               isSelected ? "bg-secondary text-light" : ""
-                            } ${isUnavailable ? "tw-bg-red-500 text-light cursor-not-allowed" : ""}`}
-                            onClick={!isUnavailable ? () => handleTimeClick(time) : undefined}
-                            style={{ cursor: isUnavailable ? "not-allowed" : "pointer" }}
+                            } ${
+                              isUnavailable
+                                ? "tw-bg-red-500 text-light cursor-not-allowed"
+                                : ""
+                            }`}
+                            onClick={
+                              !isUnavailable
+                                ? () => handleTimeClick(time)
+                                : undefined
+                            }
+                            style={{
+                              cursor: isUnavailable ? "not-allowed" : "pointer",
+                            }}
                             variants={dateCardVariants}
                             initial="initial"
                             animate="animate"
@@ -535,13 +511,15 @@ const Booking = () => {
               </div>
             )}
             <div className="tw-relative">
-              <div className="tw-font-bold border mt-4 tw-rounded-md px-2 py-2" onClick={toggleDropdown}>
+              <div
+                className="tw-font-bold border mt-4 tw-rounded-md px-2 py-2"
+                onClick={toggleDropdown}
+              >
                 <h3>Please, select the numbers of Adults and Children!</h3>
                 <div className="border tw-bg-green-200 tw-w-fit px-2">
                   <IoMdArrowDropdown className="tw-inline-block" size={20} />
-                {adults} adults, {children} children
+                  {adults} adults, {children} children
                 </div>
-                
               </div>
               {isOpen && (
                 <div className="tw-absolute tw-bg-gray-100 tw-rounded-md tw-border tw-border-black tw-p-4 tw-w-[210px] tw-z-50">
@@ -595,7 +573,7 @@ const Booking = () => {
               )}
               <span className="alert-error"></span>
             </div>
-           </div>
+          </div>
         );
 
       case 3:
@@ -642,7 +620,6 @@ const Booking = () => {
                 <p className="tw-text-gray-700">
                   {selectedDate
                     ? selectedDate.toLocaleDateString("en-CA", {
-                        
                         year: "numeric",
                         month: "numeric",
                         day: "numeric",
@@ -759,92 +736,15 @@ const Booking = () => {
             </div>
           </div>
           <div className="col-lg-4 col-md-5 col-sm-12">
-            <div className="card p-4">
-              <h4>Booking Details</h4>
-              <hr className="border border-secondary border-1 opacity-10 mb-2" />
-              <p className="text-black-50">Packages / Test Added</p>
-              <div className="row">
-                <p className="col-6">Futsal</p>
-                <p className="col-6 text-end">Rs. 1200</p>
-              </div>
-              <div className="row">
-                <p className="col-6">Advance Amount</p>
-                <p className="col-6 text-success text-end">Rs. 300</p>
-              </div>
-              <hr className="border border-secondary border-1 opacity-10 mb-2" />
-              <div className="row">
-                <p className="col-6">Remaining Amt.</p>
-                <p className="col-6 text-danger text-end">Rs. 900</p>
-              </div>
-            </div>
+            <BookingDetails/>
           </div>
         </div>
 
         {/* Rating and Feedback Section */}
         <div className="row mt-4">
+          <BookingRating />
           <div className="col-lg-6 col-md-6 col-sm-12">
-            <div className="card p-4">
-              <h4>Rate Your Experience</h4>
-              <div className="rating">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                    key={star}
-                    className={`star ${star <= rating ? "active" : ""}`}
-                    onClick={() => handleRatingChange(star)}
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
-              <div className="rating-text tw-font-bold">
-                <span>{rating ? `${rating}/5` : "No rating yet"}</span>
-              </div>
-              <div className="ratings-bar">
-                {[5, 4, 3, 2, 1].map((star) => (
-                  <div
-                    key={star}
-                    className="rating-row"
-                    style={{
-                      fontFamily: "Poppins",
-                    }}
-                  >
-                    <span className="tw-font-bold">{star}:</span>
-                    <div
-                      className="bar-container tw-rounded-lg"
-                      style={{
-                        width: `${calculatePercentage(ratingsCount[star])}%`,
-                      }}
-                    >
-                      <div
-                        className="bar"
-                        style={{
-                          width: `${calculatePercentage(ratingsCount[star])}%`,
-                        }}
-                      />
-                    </div>
-                    <span className="px-2">({ratingsCount[star]} Users)</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-6 col-md-6 col-sm-12">
-            <div className="card p-4">
-              <h4>Customer Feedback</h4>
-              <textarea
-                rows={4}
-                className="form-control"
-                value={feedback}
-                onChange={handleFeedbackChange}
-                placeholder="Share your feedback..."
-              />
-              <button
-                className="btn btn-primary mt-3"
-                onClick={handleSubmitFeedback}
-              >
-                Submit Feedback
-              </button>
-            </div>
+            <ReviewForm />
           </div>
         </div>
       </div>
