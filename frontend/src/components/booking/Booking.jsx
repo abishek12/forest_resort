@@ -19,15 +19,19 @@ import "../../assets/css/booking.css";
 import BookingRating from "./BookingRating";
 import ReviewForm from "./ReviewForm";
 import BookingDetails from "./BookingDetails";
+import { convertDateTimeSlot } from "../../utils/date-time";
 
 const Booking = () => {
+  // fetcsh user data from redux store
+  const [userInfo, setUserInfo] = useState(null);
+
   const [dates, setDates] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [bookingDate, setBookingDate] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
 
-
   const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedPeriod, setSelectedPeriod] = useState("am");
+  const [selectedPeriod, setSelectedPeriod] = useState("AM");
   const [selectedService, setSelectedService] = useState("FUTSAL");
   const [isReferenceNoVisible, setIsReferenceNoVisible] = useState(false);
 
@@ -45,16 +49,28 @@ const Booking = () => {
       let datesArray = [];
       for (let i = 0; i < 7; i++) {
         let date = new Date(today);
-        date.setDate(today.getDate() + i); // Adding days to today's date
-        datesArray.push(date); // Store the date object
+        date.setDate(today.getDate() + i);
+
+        const formattedDate = convertDateTimeSlot(date);
+
+        datesArray.push(formattedDate); // Store the formatted date string
       }
       setDates(datesArray);
     };
 
+    const getUserData = () => {
+      const storedUser = localStorage.getItem("userInfo");
+      if (storedUser) {
+        setUserInfo(JSON.parse(storedUser));
+      }
+    }
+
+    getUserData();
+
     getDates();
-    
   }, []);
 
+  //adult and children selects
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -80,8 +96,10 @@ const Booking = () => {
   };
 
   const handleDateClick = (date) => {
+    const formattedDate = convertDateTimeSlot(date);
     setSelectedDate(date);
-    fetchUnavailableSlots(date);
+    setBookingDate(formattedDate);
+    fetchUnavailableSlots(formattedDate);
   };
 
   const handleTimeClick = (time) => {
@@ -103,37 +121,35 @@ const Booking = () => {
     setActiveStep((prevStep) => prevStep - 1);
   };
 
-
-
   const timeSlots = {
-    am: [
-      "06:00 - 07:00 ",
-      "07:00 - 08:00 ",
-      "08:00 - 09:00 ",
-      "09:00 - 10:00 ",
-      "10:00 - 11:00 ",
-      "11:00 - 12:00 ",
+    AM: [
+      "06:00-07:00",
+      "07:00-08:00",
+      "08:00-09:00",
+      "09:00-10:00",
+      "10:00-11:00",
+      "11:00-12:00",
     ],
-    pm: [
-      "12:00 - 01:00 ",
-      "01:00 - 02:00 ",
-      "02:00 - 03:00 ",
-      "03:00 - 04:00 ",
-      "04:00 - 05:00 ",
-      "05:00 - 06:00 ",
-      "06:00 - 07:00 ",
-      "07:00 - 08:00 ",
-      "08:00 - 09:00 ",
-      "09:00 - 10:00 ",
+    PM: [
+      "12:00-01:00",
+      "01:00-02:00",
+      "02:00-03:00",
+      "03:00-04:00",
+      "04:00-05:00",
+      "05:00-06:00",
+      "06:00-07:00",
+      "07:00-08:00",
+      "08:00-09:00",
+      "09:00-10:00",
     ],
   };
 
   //unavailable timeslots
-  const fetchUnavailableSlots = async (selectedDate) => {
+  const fetchUnavailableSlots = async (bookingDate) => {
     try {
-      selectedDate = selectedDate.toISOString().split("T")[0];
+      // selectedDate = selectedDate.toISOString().split("T")[0];
       const response = await axios.get(
-        `/booking/unavailable-times?date=${selectedDate}&service=67a8af10655fb70f058f0f54`
+        `/booking/unavailable-times?date=${bookingDate}&service=67a8af10655fb70f058f0f54`
       );
       if (response.data.message === "success") {
         setUnavailableSlots(response.data.unavailableSlots);
@@ -147,44 +163,35 @@ const Booking = () => {
 
   const isTimeUnavailable = (time) => {
     return unavailableSlots.some((slot) => {
-      const slotStart = slot.start;
-      const slotEnd = slot.end;
-
-      return time >= slotStart && time < slotEnd;
+      const unavailableSlot = slot.slot;
+      //const unavailablePeriod = slot.period;
+      return time === unavailableSlot;
     });
   };
 
-  const getEndTime = (startTime) => {
-    // Calculating end time based on selected start time
-    const [hours, minutes] = startTime.split(":").map(Number);
-    const endHour = (hours + 1) % 24;
-    const endMinutes = "00";
-    return `${endHour.toString().padStart(2, "0")}:${endMinutes
-      .toString()
-      .padStart(2, "0")}`;
-  };
-
   const handleBookingSubmit = async () => {
-    if (!selectedDate || !selectedTime) {
-      alert("Please select a date and time");
-      return;
+    if (selectedService === "FUTSAL" && selectedService !== "SWIMMING") {
+      if (!selectedDate || !selectedTime || !selectedPeriod) {
+        alert("Please select a date, time and period(AM/PM)!");
+        return;
+      }
+    }
+    if (selectedService === "SWIMMING" && selectedService !== "FUTSAL") {
+      if (!selectedDate) {
+        alert("Please select a date for swimming!");
+        return;
+      }
     }
 
     setIsReferenceNoVisible(true);
 
-    /**
-     * Date Conversion
-     *  -> Current Date is in Thu Mar 11, 2024 -> Make it as 2024-03-11
-     *  -> Time Slot : Start : 08:00 PM End: 09:00 PM
-     */
-
     const bookingData = {
       service: "67a8af10655fb70f058f0f54",
-      user: "67c019abb6d78a672f417901",
-      date: selectedDate,
+      user: userInfo.userId,
+      date: bookingDate,
       timeSlot: {
-        start: selectedTime,
-        end: getEndTime(selectedTime),
+        slot: selectedTime,
+        period: selectedPeriod,
       },
       payment: {
         reference: "PAY12345XYZ",
@@ -199,23 +206,22 @@ const Booking = () => {
 
     console.log(bookingData);
 
-    // try {
-    //   const response = await axios.post("/booking", bookingData, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
+    try {
+      const response = await axios.post("/booking", bookingData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    //   if (response.data.success) {
-    //     alert("Booking successful!");
-    //     // Optionally reset states or redirect the user
-    //   } else {
-    //     alert("Booking failed: " + response.data.message);
-    //   }
-    // } catch (error) {
-    //   console.error("Error creating booking:", error);
-    //   alert("Something went wrong, please try again.");
-    // }
+      if (response.data.success) {
+        alert("Booking successful!");
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error creating booking:", error);
+      alert("Something went wrong, please try again.");
+    }
   };
 
   const handlePeriodToggle = (period) => {
@@ -405,7 +411,8 @@ const Booking = () => {
           <div className="card p-4">
             <p className="h4 mb-4">Select Slot</p>
             <div className="row mb-4">
-              {dates.map((date, index) => {
+              {dates.map((dateString, index) => {
+                const date = new Date(dateString);
                 const { day, dateNumber } = formatDate(date);
                 const isSelected =
                   selectedDate &&
@@ -473,10 +480,10 @@ const Booking = () => {
                         >
                           <motion.div
                             className={`time-slot-card text-center ${
-                              isSelected ? "bg-secondary text-light" : ""
+                              isSelected ? "tw-h-full bg-secondary text-light" : ""
                             } ${
                               isUnavailable
-                                ? "tw-bg-red-500 text-light cursor-not-allowed"
+                                ? "tw-h-full tw-bg-red-500 text-light cursor-not-allowed"
                                 : ""
                             }`}
                             onClick={
@@ -686,6 +693,38 @@ const Booking = () => {
     }
   };
 
+  if (!userInfo) {
+    return (
+      <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-screen tw-bg-gray-50">
+        <div className="tw-bg-white tw-shadow-lg tw-rounded-xl tw-p-8 tw-max-w-md tw-text-center tw-transition-all tw-hover:shadow-xl">
+          {/* Illustration */}
+          <img
+            src="/img/booking/reserve.svg"
+            alt="Booking Illustration"
+            className="tw-w-72 tw-h-64 tw-mx-auto tw-mb-6"
+          />
+
+          {/* Message */}
+          <h2 className="tw-text-2xl tw-font-bold tw-text-gray-800 tw-mb-3">
+            To Book, Please Login
+          </h2>
+          <p className="tw-text-gray-600 tw-mb-6">
+            You need to log in to book a time slot. Don't have an account? Sign
+            up now!
+          </p>
+
+          {/* Login Button */}
+          <button
+            className="tw-bg-blue-500 tw-text-white tw-py-2 tw-px-6 tw-rounded-lg tw-font-semibold tw-transition-all tw-hover:bg-blue-600 tw-hover:shadow-md tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-blue-500 tw-focus:ring-offset-2"
+            // onClick={handleLoginRedirect}
+          >
+            Go to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="m-5">
@@ -736,7 +775,7 @@ const Booking = () => {
             </div>
           </div>
           <div className="col-lg-4 col-md-5 col-sm-12">
-            <BookingDetails/>
+            <BookingDetails />
           </div>
         </div>
 
