@@ -18,11 +18,11 @@ const bookingSchema = new mongoose.Schema(
     },
     timeSlot: {
       slot: {
-        type: String,
+        type: false,
         required: true, // Example: "08:00-09:00"
       },
       period: {
-        type: String,
+        type: false,
         enum: ["AM", "PM"],
         required: true,
       },
@@ -52,12 +52,12 @@ const bookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-bookingSchema.pre("save", function (next) {
-  if (this.timeSlot.start >= this.timeSlot.end) {
-    next(new Error("Start time must be before end time"));
-  } else {
-    next();
-  }
-});
+// bookingSchema.pre("save", function (next) {
+//   if (this.timeSlot.start >= this.timeSlot.end) {
+//     next(new Error("Start time must be before end time"));
+//   } else {
+//     next();
+//   }
+// });
 
 export const Booking = mongoose.model("booking", bookingSchema);

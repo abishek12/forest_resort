@@ -5,22 +5,7 @@ export const bookingHelper = (data) => {
     service: Joi.string().required(),
     user: Joi.string().required(),
     date: Joi.date().iso().required(),
-    timeSlot: Joi.object({
-      slot: Joi.string().required(),
-      period: Joi.string().required(),
-    })
-      .required()
-      .custom((value, helpers) => {
-        let startTime = value.start;
-        let endTime = value.end;
-        if (startTime >= endTime) {
-          return helpers.error("any.invalid", {
-            message: "End time must be after start time",
-          });
-        }
-
-        return value;
-      }),
+    timeSlot: Joi.object().allow(""),
     status: Joi.string()
       .valid("pending", "confirmed", "cancelled")
       .default("pending"),

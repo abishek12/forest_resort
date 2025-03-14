@@ -9,6 +9,7 @@ export const createBooking = async (req, res) => {
 
   try {
     let { error, value } = bookingHelper(req.body);
+    console.log(value);
     if (error) {
       await session.abortTransaction();
       session.endSession();
@@ -52,6 +53,7 @@ export const createBooking = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    console.log(error)
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
