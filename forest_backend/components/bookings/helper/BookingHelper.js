@@ -1,26 +1,25 @@
 import Joi from "joi";
 
-export const bookingHelper = (data) => {
+import { Service } from "../../services/model/ServiceModel.js";
+
+export const bookingHelper = async (data) => {
+  const service = await Service.findById(data.service);
+  if (!service) {
+    return { error: { details: [{ message: "Invalid service ID" }] } };
+  }
+
+  const requiresTimeSlot = service.requiresTimeSlot;
+
   let bookingSchema = Joi.object({
     service: Joi.string().required(),
     user: Joi.string().required(),
     date: Joi.date().iso().required(),
-    timeSlot: Joi.object({
-      slot: Joi.string().required(),
-      period: Joi.string().required(),
-    })
-      .required()
-      .custom((value, helpers) => {
-        let startTime = value.start;
-        let endTime = value.end;
-        if (startTime >= endTime) {
-          return helpers.error("any.invalid", {
-            message: "End time must be after start time",
-          });
-        }
-
-        return value;
-      }),
+    timeSlot: requiresTimeSlot
+      ? Joi.object({
+          slot: Joi.string().required(),
+          period: Joi.string().valid("AM", "PM").required(),
+        }).required()
+      : Joi.any().optional(),
     status: Joi.string()
       .valid("pending", "confirmed", "cancelled")
       .default("pending"),

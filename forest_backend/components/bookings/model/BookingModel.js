@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+import { Service } from "../../services/model/ServiceModel.js";
+
 const bookingSchema = new mongoose.Schema(
   {
     service: {
@@ -19,12 +21,16 @@ const bookingSchema = new mongoose.Schema(
     timeSlot: {
       slot: {
         type: String,
-        required: true, // Example: "08:00-09:00"
+        required: function () {
+          return this._requiresTimeSlot; // Only required if the service needs a time slot
+        },
       },
       period: {
         type: String,
         enum: ["AM", "PM"],
-        required: true,
+        required: function () {
+          return this._requiresTimeSlot;
+        },
       },
     },
     status: {
@@ -52,12 +58,19 @@ const bookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-bookingSchema.pre("save", function (next) {
-  if (this.timeSlot.start >= this.timeSlot.end) {
-    next(new Error("Start time must be before end time"));
-  } else {
-    next();
+bookingSchema.pre("validate", async function (next) {
+  const service = await Service.findById(this.service);
+  if (!service) {
+    return next(new Error("Invalid service ID"));
   }
+
+  this._requiresTimeSlot = service.requiresTimeSlot;
+
+  if (service.requiresTimeSlot && !this.timeSlot?.slot) {
+    return next(new Error("Time slot is required for this service"));
+  }
+
+  next();
 });
 
 export const Booking = mongoose.model("booking", bookingSchema);

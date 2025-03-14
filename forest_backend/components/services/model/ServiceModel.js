@@ -45,6 +45,12 @@ const serviceSchema = new mongoose.Schema(
       enum: ["pool", "futsal", "other"],
       required: true,
     },
+    requiresTimeSlot: {
+      type: Boolean,
+      default: function () {
+        return this.type === "futsal"; // Futsal needs time slots, others may not
+      },
+    },
     pool: poolSchema,
     futsal: futsalSchema,
     price: {
@@ -54,7 +60,7 @@ const serviceSchema = new mongoose.Schema(
     images: [{ type: String }],
     availability: {
       type: availabilitySchema,
-      default: () => ({}), 
+      default: () => ({}),
     },
   },
   { timestamps: true }

@@ -5,14 +5,27 @@ export const serviceHelper = (data) => {
     name: Joi.string().min(3).max(100).required(),
     description: Joi.string().max(500).optional(),
     type: Joi.string().valid("pool", "futsal", "other").required(),
-    pool: Joi.object({
-      lanes: Joi.number().min(1).optional(),
-      depth: Joi.number().min(0).optional(),
-    }).optional(),
-    futsal: Joi.object({
-      courtSize: Joi.string().optional(),
-      surfaceType: Joi.string().optional(),
-    }).optional(),
+
+    pool: Joi.alternatives().conditional("type", {
+      is: "pool",
+      then: Joi.object({
+        lanes: Joi.number().min(1).required(),
+        depth: Joi.number().min(0).required(),
+      }).required(),
+      otherwise: Joi.forbidden(), // Disallow if not a pool
+    }),
+
+    futsal: Joi.alternatives().conditional("type", {
+      is: "futsal",
+      then: Joi.object({
+        courtSize: Joi.string().required(),
+        surfaceType: Joi.string().required(),
+      }).required(),
+      otherwise: Joi.forbidden(), // Disallow if not futsal
+    }),
+
+    requiresTimeSlot: Joi.boolean().default(false),
+
     price: Joi.number().min(0).required(),
     images: Joi.array().items(Joi.string().uri()).optional(),
     availability: Joi.object({
