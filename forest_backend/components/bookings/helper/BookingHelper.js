@@ -19,7 +19,7 @@ export const bookingHelper = async (data) => {
           slot: Joi.string().required(),
           period: Joi.string().valid("AM", "PM").required(),
         }).required()
-      : Joi.any().optional(),
+      : Joi.forbidden(),
     status: Joi.string()
       .valid("pending", "confirmed", "cancelled")
       .default("pending"),

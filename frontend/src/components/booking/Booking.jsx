@@ -11,6 +11,7 @@ import {
 import { MdSports } from "react-icons/md";
 import { FaPersonSwimming } from "react-icons/fa6";
 import { TbPlayFootball } from "react-icons/tb";
+import { Button } from "react-bootstrap";
 
 import { FaRegUser } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -20,6 +21,7 @@ import BookingRating from "./BookingRating";
 import ReviewForm from "./ReviewForm";
 import BookingDetails from "./BookingDetails";
 import { convertDateTimeSlot } from "../../utils/date-time";
+import { toast } from "react-toastify";
 
 const Booking = () => {
   // fetcsh user data from redux store
@@ -40,8 +42,9 @@ const Booking = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [unavailableSlots, setUnavailableSlots] = useState([]);
-  const [availableSlots, setAvailableSlots] = useState([]);
-  const [updatedSlots, setUpdatedSlots] = useState([]);
+
+  const [showButton, setShowButton] = useState(false);
+  const [transactionId, setTransactionId] = useState("");
 
   useEffect(() => {
     const getDates = () => {
@@ -63,7 +66,7 @@ const Booking = () => {
       if (storedUser) {
         setUserInfo(JSON.parse(storedUser));
       }
-    }
+    };
 
     getUserData();
 
@@ -121,6 +124,8 @@ const Booking = () => {
     setActiveStep((prevStep) => prevStep - 1);
   };
 
+  const handleFinish = () => {};
+
   const timeSlots = {
     AM: [
       "06:00-07:00",
@@ -169,7 +174,7 @@ const Booking = () => {
     });
   };
 
-  const handleBookingSubmit = async () => {
+  const handleTransactionDetail = () => {
     if (selectedService === "FUTSAL" && selectedService !== "SWIMMING") {
       if (!selectedDate || !selectedTime || !selectedPeriod) {
         alert("Please select a date, time and period(AM/PM)!");
@@ -182,7 +187,17 @@ const Booking = () => {
         return;
       }
     }
+    setTimeout(() => {
+      setShowButton(true);
+    }, 1000);
+  };
+  const handleTransactionIdBtn = () => {
+    if (!transactionId) {
+      toast("Please, Enter a Transaction ID!");
+    }
+  };
 
+  const handleBookingSubmit = async () => {
     setIsReferenceNoVisible(true);
 
     const bookingData = {
@@ -194,7 +209,7 @@ const Booking = () => {
         period: selectedPeriod,
       },
       payment: {
-        reference: "PAY12345XYZ",
+        reference: transactionId,
         amount: 500,
         status: "pending",
       },
@@ -450,22 +465,22 @@ const Booking = () => {
               >
                 <h3>Select Time</h3>
                 <div className="mb-4 tw-space-x-2">
-                  <button
-                    className={`btn ${
-                      selectedPeriod === "AM" ? "btn-primary" : "btn-secondary"
-                    }`}
+                  <button 
+                    className={`btn  ${
+                      selectedPeriod === "AM" ? "btn-primary" : "btn-secondary" 
+                    } hover:tw-scale-105 hover:tw-bg-yellow-400 active:tw-scale-110`}
                     onClick={() => handlePeriodToggle("AM")}
                   >
                     AM
                   </button>
-                  <button
+                  <Button
                     className={`btn ${
                       selectedPeriod === "PM" ? "btn-primary" : "btn-secondary"
-                    }`}
+                    } hover:tw-scale-105 hover:tw-bg-yellow-400 active:tw-scale-110`}
                     onClick={() => handlePeriodToggle("PM")}
                   >
                     PM
-                  </button>
+                  </Button>
                 </div>
                 <div className="row mb-2">
                   {timeSlots[selectedPeriod].map((time, index) => {
@@ -480,7 +495,9 @@ const Booking = () => {
                         >
                           <motion.div
                             className={`time-slot-card text-center ${
-                              isSelected ? "tw-h-full bg-secondary text-light" : ""
+                              isSelected
+                                ? "tw-h-full bg-secondary text-light"
+                                : ""
                             } ${
                               isUnavailable
                                 ? "tw-h-full tw-bg-red-500 text-light cursor-not-allowed"
@@ -679,17 +696,55 @@ const Booking = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <button
-                className="tw-w-full tw-bg-blue-500 tw-text-white tw-py-3 tw-px-6 tw-rounded-lg tw-font-semibold hover:tw-bg-blue-600 tw-transition-colors"
-                onClick={() => handleBookingSubmit("Booking confirmed!")}
-              >
-                Confirm Booking
-              </button>
+              {showButton ? (
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="form-group">
+                      <input
+                        className="form-control no-arrows"
+                        id="transaction_id"
+                        name="transaction_id"
+                        placeholder="Transaction No.*"
+                        type="text"
+                        autoComplete="off"
+                        required
+                        onChange={(e) => setTransactionId(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
+
+              <div className="row">
+                <div className="col-lg-12 tw-py-3">
+                  {!showButton ? (
+                    <Button
+                      type="button"
+                      onClick={handleTransactionDetail}
+                      className=" tw-bg-green-600 tw-w-full"
+                    >
+                      {" "}
+                      Confirm Booking
+                    </Button>
+                  ) : (
+                    <Button
+                      type="submit"
+                      name="transactionId"
+                      onClick={handleTransactionIdBtn}
+                      className=" tw-w-[340px]"
+                    >
+                      Done
+                    </Button>
+                  )}
+                </div>
+              </div>
             </motion.div>
           </div>
         );
       default:
-        return "Unknown step";
+        return "Completed.";
     }
   };
 
@@ -767,7 +822,11 @@ const Booking = () => {
               </button>
               <button
                 className="btn btn-primary"
-                onClick={handleNext}
+                onClick={
+                  activeStep === steps.length - 1
+                    ? handleBookingSubmit
+                    : handleNext
+                }
                 style={{ marginLeft: "10px" }}
               >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}

@@ -2332,7 +2332,7 @@ button i {
   width: 0;
   display: block;
   opacity: 0;
-  border-top: solid 2px var(--color-primary);
+  /* border-top: solid 2px var(--color-primary); */
   border-right: solid 2px var(--color-primary);
   left: 98px;
   top: -1px;
