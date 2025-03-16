@@ -7,7 +7,10 @@ import {
 } from "../controllers/GetBookingController.js";
 import { createBooking } from "../controllers/CreateBookingController.js";
 import { cancelBooking } from "../controllers/CancelBookingController.js";
-import { deleteBooking } from "../controllers/DeleteBookingController.js";
+import {
+  deleteBooking,
+  deleteAllBoking,
+} from "../controllers/DeleteBookingController.js";
 import {
   updateBookingStatus,
   updatePaymentStatus,
@@ -23,6 +26,7 @@ route
   .patch("/:id/cancel", cancelBooking)
   .put("/:id/status", updateBookingStatus)
   .put("/:id/payment-status", updatePaymentStatus)
-  .delete("/:id/delete", deleteBooking);
+  .delete("/:id/delete", deleteBooking)
+  .delete("/deleteAll", deleteAllBoking);
 
 export default route;
