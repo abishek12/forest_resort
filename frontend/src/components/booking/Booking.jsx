@@ -34,14 +34,15 @@ const Booking = () => {
 
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState("AM");
-  const [selectedService, setSelectedService] = useState("FUTSAL");
-  const [isReferenceNoVisible, setIsReferenceNoVisible] = useState(false);
+  const [selectedService, setSelectedService] = useState("futsal");
+  const [selectedServiceId, setSelectedServiceId] = useState(null);
 
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
   const [unavailableSlots, setUnavailableSlots] = useState([]);
+  const [servicesData, setServicesData] = useState([]);
 
   const [showButton, setShowButton] = useState(false);
   const [transactionId, setTransactionId] = useState("");
@@ -124,8 +125,6 @@ const Booking = () => {
     setActiveStep((prevStep) => prevStep - 1);
   };
 
-  const handleFinish = () => {};
-
   const timeSlots = {
     AM: [
       "06:00-07:00",
@@ -156,6 +155,11 @@ const Booking = () => {
       const response = await axios.get(
         `/booking/unavailable-times?date=${bookingDate}&service=67a8af10655fb70f058f0f54`
       );
+      const servicesResponse = await axios.get("/services");
+      if (response.data.message === "success") {
+        setServicesData(servicesResponse.data.items);
+      }
+
       if (response.data.message === "success") {
         setUnavailableSlots(response.data.unavailableSlots);
       } else {
@@ -175,13 +179,13 @@ const Booking = () => {
   };
 
   const handleTransactionDetail = () => {
-    if (selectedService === "FUTSAL" && selectedService !== "SWIMMING") {
+    if (selectedService === "futsal" && selectedService !== "pool") {
       if (!selectedDate || !selectedTime || !selectedPeriod) {
         alert("Please select a date, time and period(AM/PM)!");
         return;
       }
     }
-    if (selectedService === "SWIMMING" && selectedService !== "FUTSAL") {
+    if (selectedService === "futsal" && selectedService !== "pool") {
       if (!selectedDate) {
         alert("Please select a date for swimming!");
         return;
@@ -320,20 +324,20 @@ const Booking = () => {
                 {/* SWIMMING Card */}
                 <motion.div
                   className={`px-2 cursor-pointer tw-text-2xl border-2 rounded-lg relative overflow-hidden ${
-                    selectedService === "SWIMMING"
+                    selectedService === "pool"
                       ? "border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100"
                       : "border-gray-200 bg-gray-50"
                   }`}
-                  onClick={() => handleServiceClick("SWIMMING")}
+                  onClick={() => handleServiceClick("pool")}
                   whileHover={{
                     scale: 1.05,
                     boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.15)",
-                    rotate: selectedService === "SWIMMING" ? 0 : 1, // Slight tilt on hover
+                    rotate: selectedService === "pool" ? 0 : 1, // Slight tilt on hover
                   }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  {selectedService === "SWIMMING" && (
+                  {selectedService === "pool" && (
                     <motion.div
                       className="tw-absolute tw-top-2 tw-right-2 tw-bg-blue-500 tw-text-white tw-p-2 tw-rounded-full"
                       initial={{ scale: 0 }}
@@ -356,7 +360,7 @@ const Booking = () => {
                       className="tw-h-full tw-w-full tw-object-cover"
                       alt="Swimming Pool"
                     />
-                    {selectedService === "SWIMMING" && (
+                    {selectedService === "pool" && (
                       <motion.div
                         className="tw-absolute tw-inset-0 tw-bg-black/10 tw-rounded-lg"
                         initial={{ opacity: 0 }}
@@ -370,20 +374,20 @@ const Booking = () => {
                 {/* FUTSAL Card */}
                 <motion.div
                   className={`px-2 cursor-pointer tw-text-2xl border-2 rounded-lg relative overflow-hidden ${
-                    selectedService === "FUTSAL"
+                    selectedService === "futsal"
                       ? "border-green-500 bg-gradient-to-br from-green-50 to-green-100"
                       : "border-gray-200 bg-gray-50"
                   }`}
-                  onClick={() => handleServiceClick("FUTSAL")}
+                  onClick={() => handleServiceClick("futsal")}
                   whileHover={{
                     scale: 1.05,
                     boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.15)",
-                    rotate: selectedService === "FUTSAL" ? 0 : -1, // Slight tilt on hover
+                    rotate: selectedService === "futsal" ? 0 : -1, // Slight tilt on hover
                   }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  {selectedService === "FUTSAL" && (
+                  {selectedService === "futsal" && (
                     <motion.div
                       className="tw-absolute tw-top-2 tw-right-2 tw-bg-green-500 tw-text-white tw-p-2 tw-rounded-full"
                       initial={{ scale: 0 }}
@@ -406,7 +410,7 @@ const Booking = () => {
                       className="tw-h-full tw-w-full tw-object-cover"
                       alt="Futsal Court"
                     />
-                    {selectedService === "FUTSAL" && (
+                    {selectedService === "futsal" && (
                       <motion.div
                         className="tw-absolute tw-inset-0 tw-bg-black/10 tw-rounded-lg"
                         initial={{ opacity: 0 }}
@@ -456,7 +460,7 @@ const Booking = () => {
               })}
             </div>
 
-            {selectedService === "FUTSAL" && (
+            {selectedService === "futsal" && (
               <div
                 className=" card time-slot px-4 py-2"
                 style={{
@@ -465,9 +469,9 @@ const Booking = () => {
               >
                 <h3>Select Time</h3>
                 <div className="mb-4 tw-space-x-2">
-                  <button 
+                  <button
                     className={`btn  ${
-                      selectedPeriod === "AM" ? "btn-primary" : "btn-secondary" 
+                      selectedPeriod === "AM" ? "btn-primary" : "btn-secondary"
                     } hover:tw-scale-105 hover:tw-bg-yellow-400 active:tw-scale-110`}
                     onClick={() => handlePeriodToggle("AM")}
                   >
@@ -528,7 +532,7 @@ const Booking = () => {
               </div>
             )}
 
-            {selectedService === "SWIMMING" && selectedDate && (
+            {selectedService === "pool" && selectedDate && (
               <div className="card p-4">
                 <p className="h4 mb-4">Selected Date</p>
                 <p>{selectedDate.toLocaleDateString()}</p>
