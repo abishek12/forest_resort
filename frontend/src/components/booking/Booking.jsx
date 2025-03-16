@@ -36,6 +36,7 @@ const Booking = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("AM");
   const [selectedService, setSelectedService] = useState("FUTSAL");
   const [isReferenceNoVisible, setIsReferenceNoVisible] = useState(false);
+  //const [bookedSlots, setBookedSlots] = useState([]);
 
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -124,8 +125,6 @@ const Booking = () => {
     setActiveStep((prevStep) => prevStep - 1);
   };
 
-  const handleFinish = () => {};
-
   const timeSlots = {
     AM: [
       "06:00-07:00",
@@ -149,6 +148,11 @@ const Booking = () => {
     ],
   };
 
+  const swimmingSlots = {
+    AM: ["00:00"],
+    PM: ["00:00"],
+  };
+
   //unavailable timeslots
   const fetchUnavailableSlots = async (bookingDate) => {
     try {
@@ -167,23 +171,25 @@ const Booking = () => {
   };
 
   const isTimeUnavailable = (time) => {
+    if(selectedService === "FUTSAL" && selectedPeriod !== "SWIMMING"){
     return unavailableSlots.some((slot) => {
       const unavailableSlot = slot.slot;
       //const unavailablePeriod = slot.period;
       return time === unavailableSlot;
     });
+  }
   };
 
   const handleTransactionDetail = () => {
     if (selectedService === "FUTSAL" && selectedService !== "SWIMMING") {
       if (!selectedDate || !selectedTime || !selectedPeriod) {
-        alert("Please select a date, time and period(AM/PM)!");
+        toast("Please select a date, time and period(AM/PM)!");
         return;
       }
     }
     if (selectedService === "SWIMMING" && selectedService !== "FUTSAL") {
-      if (!selectedDate) {
-        alert("Please select a date for swimming!");
+      if (!selectedDate && !selectedTime) {
+        toast("Please select a date and time for swimming!");
         return;
       }
     }
@@ -229,13 +235,13 @@ const Booking = () => {
       });
 
       if (response.data.success) {
-        alert("Booking successful!");
+        toast("Booking successful!");
       } else {
-        alert(response.data.message);
+        toast(response.data.message);
       }
     } catch (error) {
       console.error("Error creating booking:", error);
-      alert("Something went wrong, please try again.");
+      toast("Something went wrong, please try again.");
     }
   };
 
@@ -456,7 +462,7 @@ const Booking = () => {
               })}
             </div>
 
-            {selectedService === "FUTSAL" && (
+            {selectedService === "FUTSAL" && selectedService !== "SWIMMING" && (
               <div
                 className=" card time-slot px-4 py-2"
                 style={{
@@ -464,23 +470,35 @@ const Booking = () => {
                 }}
               >
                 <h3>Select Time</h3>
-                <div className="mb-4 tw-space-x-2">
-                  <button 
+                <div className="mb-4 tw-space-x-2 tw-col-auto row-lg-1 row-md-1 col-sm-1 lg:tw-w-[2560px] md:tw-w-[768px] max-sm:tw-w-[425px] max-sm:tw-ml-[-15px]">
+                  <motion.button
                     className={`btn  ${
-                      selectedPeriod === "AM" ? "btn-primary" : "btn-secondary" 
+                      selectedPeriod === "AM" ? "btn-primary" : "btn-secondary"
                     } hover:tw-scale-105 hover:tw-bg-yellow-400 active:tw-scale-110`}
                     onClick={() => handlePeriodToggle("AM")}
+                    style={{ cursor: "pointer" }}
+                    initial="initial"
+                    animate="animate"
+                    whileHover="hover"
+                    whileTap="selected"
+                    transition={{ duration: 1.5, ease: "easeInOut"}}
                   >
                     AM
-                  </button>
-                  <Button
+                  </motion.button>
+                  <motion.button
                     className={`btn ${
                       selectedPeriod === "PM" ? "btn-primary" : "btn-secondary"
                     } hover:tw-scale-105 hover:tw-bg-yellow-400 active:tw-scale-110`}
                     onClick={() => handlePeriodToggle("PM")}
+                    style={{ cursor: "pointer" }}
+                    initial="initial"
+                    animate="animate"
+                    whileHover="hover"
+                    whileTap="selected"
+                    transition={{ duration: 1.5, ease: "easeInOut"}}
                   >
                     PM
-                  </Button>
+                  </motion.button>
                 </div>
                 <div className="row mb-2">
                   {timeSlots[selectedPeriod].map((time, index) => {
@@ -496,7 +514,7 @@ const Booking = () => {
                           <motion.div
                             className={`time-slot-card text-center ${
                               isSelected
-                                ? "tw-h-full bg-secondary text-light"
+                                ? "bg-secondary text-light"
                                 : ""
                             } ${
                               isUnavailable
@@ -526,6 +544,28 @@ const Booking = () => {
                   })}
                 </div>
               </div>
+            )}
+            
+            {selectedService === "SWIMMING"  && (
+                          <div className="row mb-2">
+                          {swimmingSlots[selectedPeriod].map((time, index) => {
+                            const isSelected = selectedTime === time;
+                            return (
+                              <div
+                                className="col-lg-2 col-md-3 col-sm-4 m-2 mb-4 mx-3 border tw-rounded-lg tw-w-fit"
+                                key={index}>
+                                <h3>Pick the time</h3>
+                                <div className={`tw-m-5 ${
+                                    isSelected ? " bg-secondary text-light" : ""
+                                  }`}
+                                  onClick={ !isSelected ? () => handleTimeClick(time) : undefined
+                                  }>
+                                  <p className=" border tw-flex tw-justify-center">{time}</p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
             )}
 
             {selectedService === "SWIMMING" && selectedDate && (
