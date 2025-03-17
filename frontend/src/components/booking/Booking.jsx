@@ -22,8 +22,10 @@ import ReviewForm from "./ReviewForm";
 import BookingDetails from "./BookingDetails";
 import { convertDateTimeSlot } from "../../utils/date-time";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Booking = () => {
+  const navigate = useNavigate();
   // fetcsh user data from redux store
   const [userInfo, setUserInfo] = useState(null);
 
@@ -36,7 +38,7 @@ const Booking = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("AM");
   const [selectedService, setSelectedService] = useState("futsal");
   const [selectedServiceId, setSelectedServiceId] = useState(null);
-  
+
   const [isTimeSelected, setIsTimeSelected] = useState(false);
   const [isServiceSelected, setIsServiceSelected] = useState(false);
   const [isTimeSlotSelected, setIsTimeSlotSelected] = useState(false);
@@ -109,17 +111,17 @@ const Booking = () => {
     setSelectedDate(date);
     setBookingDate(formattedDate);
     fetchUnavailableSlots(formattedDate);
-    if(date){
+    if (date) {
       setIsTimeSlotSelected(true);
-    } else{
+    } else {
       setIsTimeSlotSelected(false);
     }
-   // console.log("sjsj",selectedDate)
+    // console.log("sjsj",selectedDate)
   };
 
   const handleTimeClick = (time) => {
     setSelectedTime(time);
-    if(time){
+    if (time) {
       setIsTimeSelected(true);
     } else {
       setIsTimeSelected(false);
@@ -139,20 +141,22 @@ const Booking = () => {
         return;
       }
     }
-    if(activeStep === 2){
-      if(!isTimeSlotSelected && !isTimeSelected){
+    if (activeStep === 2) {
+      if (!isTimeSlotSelected && !isTimeSelected) {
         return;
       }
     }
-    if(activeStep === 2){
-      if(!isTimeSelected){
+    if (activeStep === 2) {
+      if (!isTimeSelected) {
         return;
       }
     }
     setActiveStep((prevStep) => prevStep + 1);
   };
-  
-  const isNextDisabled = ((activeStep === 1 && !isServiceSelected) || (activeStep === 2 && (!isTimeSlotSelected || !isTimeSelected)))
+
+  const isNextDisabled =
+    (activeStep === 1 && !isServiceSelected) ||
+    (activeStep === 2 && (!isTimeSlotSelected || !isTimeSelected));
 
   const handleBack = () => {
     setActiveStep((prevStep) => prevStep - 1);
@@ -186,6 +190,10 @@ const Booking = () => {
     PM: ["00:00"],
   };
 
+  const handleLoginRedirect = () => {
+    navigate("/login");
+  };
+
   useEffect(() => {
     const fetchServicesData = async () => {
       try {
@@ -193,7 +201,7 @@ const Booking = () => {
         if (servicesResponse.data.message === "success") {
           setServicesData(servicesResponse.data.items);
         }
-      //  console.log(servicesData);
+        //  console.log(servicesData);
       } catch (error) {
         console.error("Error fetching services data:", error);
       }
@@ -290,7 +298,7 @@ const Booking = () => {
 
       if (response.data.message) {
         toast("Booking successful!");
-      } 
+      }
       // else {
       //   toast(response.data.message);
       // }
@@ -308,15 +316,17 @@ const Booking = () => {
     setSelectedService(service);
     setSelectedTime(null);
     const selectedServiceId = servicesData
-      .filter((items) => service ? items.type === service : items.type === "futsal" )
+      .filter((items) =>
+        service ? items.type === service : items.type === "futsal"
+      )
       .find((items) => items._id);
 
-     // console.log(selectedServiceId);
+    // console.log(selectedServiceId);
 
     if (selectedServiceId) {
       setSelectedServiceId(selectedServiceId._id);
       console.log("selected Service ID:", selectedServiceId._id);
-     setIsServiceSelected(true);
+      setIsServiceSelected(true);
     } else {
       console.log("No matching service found");
       setIsServiceSelected(false);
@@ -885,7 +895,7 @@ const Booking = () => {
           {/* Login Button */}
           <button
             className="tw-bg-blue-500 tw-text-white tw-py-2 tw-px-6 tw-rounded-lg tw-font-semibold tw-transition-all tw-hover:bg-blue-600 tw-hover:shadow-md tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-blue-500 tw-focus:ring-offset-2"
-            // onClick={handleLoginRedirect}
+            onClick={handleLoginRedirect}
           >
             Go to Login
           </button>
