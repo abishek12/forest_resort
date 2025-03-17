@@ -5,6 +5,7 @@ import helmet from "helmet";
 import cors from "cors";
 import bodyParser from "body-parser";
 import rateLimit from "express-rate-limit";
+import cookieParser from "cookie-parser";
 
 import { logger } from "./utils/logger.js";
 import { corsOptions } from "./utils/CorsOption.js";
@@ -33,6 +34,7 @@ app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // Creating a limiter by calling rateLimit function with options:
 // max contains the maximum number of request and windowMs

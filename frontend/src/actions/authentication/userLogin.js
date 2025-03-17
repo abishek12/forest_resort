@@ -32,6 +32,7 @@ export const loginUser = (email, password) => async (dispatch) => {
 
     const userInfo = {
       accessToken: data.accessToken,
+      token: data.refreshToken,
       role: decodedToken.roles,
       userId: decodedToken.userId,
       fullname: decodedToken.fullname,

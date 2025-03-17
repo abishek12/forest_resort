@@ -23,7 +23,7 @@ route
   .post(
     "/",
     authMiddleware,
-    authorizeRole(["admin"]),
+    // authorizeRole(["admin"]),
     upload.single("featured_image"),
     createBlog
   )

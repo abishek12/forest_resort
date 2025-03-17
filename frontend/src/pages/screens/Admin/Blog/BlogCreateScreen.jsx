@@ -96,6 +96,8 @@ const BlogCreateScreen = () => {
         formData.append("featured_image", image);
       }
 
+      console.log(formData)
+
       await createBlog(formData);
 
       toast.success("Blog created successfully!");

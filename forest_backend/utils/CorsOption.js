@@ -21,4 +21,5 @@ export const corsOptions = {
     }
   },
   allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 };

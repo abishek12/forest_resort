@@ -1,5 +1,8 @@
 import axios from "axios";
+import api from "./api";
 import { logout } from "./authentication/userLogout";
+
+const userInfo = localStorage.getItem("userInfo");
 
 export const listBlogs = async (
   keyword = "",
@@ -9,7 +12,7 @@ export const listBlogs = async (
   q = ""
 ) => {
   try {
-    const { data } = await axios.get(`/blog`, {
+    const { data } = await api.get(`/blog`, {
       params: {
         page,
         limit,
@@ -68,11 +71,11 @@ export const listBlogInfo = async (id) => {
 
 export const removeBlog = async (id) => {
   try {
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${userInfo.token}`,
-    //   },
-    // };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
     await axios.delete(`/blog/${id}`);
   } catch (error) {
     const message =
@@ -88,13 +91,8 @@ export const removeBlog = async (id) => {
 
 export const createBlog = async (blogData) => {
   try {
-    // pass userInfo in params in function
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${userInfo.token}`,
-    //   },
-    // };
-    const { data } = await axios.post(`/blog`, blogData);
+    console.log(blogData);
+    const { data } = await api.post(`/blog`, blogData);
     return data;
   } catch (error) {
     const message =
@@ -116,11 +114,7 @@ export const updateBlog = async (blog, userInfo) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.put(
-      `/blogs/${blog._id}`,
-      blog,
-      config
-    );
+    const { data } = await axios.put(`/blogs/${blog._id}`, blog, config);
     return data;
   } catch (error) {
     const message =

@@ -1,7 +1,7 @@
 import express from "express";
 
 import { registerUser } from "../controllers/RegisterController.js";
-import { loginUser, refreshToken } from "../controllers/LoginController.js";
+import { loginUser, refreshAccessToken } from "../controllers/LoginController.js";
 import {
   ForgotPassword,
   ResetPasswod,
@@ -16,6 +16,6 @@ route
   .put("/reset-password", ResetPasswod)
   .put("/activate-account", activateAccount)
   .post("/login", loginUser)
-  .post("/refresh-token", refreshToken);
+  .post("/refresh-token", refreshAccessToken);
 
 export default route;

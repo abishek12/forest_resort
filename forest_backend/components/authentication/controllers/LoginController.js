@@ -47,12 +47,17 @@ export const loginUser = async (req, res) => {
         expiresIn: "7d",
       }
     );
+    // Store refresh token in an HTTP-only cookie
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
-    userData.token = refreshToken;
-
-    await userData.save();
-
-    return res.status(200).json({ message: "Login successful", accessToken });
+    return res
+      .status(200)
+      .json({ message: "Login successful", accessToken, refreshToken });
   } catch (error) {
     console.error(`Error: ${error}`);
     return res.status(500).json({
@@ -63,36 +68,31 @@ export const loginUser = async (req, res) => {
 
 /**
  *
- * @param {token} req
+ * @param {token}
  * @route POST /api/auth/refresh-token
  * @access Public
  * @returns
  */
 
-export const refreshToken = async (req, res) => {
+export const refreshAccessToken = async (req, res) => {
   try {
-    let { token: refreshToken } = req.body;
-
+    const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
-      return res.status(403).json({
-        message: "Refresh Token Required",
-      });
+      return res.status(403).json({ message: "Refresh Token Required" });
     }
 
-    // verify the jwt token
-    let decoded = null;
-    try {
-      decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH);
-    } catch (err) {
-      return res.status(403).json({ message: "Invalid Token" });
+    console.log(refreshToken);
+
+    // Awaiting the jwt.verify instead of using the callback
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH);
+
+    let user = await User.findById(decoded.id);
+    if (!user) {
+      return res.status(403).json({ message: "User not found" });
     }
 
-    let user = await User.findById(decoded.userId);
-    if (!user || user.refreshToken !== refreshToken) {
-      return res.status(403).json({ message: "Invalid Refresh Token" });
-    }
-
-    let accessToken = await tokenGenerator(user);
+    // Generate new access token
+    const accessToken = await tokenGenerator(user);
 
     return res.status(200).json({
       message: "success",
@@ -101,7 +101,7 @@ export const refreshToken = async (req, res) => {
   } catch (error) {
     console.error(`Error: ${error}`);
     return res.status(500).json({
-      message: `Error: ${error}`,
+      message: `Error: ${error.message}`, // Provide the error message directly
     });
   }
 };
