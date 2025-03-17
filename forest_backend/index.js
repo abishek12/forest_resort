@@ -4,10 +4,11 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
 import bodyParser from "body-parser";
+import rateLimit from "express-rate-limit";
 
 import { logger } from "./utils/logger.js";
 import { corsOptions } from "./utils/CorsOption.js";
-import { configureCloudinary } from './utils/CloudinaryConfig.js';
+import { configureCloudinary } from "./utils/CloudinaryConfig.js";
 
 /**
  * import user defined components
@@ -32,6 +33,20 @@ app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Creating a limiter by calling rateLimit function with options:
+// max contains the maximum number of request and windowMs
+// contains the time in millisecond so only max amount of
+// request can be made in windowMS time.
+const limiter = rateLimit({
+  max: 200,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many request from this IP",
+});
+// Add the limiter function to the express middleware
+// so that every request coming from user passes
+// through this middleware.
+app.use(limiter);
 
 app.get("/", (req, res) => {
   return res.status(200).json({ message: "Server is Working" });

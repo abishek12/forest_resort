@@ -10,8 +10,8 @@ import { deleteBlog } from "../controllers/DeleteBlogController.js";
 import { updateBlogController } from "../controllers/UpdateBlogController.js";
 
 // authorized middleware
-// import { authenticateToken } from "../../../middleware/authenticateToken.js";
-// import { authorizeRole } from "../../../middleware/authorize_role.js";
+import { authMiddleware } from "../../../middleware/UserToken.js";
+import { authorizeRole } from "../../../middleware/UserRole.js";
 
 import { upload } from "../../../utils/MulterConfig.js";
 
@@ -20,8 +20,14 @@ const route = express.Router();
 route
   .get("/", listBlogs)
   .get("/:id", listSingleBlog)
-  .post("/", upload.single("featured_image"), createBlog)
-  .delete("/:id", deleteBlog)
-  .put("/:id", updateBlogController);
+  .post(
+    "/",
+    authMiddleware,
+    authorizeRole(["admin"]),
+    upload.single("featured_image"),
+    createBlog
+  )
+  .delete("/:id", authMiddleware, deleteBlog)
+  .put("/:id", authMiddleware, authorizeRole(["admin"]), updateBlogController);
 
 export default route;
