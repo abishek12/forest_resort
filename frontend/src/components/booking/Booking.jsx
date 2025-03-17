@@ -36,6 +36,11 @@ const Booking = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("AM");
   const [selectedService, setSelectedService] = useState("futsal");
   const [selectedServiceId, setSelectedServiceId] = useState(null);
+  
+  const [isTimeSelected, setIsTimeSelected] = useState(false);
+  const [isServiceSelected, setIsServiceSelected] = useState(false);
+  const [isTimeSlotSelected, setIsTimeSlotSelected] = useState(false);
+  const [isPaymentSelected, setIsPaymentSelected] = useState(false);
 
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -104,10 +109,21 @@ const Booking = () => {
     setSelectedDate(date);
     setBookingDate(formattedDate);
     fetchUnavailableSlots(formattedDate);
+    if(date){
+      setIsTimeSlotSelected(true);
+    } else{
+      setIsTimeSlotSelected(false);
+    }
+   // console.log("sjsj",selectedDate)
   };
 
   const handleTimeClick = (time) => {
     setSelectedTime(time);
+    if(time){
+      setIsTimeSelected(true);
+    } else {
+      setIsTimeSelected(false);
+    }
   };
 
   const formatDate = (date) => {
@@ -118,8 +134,25 @@ const Booking = () => {
   };
 
   const handleNext = () => {
+    if (activeStep === 1) {
+      if (!isServiceSelected) {
+        return;
+      }
+    }
+    if(activeStep === 2){
+      if(!isTimeSlotSelected && !isTimeSelected){
+        return;
+      }
+    }
+    if(activeStep === 2){
+      if(!isTimeSelected){
+        return;
+      }
+    }
     setActiveStep((prevStep) => prevStep + 1);
   };
+  
+  const isNextDisabled = ((activeStep === 1 && !isServiceSelected) || (activeStep === 2 && (!isTimeSlotSelected || !isTimeSelected)))
 
   const handleBack = () => {
     setActiveStep((prevStep) => prevStep - 1);
@@ -153,17 +186,32 @@ const Booking = () => {
     PM: ["00:00"],
   };
 
+  useEffect(() => {
+    const fetchServicesData = async () => {
+      try {
+        const servicesResponse = await axios.get("/services");
+        if (servicesResponse.data.message === "success") {
+          setServicesData(servicesResponse.data.items);
+        }
+      //  console.log(servicesData);
+      } catch (error) {
+        console.error("Error fetching services data:", error);
+      }
+    };
+    fetchServicesData();
+  }, []);
+
   //unavailable timeslots
   const fetchUnavailableSlots = async (bookingDate) => {
     try {
       // selectedDate = selectedDate.toISOString().split("T")[0];
       const response = await axios.get(
-        `/booking/unavailable-times?date=${bookingDate}&service=67a8af10655fb70f058f0f54`
+        `/booking/unavailable-times?date=${bookingDate}&service=${selectedServiceId}`
       );
-      const servicesResponse = await axios.get("/services");
-      if (response.data.message === "success") {
-        setServicesData(servicesResponse.data.items);
-      }
+      // const servicesResponse = await axios.get("/services");
+      // if (servicesResponse.data.message === "success") {
+      //   setServicesData(servicesResponse.data.items);
+      // }
 
       if (response.data.message === "success") {
         setUnavailableSlots(response.data.unavailableSlots);
@@ -209,10 +257,11 @@ const Booking = () => {
   };
 
   const handleBookingSubmit = async () => {
-    setIsReferenceNoVisible(true);
+    //setIsReferenceNoVisible(true);
 
     const bookingData = {
-      service: "67a8af10655fb70f058f0f54",
+      //service: "67a8af10655fb70f058f0f54",
+      service: selectedServiceId,
       user: userInfo.userId,
       date: bookingDate,
       timeSlot: {
@@ -239,11 +288,12 @@ const Booking = () => {
         },
       });
 
-      if (response.data.success) {
+      if (response.data.message) {
         toast("Booking successful!");
-      } else {
-        toast(response.data.message);
-      }
+      } 
+      // else {
+      //   toast(response.data.message);
+      // }
     } catch (error) {
       console.error("Error creating booking:", error);
       toast("Something went wrong, please try again.");
@@ -257,6 +307,21 @@ const Booking = () => {
   const handleServiceClick = (service) => {
     setSelectedService(service);
     setSelectedTime(null);
+    const selectedServiceId = servicesData
+      .filter((items) => service ? items.type === service : items.type === "futsal" )
+      .find((items) => items._id);
+
+     // console.log(selectedServiceId);
+
+    if (selectedServiceId) {
+      setSelectedServiceId(selectedServiceId._id);
+      console.log("selected Service ID:", selectedServiceId._id);
+     setIsServiceSelected(true);
+    } else {
+      console.log("No matching service found");
+      setIsServiceSelected(false);
+      setSelectedServiceId(null);
+    }
   };
 
   // Animation variants for date cards
@@ -285,7 +350,7 @@ const Booking = () => {
                   <input
                     type="text"
                     className="form-control"
-                    value="Abishek Khanal"
+                    value={userInfo.fullname}
                     readOnly
                   />
                 </div>
@@ -298,7 +363,7 @@ const Booking = () => {
                   <input
                     type="text"
                     className="form-control"
-                    value="abishekkhanal2056@gmail.com"
+                    value={userInfo.email}
                     readOnly
                   />
                 </div>
@@ -311,7 +376,7 @@ const Booking = () => {
                   <input
                     type="text"
                     className="form-control"
-                    value="9841998678"
+                    value={userInfo.phone_no}
                     readOnly
                   />
                 </div>
@@ -877,6 +942,7 @@ const Booking = () => {
                     : handleNext
                 }
                 style={{ marginLeft: "10px" }}
+                disabled={isNextDisabled}
               >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
               </button>
