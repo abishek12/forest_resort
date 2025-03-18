@@ -10,6 +10,7 @@ import { dateTimeFormat } from "../../utils/date-time";
 import "../../assets/css/SearchWidget.css";
 import BlogComponentShimmer from "./BlogCompomentShimmer";
 import AppComingSoon from "../appcomingsoon/AppComingSoon";
+import { motion } from "framer-motion";
 
 const MyBlogContent = () => {
   const [blogs, setBlogs] = useState([]);
@@ -57,16 +58,20 @@ const MyBlogContent = () => {
         </div>
 
         <div className="md:tw-col-span-9">
-          <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
+          <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6 tw-mt-4 tw-mb-4">
             {loading
               ? Array.from({ length: 6 }).map((_, index) => (
                   <BlogComponentShimmer key={index} />
                 ))
               : blogs.map((item, index) => (
-                  <div
+                <Link to={`/blog-single/${item._id}`} className="tw-block tw-no-underline">
+                  <motion.div
                     className="tw-rounded-lg tw-bg-white tw-shadow-md tw-overflow-hidden"
                     key={index}
-                  >
+                    initial="initial"
+                      whileHover={{scale: 1.07,
+                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.4)"}}
+                    whileTap={{ scale: 0.75 }} >
                     <div className="tw-p-4">
                       <img
                         src={item.featured_image}
@@ -74,7 +79,7 @@ const MyBlogContent = () => {
                         className="tw-w-full tw-h-48 sm:tw-h-56 lg:tw-h-64 tw-object-cover"
                       />
                       <h3 className="tw-mt-4 tw-text-xl tw-font-bold">
-                        {item.title}
+                        {item.title.length > 59 ? item.title.slice(0, 59) + "..." : item.title}
                       </h3>
                       <div className="tw-relative tw-mb-4">
                         <p className="tw-text-sm tw-text-black tw-font-bold">
@@ -116,14 +121,15 @@ const MyBlogContent = () => {
                         </svg>
                       </Link>
                     </div>
-                  </div>
+                  </motion.div>
+                  </Link>
                 ))}
           </div>
         </div>
       </div>
-     <div className="tw-mt-8">
-     <AppComingSoon/>
-     </div>
+      <div className="tw-mt-8">
+        <AppComingSoon />
+      </div>
     </div>
   );
 };
