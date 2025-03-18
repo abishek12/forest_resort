@@ -41,7 +41,7 @@ const ServicesDetails = () => {
         <HeaderV1 />
         <BreadCrumb
           breadCrumb="services-details"
-          title1="Swimming"
+          title1="Get Started with your Reservation"
           // title2="Into Actionable Insights"
           bottomSpace="pb-0"
         />
