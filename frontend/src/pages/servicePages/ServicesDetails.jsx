@@ -45,15 +45,6 @@ const ServicesDetails = () => {
           // title2="Into Actionable Insights"
           bottomSpace="pb-0"
         />
-        <ServicesDetailsContent
-          serviceInfo={[
-            {
-              title: "Swimming",
-              name: "Swimming",
-              isOpen: true,
-            },
-          ]}
-        />
         <Booking />
         <FooterV1 />
       </div>
