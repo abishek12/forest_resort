@@ -12,7 +12,6 @@ import { MdSports } from "react-icons/md";
 import { FaPersonSwimming } from "react-icons/fa6";
 import { TbPlayFootball } from "react-icons/tb";
 import { Button } from "react-bootstrap";
-
 import { FaRegUser } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
@@ -42,7 +41,6 @@ const Booking = () => {
   const [isTimeSelected, setIsTimeSelected] = useState(false);
   const [isServiceSelected, setIsServiceSelected] = useState(false);
   const [isTimeSlotSelected, setIsTimeSlotSelected] = useState(false);
-  const [isPaymentSelected, setIsPaymentSelected] = useState(false);
 
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -61,9 +59,7 @@ const Booking = () => {
       for (let i = 0; i < 7; i++) {
         let date = new Date(today);
         date.setDate(today.getDate() + i);
-
         const formattedDate = convertDateTimeSlot(date);
-
         datesArray.push(formattedDate); // Store the formatted date string
       }
       setDates(datesArray);
@@ -77,11 +73,10 @@ const Booking = () => {
     };
 
     getUserData();
-
     getDates();
   }, []);
 
-  //adult and children selects
+  // Adult and children selects
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -116,7 +111,6 @@ const Booking = () => {
     } else {
       setIsTimeSlotSelected(false);
     }
-    // console.log("sjsj",selectedDate)
   };
 
   const handleTimeClick = (time) => {
@@ -209,18 +203,12 @@ const Booking = () => {
     fetchServicesData();
   }, []);
 
-  //unavailable timeslots
+  // Fetch unavailable time slots
   const fetchUnavailableSlots = async (bookingDate) => {
     try {
-      // selectedDate = selectedDate.toISOString().split("T")[0];
       const response = await axios.get(
-        `/booking/unavailable-times?date=${bookingDate}&service=${selectedServiceId}`
+        `/booking/unavailable-times?date=${bookingDate}&service=${selectedServiceId}&period=${selectedPeriod}`
       );
-      // const servicesResponse = await axios.get("/services");
-      // if (servicesResponse.data.message === "success") {
-      //   setServicesData(servicesResponse.data.items);
-      // }
-
       if (response.data.message === "success") {
         setUnavailableSlots(response.data.unavailableSlots);
       } else {
@@ -235,8 +223,8 @@ const Booking = () => {
     if (selectedService === "futsal" && selectedPeriod !== "pool") {
       return unavailableSlots.some((slot) => {
         const unavailableSlot = slot.slot;
-        //const unavailablePeriod = slot.period;
-        return time === unavailableSlot;
+        const unavailablePeriod = slot.period;
+        return time === unavailableSlot && selectedPeriod === unavailablePeriod;
       });
     }
   };
@@ -244,7 +232,7 @@ const Booking = () => {
   const handleTransactionDetail = () => {
     if (selectedService === "futsal" && selectedService !== "pool") {
       if (!selectedDate || !selectedTime || !selectedPeriod) {
-        toast("Please select a date, time and period(AM/PM)!");
+        toast("Please select a date, time, and period (AM/PM)!");
         return;
       }
     }
@@ -258,17 +246,15 @@ const Booking = () => {
       setShowButton(true);
     }, 1000);
   };
+
   const handleTransactionIdBtn = () => {
     if (!transactionId) {
-      toast("Please, Enter a Transaction ID!");
+      toast("Please, enter a Transaction ID!");
     }
   };
 
   const handleBookingSubmit = async () => {
-    //setIsReferenceNoVisible(true);
-
     const bookingData = {
-      //service: "67a8af10655fb70f058f0f54",
       service: selectedServiceId,
       user: userInfo.userId,
       date: bookingDate,
@@ -286,8 +272,7 @@ const Booking = () => {
         adult: adults,
       },
     };
-
-    console.log(bookingData);
+      console.log(bookingData);
 
     try {
       const response = await axios.post("/booking", bookingData, {
@@ -299,9 +284,6 @@ const Booking = () => {
       if (response.data.message) {
         toast("Booking successful!");
       }
-      // else {
-      //   toast(response.data.message);
-      // }
     } catch (error) {
       console.error("Error creating booking:", error);
       toast("Something went wrong, please try again.");
@@ -310,6 +292,8 @@ const Booking = () => {
 
   const handlePeriodToggle = (period) => {
     setSelectedPeriod(period);
+    //resets the seleceted times when the perios changes
+    setSelectedTime(null);
   };
 
   const handleServiceClick = (service) => {
@@ -325,10 +309,10 @@ const Booking = () => {
 
     if (selectedServiceId) {
       setSelectedServiceId(selectedServiceId._id);
-      console.log("selected Service ID:", selectedServiceId._id);
+      console.log("selected Service ID:", selectedServiceId._id)
       setIsServiceSelected(true);
     } else {
-      console.log("No matching service found");
+      console.log("no matching service found")
       setIsServiceSelected(false);
       setSelectedServiceId(null);
     }
@@ -549,10 +533,10 @@ const Booking = () => {
                   fontFamily: "Poppins",
                 }}
               >
-                <h3>Select Time</h3>
-                <div className="mb-4 tw-space-x-2 tw-col-auto row-lg-1 row-md-1 col-sm-1 lg:tw-w-[2560px] md:tw-w-[768px] max-sm:tw-w-[425px] max-sm:tw-ml-[-15px]">
+               <h3>Select Time</h3>
+                                <div className="mb-4 tw-space-x-2 tw-col-auto row-lg-1 row-md-1 col-sm-1 lg:tw-w-[2560px] md:tw-w-[768px] max-sm:tw-w-[425px] max-sm:tw-ml-[-15px]">
                   <motion.button
-                    className={`btn  ${
+                    className={`btn ${
                       selectedPeriod === "AM" ? "btn-primary" : "btn-secondary"
                     } hover:tw-scale-105 hover:tw-bg-yellow-400 active:tw-scale-110`}
                     onClick={() => handlePeriodToggle("AM")}
@@ -582,42 +566,39 @@ const Booking = () => {
                 </div>
                 <div className="row mb-2">
                   {timeSlots[selectedPeriod].map((time, index) => {
-                    // checking unavailable times
                     const isUnavailable = isTimeUnavailable(time);
                     const isSelected = selectedTime === time;
                     return (
-                      <>
-                        <div
-                          className=" col-lg-2 col-md-3 col-sm-4 m-2 mb-0 mx-2 border tw-rounded-lg"
-                          key={index}
+                      <div
+                        className="col-lg-2 col-md-3 col-sm-4 m-2 mb-0 mx-2 border tw-rounded-lg"
+                        key={index}
+                      >
+                        <motion.div
+                          className={`time-slot-card text-center ${
+                            isSelected ? "bg-secondary text-light" : ""
+                          } ${
+                            isUnavailable
+                              ? "tw-h-full tw-bg-red-500 text-light cursor-not-allowed"
+                              : ""
+                          }`}
+                          onClick={
+                            !isUnavailable
+                              ? () => handleTimeClick(time)
+                              : undefined
+                          }
+                          style={{
+                            cursor: isUnavailable ? "not-allowed" : "pointer",
+                          }}
+                          variants={dateCardVariants}
+                          initial="initial"
+                          animate="animate"
+                          whileHover="hover"
+                          whileTap="selected"
+                          transition={{ duration: 1.2, ease: "easeInOut" }}
                         >
-                          <motion.div
-                            className={`time-slot-card text-center ${
-                              isSelected ? "bg-secondary text-light" : ""
-                            } ${
-                              isUnavailable
-                                ? "tw-h-full tw-bg-red-500 text-light cursor-not-allowed"
-                                : ""
-                            }`}
-                            onClick={
-                              !isUnavailable
-                                ? () => handleTimeClick(time)
-                                : undefined
-                            }
-                            style={{
-                              cursor: isUnavailable ? "not-allowed" : "pointer",
-                            }}
-                            variants={dateCardVariants}
-                            initial="initial"
-                            animate="animate"
-                            whileHover="hover"
-                            whileTap="selected"
-                            transition={{ duration: 1.2, ease: "easeInOut" }}
-                          >
-                            <p>{time}</p>
-                          </motion.div>
-                        </div>
-                      </>
+                          <p>{time}</p>
+                        </motion.div>
+                      </div>
                     );
                   })}
                 </div>
@@ -636,13 +617,13 @@ const Booking = () => {
                       <h3>Pick the time</h3>
                       <div
                         className={`tw-m-5 ${
-                          isSelected ? " bg-secondary text-light" : ""
+                          isSelected ? "bg-secondary text-light" : ""
                         }`}
                         onClick={
                           !isSelected ? () => handleTimeClick(time) : undefined
                         }
                       >
-                        <p className=" border tw-flex tw-justify-center">
+                        <p className="border tw-flex tw-justify-center">
                           {time}
                         </p>
                       </div>
@@ -691,7 +672,7 @@ const Booking = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="tw-flex tw-place-items-center tw-justify-between tw-py-2 ">
+                  <div className="tw-flex tw-place-items-center tw-justify-between tw-py-2">
                     <label htmlFor="Children">Children</label>
                     <div className="tw-flex tw-pb-1">
                       <button
@@ -700,7 +681,7 @@ const Booking = () => {
                       >
                         -
                       </button>
-                      <span className="tw-px-4 tw-flex tw-place-items-center tw-text-center ">
+                      <span className="tw-px-4 tw-flex tw-place-items-center tw-text-center">
                         {children}
                       </span>
                       <button
@@ -713,7 +694,7 @@ const Booking = () => {
                   </div>
                   <button
                     onClick={closeDropdown}
-                    className="reserveBtns tw-pt-2 tw-w-full "
+                    className="reserveBtns tw-pt-2 tw-w-full"
                   >
                     Done
                   </button>
@@ -847,9 +828,8 @@ const Booking = () => {
                     <Button
                       type="button"
                       onClick={handleTransactionDetail}
-                      className=" tw-bg-green-600 tw-w-full"
+                      className="tw-bg-green-600 tw-w-full"
                     >
-                      {" "}
                       Confirm Booking
                     </Button>
                   ) : (
@@ -857,7 +837,7 @@ const Booking = () => {
                       type="submit"
                       name="transactionId"
                       onClick={handleTransactionIdBtn}
-                      className=" tw-w-[340px]"
+                      className="tw-w-[340px]"
                     >
                       Done
                     </Button>
