@@ -25,6 +25,7 @@ const TABLE_HEADS = [
 const Appointment = () => {
   const [appointments, setAppointments] = useState([]);
   const [sort, setSorting] = useState("desc");
+  const [statusFilter, setStatusFilter] = useState("");
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
@@ -38,7 +39,9 @@ const Appointment = () => {
     const fetchedData = await listAppointments(
       "",
       pageNumber,
-      pagination.limit
+      pagination.limit,
+      sort,
+      statusFilter
     );
     if (fetchedData) {
       setAppointments(fetchedData.items);
@@ -53,7 +56,7 @@ const Appointment = () => {
 
   useEffect(() => {
     fetchAppointments(pagination.currentPage);
-  }, [pagination.currentPage]);
+  }, [pagination.currentPage, statusFilter]);
 
   // function to handle modal of payment
   const handlePaymentClick = (paymentInfo) => {
@@ -68,11 +71,32 @@ const Appointment = () => {
     }
   };
 
+  // handle status filter
+  const handleStatusFilter = (status) => {
+    setStatusFilter(status);
+  };
+
   return (
     <>
       <section className="content-area-table">
         <div className="data-table-info">
           <h4 className="data-table-title">Appointment Responses</h4>
+        </div>
+
+        <div className="filter-container col-3 mb-4">
+          <label htmlFor="" className="form-label">
+            Status
+          </label>
+          <select
+            className="form-select"
+            onChange={(e) => handleStatusFilter(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
         </div>
 
         <div className="data-table-diagram">
@@ -96,17 +120,33 @@ const Appointment = () => {
                     {appointment.timeSlot.start} - {appointment.timeSlot.end}
                   </td>
                   <td>
-                    <Badge bg="secondary">{appointment.status}</Badge>
+                    <Badge
+                      bg={
+                        appointment.status === "pending"
+                          ? "warning" // Yellow for pending
+                          : appointment.status === "confirmed"
+                          ? "success" // Green for confirmed
+                          : appointment.status === "cancelled"
+                          ? "danger" // Red for cancelled
+                          : appointment.status === "completed"
+                          ? "primary" // Blue for completed
+                          : "secondary" // Default color
+                      }
+                    >
+                      {appointment.status}
+                    </Badge>
                   </td>
                   <td className="dt-cell-action">
-                    <Link to={`/admin/appointment/${appointment._id}/view`}>
+                    <Link to={`/user/booking/${appointment._id}/view`}>
                       <MdPreview />
                     </Link>
-                    <Link onClick={() => viewedHandler(appointment._id)}>
-                      <HiThumbUp />
-                    </Link>
                     <Link
-                      onClick={() => handlePaymentClick(appointment.payment)}
+                      onClick={() =>
+                        handlePaymentClick({
+                          id: appointment._id,
+                          info: appointment.payment,
+                        })
+                      }
                     >
                       <MdPayment />
                     </Link>
@@ -116,7 +156,7 @@ const Appointment = () => {
             </tbody>
           </table>
         </div>
-        
+
         {/* Pagination Component */}
         <PaginationControls
           currentPage={pagination.currentPage}

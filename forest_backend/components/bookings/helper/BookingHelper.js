@@ -1,30 +1,25 @@
 import Joi from "joi";
 
-export const bookingHelper = (data) => {
+import { Service } from "../../services/model/ServiceModel.js";
+
+export const bookingHelper = async (data) => {
+  const service = await Service.findById(data.service);
+  if (!service) {
+    return { error: { details: [{ message: "Invalid service ID" }] } };
+  }
+
+  const requiresTimeSlot = service.requiresTimeSlot;
+
   let bookingSchema = Joi.object({
     service: Joi.string().required(),
     user: Joi.string().required(),
     date: Joi.date().iso().required(),
-    timeSlot: Joi.object({
-      start: Joi.string()
-        .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
-        .required(),
-      end: Joi.string()
-        .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
-        .required(),
-    })
-      .required()
-      .custom((value, helpers) => {
-        let startTime = value.start;
-        let endTime = value.end;
-        if (startTime >= endTime) {
-          return helpers.error("any.invalid", {
-            message: "End time must be after start time",
-          });
-        }
-
-        return value;
-      }),
+    timeSlot: requiresTimeSlot
+      ? Joi.object({
+          slot: Joi.string().required(),
+          period: Joi.string().valid("AM", "PM").required(),
+        }).required()
+      : Joi.any(),
     status: Joi.string()
       .valid("pending", "confirmed", "cancelled")
       .default("pending"),
@@ -34,6 +29,10 @@ export const bookingHelper = (data) => {
       status: Joi.string()
         .valid("pending", "paid", "failed", "refunded")
         .required(),
+    }).required(),
+    persons: Joi.object({
+      children: Joi.number().required(),
+      adult: Joi.number().positive().required(),
     }).required(),
   });
 

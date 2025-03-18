@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
+import { useDispatch, useSelector } from "react-redux";
+import { ContextData } from "../booking/Booking";
+import { jwtDecode } from "jwt-decode";
 
 import BoxReveal from "../ui/magic_ui/box-reveal";
 import { IoMdArrowDropdown } from "react-icons/io";
 import "react-datepicker/dist/react-datepicker.css";
 
 const BookingForm = ({ setIsQrVisible }) => {
-  // const [startDate, setStartDate] = useState(new Date());
+  const { selectedDate } = useContext(ContextData); //consumecontenxt,
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const [date, setDate] = useState(new Date());
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
+  const [userId, setUserId] = useState("");
   const [service, setService] = useState("");
 
   const [transactionId, setTransactionId] = useState("");
@@ -28,16 +32,43 @@ const BookingForm = ({ setIsQrVisible }) => {
 
   const [loading, setLoading] = useState(false);
 
+  //default times in time picking section in the form
   const [startTime, setStartTime] = useState({
-    hour: "09",
+    hour: "00",
     minute: "00",
-    period: "AM",
+    period: "PM",
   });
   const [endTime, setEndTime] = useState({
-    hour: "10",
+    hour: "00",
     minute: "00",
-    period: "AM",
+    period: "PM",
   });
+
+  useEffect(() => {
+    setStartTime({
+      hour: selectedDate.start.hour,
+      minute: selectedDate.start.minute,
+      period: selectedDate.start.period,
+    });
+    setEndTime({
+      hour: selectedDate.end.hour,
+      minute: selectedDate.end.minute,
+      period: selectedDate.end.period,
+    });
+  }, [selectedDate]);
+
+  // Decoding the JWT to extract user information
+  useEffect(() => {
+    if (userInfo?.accessToken) {
+      const decodedToken = jwtDecode(userInfo.accessToken);
+      setUserId(decodedToken.userId);
+      // Now you can use the decoded information, for example:
+    }
+  }, [userInfo]);
+  console.log("userId", userId);
+
+  const dispatch = useDispatch();
+
   const handleDateChange = (selectedDate) => {
     setDate(selectedDate);
   };
@@ -48,31 +79,6 @@ const BookingForm = ({ setIsQrVisible }) => {
     setTimeout(() => {
       setShowBookingBtn(true);
     }, 1000);
-  };
-
-  const handleTimeChange = (e, type) => {
-    const { name, value } = e.target;
-    if (type === "start") {
-      setStartTime((prev) => ({ ...prev, [name]: value }));
-    } else {
-      setEndTime((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const get24HourTime = (time) => {
-    let hour = parseInt(time.hour, 10);
-    const minute = parseInt(time.minute, 10);
-    const period = time.period;
-
-    let adjustedHour = hour;
-    if (period === "PM" && hour !== 12) {
-      adjustedHour += 12;
-    }
-    if (period === "AM" && hour === 12) {
-      adjustedHour = 0;
-    }
-
-    return { hour: adjustedHour, minute };
   };
 
   const handleServiceChange = (event) => {
@@ -110,43 +116,99 @@ const BookingForm = ({ setIsQrVisible }) => {
       setChildren(children - 1);
     }
   };
+  const get24HourTime = (time) => {
+    let hour = parseInt(time.hour, 10);
+    const minute = time.minute;
+    const period = time.period;
 
+    let adjustedHour = hour;
+    if (period === "PM" && hour !== 12) {
+      adjustedHour += 12;
+    }
+    if (period === "AM" && hour === 12) {
+      adjustedHour = 0;
+    }
+
+    return { hour: adjustedHour, minute };
+  };
   const handleForm = async (event) => {
     event.preventDefault();
     setLoading(true);
+
+    if (!service) {
+      toast.error("Please select a service.");
+      setLoading(false);
+      return;
+    }
+
+    if (!startTime.hour || !startTime.minute || !startTime.period) {
+      toast.error("Please select a start time.");
+      setLoading(false);
+      return;
+    }
+
+    if (!endTime.hour || !endTime.minute || !endTime.period) {
+      toast.error("Please select an end time.");
+      setLoading(false);
+      return;
+    }
+
+    if (!transactionId || !paidAmount) {
+      toast.error("Please enter transaction details.");
+      setLoading(false);
+      return;
+    }
+
+    if (paidAmount < 300) {
+      toast.error("Amount should not be less than 300");
+      setLoading(false);
+      return;
+    }
+
     try {
+      const startTimeFormatted = `${startTime.hour}:${startTime.minute} ${startTime.period}`;
+      const endTimeFormatted = `${endTime.hour}:${endTime.minute} ${endTime.period}`;
       const bookingData = {
         service: "67a8af10655fb70f058f0f54",
-        user: "67a890ae259d39cf93d0fc3b",
+        user: userId,
         date,
         timeSlot: {
-          startTime,
-          endTime,
+          start: startTimeFormatted,
+          end: endTimeFormatted,
         },
         payment: {
           reference: transactionId,
           amount: paidAmount,
           status: "pending",
         },
-        
+        persons: {
+          adult: adults,
+          children,
+        },
       };
 
-      console.log("My Data: ", bookingData)
-
-      const response = await axios.post("http://localhost:8888/api/booking", bookingData);
+      if (!userId) {
+        toast.error("Error: User ID is missing!");
+        return;
+      }
+      const response = await axios.post("/booking", bookingData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response.data);
 
       if (response.status === 201) {
         toast.success("Booking Successful!");
-        console.log("Booking Details: ", response.data);
-    } else {
-        console.error("Unexpected response status:", response.status);
-    }    
-     
+      } else {
+        toast.error("Unexpected response status:", response.status);
+      }
     } catch (error) {
       console.error("Booking failed:", error.response || error);
-      alert("Booking failed! " + (error.response?.data?.message || error.message));
-    }
-    finally{
+      toast.error(
+        "Booking failed! " + (error.response?.data?.message || error.message)
+      );
+    } finally {
       setLoading(false);
     }
 
@@ -167,7 +229,7 @@ const BookingForm = ({ setIsQrVisible }) => {
   };
 
   return (
-    <div className="contact-form-style-one" id="Reserve">
+    <div className="contact-form-style-one tw-left-[-30px]" id="Reserve">
       <h4 className="sub-title">
         <BoxReveal>Need relaxation?</BoxReveal>
       </h4>
@@ -185,7 +247,7 @@ const BookingForm = ({ setIsQrVisible }) => {
                 placeholder="Full Name"
                 type="text"
                 autoComplete="off"
-                value="Ram Prasad Subedi"
+                value={userInfo.fullname}
                 required
                 readOnly
               />
@@ -203,8 +265,9 @@ const BookingForm = ({ setIsQrVisible }) => {
                 placeholder="Email*"
                 type="email"
                 autoComplete="off"
+                value={userInfo.email}
                 required
-                onChange={(e) => setEmail(e.target.value)}
+                readOnly
               />
             </div>
           </div>
@@ -217,8 +280,10 @@ const BookingForm = ({ setIsQrVisible }) => {
                 placeholder="Phone*"
                 type="number"
                 autoComplete="off"
+                //value={user.phone_no}
                 required
-                onChange={(e) => setPhone(e.target.value)}
+                value={userInfo.phone_no}
+                readOnly
               />
             </div>
           </div>
@@ -239,90 +304,15 @@ const BookingForm = ({ setIsQrVisible }) => {
             </div>
 
             <div className="form-group">
-              <label className="tw-font-bold">TIME</label>
-              <div className="time-inputs">
-                <label>Start Time:</label>
-                <div className="time-inputs">
-                  <select
-                    name="hour"
-                    value={startTime.hour}
-                    onChange={(e) => handleTimeChange(e, "start")}
-                  >
-                    {Array.from({ length: 12 }, (_, i) => {
-                      const hour = i + 1;
-                      return (
-                        <option
-                          key={hour}
-                          value={hour.toString().padStart(2, "0")}
-                        >
-                          {hour.toString().padStart(2, "0")}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <span>:</span>
-                  <select
-                    name="minute"
-                    value={startTime.minute}
-                    onChange={(e) => handleTimeChange(e, "start")}
-                  >
-                    {["00", "15", "30", "45"].map((minute) => (
-                      <option key={minute} value={minute}>
-                        {minute}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    name="period"
-                    value={startTime.period}
-                    onChange={(e) => handleTimeChange(e, "start")}
-                  >
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                  </select>
-                </div>
-
-                <label>End Time: </label>
-                <div className="time-inputs">
-                  <select
-                    name="hour"
-                    value={endTime.hour}
-                    onChange={(e) => handleTimeChange(e, "end")}
-                  >
-                    {Array.from({ length: 12 }, (_, i) => {
-                      const hour = i + 1;
-                      return (
-                        <option
-                          key={hour}
-                          value={hour.toString().padStart(2, "0")}
-                        >
-                          {hour.toString().padStart(2, "0")}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <span>:</span>
-                  <select
-                    name="minute"
-                    value={endTime.minute}
-                    onChange={(e) => handleTimeChange(e, "end")}
-                  >
-                    {["00", "15", "30", "45"].map((minute) => (
-                      <option key={minute} value={minute}>
-                        {minute}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    name="period"
-                    value={endTime.period}
-                    onChange={(e) => handleTimeChange(e, "end")}
-                  >
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                  </select>
-                </div>
-              </div>
+              <p className="tw-font-bold">TIME</p>
+              <p className="tw-font-bold">
+                Start Time:
+                <span className="tw-ml-3  tw-font-medium">{`${startTime.hour}:${startTime.minute} ${startTime.period}`}</span>
+              </p>
+              <p className="tw-font-bold">
+                End Time:
+                <span className="tw-ml-3 tw-font-medium">{`${endTime.hour}:${endTime.minute} ${endTime.period}`}</span>
+              </p>
             </div>
           </div>
 
@@ -412,16 +402,6 @@ const BookingForm = ({ setIsQrVisible }) => {
             />
             <label htmlFor="futsal">Futsal</label>
           </div>
-
-          <div className="tw-flex tw-place-items-center tw-gap-2">
-            <input
-              type="radio"
-              name="service"
-              value="both"
-              onChange={handleServiceChange}
-            />
-            <label htmlFor="both">Both</label>
-          </div>
         </div>
 
         {showBookingBtn ? (
@@ -487,5 +467,4 @@ const BookingForm = ({ setIsQrVisible }) => {
     </div>
   );
 };
-
 export default BookingForm;

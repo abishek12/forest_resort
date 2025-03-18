@@ -3,8 +3,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./PrivateRouters";
 
 import Home1 from "./pages/homePages/Home1";
-import Home2 from "./pages/homePages/Home2";
-import Home3 from "./pages/homePages/Home3";
 import Business from "./pages/homePages/Business";
 import Home1Dark from "./pages/homePages/Home1Dark";
 import Home2Dark from "./pages/homePages/Home2Dark";
@@ -35,6 +33,7 @@ import BlogSingle from "./pages/blogPages/BlogSingle";
 import BlogSingleSidebar from "./pages/blogPages/BlogSingleSidebar";
 
 import LoginScreen from "./pages/screens/LoginScreen";
+import ActivateAccount from "./pages/screens/ActivateAccount";
 
 import BaseLayout from "./layout/BaseLayout";
 import ProfileScreen from "./pages/screens/Admin/Profile/ProfileScreen";
@@ -44,15 +43,18 @@ import BlogEditScreen from "./pages/screens/Admin/Blog/BlogEditScreen";
 import Dashboard from "./pages/screens/Admin/Dashboard";
 import AdminBlog from "./pages/screens/Admin/Blog/AdminBlog";
 import AdminContact from "./pages/screens/Admin/Contact/Contact";
+import { AdminCategory } from "./pages/screens/Admin/Category/Category";
+import { AdminTag } from "./pages/screens/Admin/Tag/AdminTag";
 import Offer from "./components/offer/Offer";
 
-import AdminAppointment from "./pages/screens/Admin/Appointment/Appointment";
-import AppointmentViewed from "./pages/screens/Admin/Appointment/AppointmentViewed";
+import RegisterScreen from "./pages/screens/RegisterScreen";
+import User from "./pages/screens/Admin/User/User";
+import { AdminOffers } from "./pages/screens/Admin/Offers/AdminOffers";
+import { AdminService } from "./pages/screens/Admin/Services/AdminService";
+import Appointment from "./pages/screens/Admin/Appointment/Appointment";
 import AppointmentViewScreen from "./pages/screens/Admin/Appointment/AppointmentViewScreen";
-import Service from "./pages/screens/Admin/Services/Service";
-import Booking from "./pages/screens/Admin/Bookings/Booking";
-import BookingTime from "./components/booking/BookingTime";
-import RegisterScreen from "./pages/screens/Register";
+import AddService from "./pages/screens/Admin/Services/AddService";
+import UpdateService from "./pages/screens/Admin/Services/UpdateService";
 
 const Routers = () => {
   return (
@@ -118,52 +120,141 @@ const Routers = () => {
 
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
+        <Route path="/activate-account" element={<ActivateAccount />} />
         <Route element={<BaseLayout />}>
           <Route
-            path="/admin/dashboard"
+            path="/user/dashboard"
             element={
               <PrivateRoute>
-                <AdminBlog />
+                <Dashboard />
               </PrivateRoute>
             }
           />
           <Route
-            path="/admin/profile"
+            path="/user/category"
+            element={
+              <PrivateRoute>
+                <AdminCategory />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/user/tag"
+            element={
+              <PrivateRoute>
+                <AdminTag />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/user/users"
+            element={
+              <PrivateRoute>
+                <User />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/user/profile"
             element={
               <PrivateRoute>
                 <ProfileScreen />
               </PrivateRoute>
             }
           />
-          <Route path="/admin/blogs" element={<AdminBlog />} exact />
+          <Route
+            path="/user/blogs"
+            element={
+              <PrivateRoute>
+                <AdminBlog />
+              </PrivateRoute>
+            }
+            exact
+          />
           {/* <Route path="/admin/blogs/:pageNumber" element={<BlogListScreen />} exact /> */}
           <Route
-            path="/admin/blog/create"
+            path="/user/blog/create"
             element={
               <PrivateRoute>
                 <BlogCreateScreen />
               </PrivateRoute>
             }
           />
-          <Route path="/admin/blog/:id/edit" element={<BlogEditScreen />} />
-          <Route path="/admin/contacts" element={<AdminContact />} exact />
+          <Route
+            path="/user/blog/:id/edit"
+            element={
+              <PrivateRoute>
+                <BlogEditScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/user/contacts"
+            element={
+              <PrivateRoute>
+                <AdminContact />
+              </PrivateRoute>
+            }
+            exact
+          />
 
           <Route
-            path="/admin/appointments"
-            element={<AdminAppointment />}
+            path="/user/service"
+            element={
+              <PrivateRoute>
+                <AdminService />
+              </PrivateRoute>
+            }
+            exact
+          />
+
+          <Route
+            path="/user/add-service"
+            element={
+              <PrivateRoute>
+                <AddService />
+              </PrivateRoute>
+            }
+            exact
+          />
+
+          <Route
+            path="/user/edit-service/:id"
+            element={
+              <PrivateRoute>
+                <UpdateService />
+              </PrivateRoute>
+            }
+            exact
+          />
+
+          <Route
+            path="/user/offers"
+            element={
+              <PrivateRoute>
+                <AdminOffers />
+              </PrivateRoute>
+            }
             exact
           />
           <Route
-            path="/admin/appointmentsviewed"
-            element={<AppointmentViewed />}
+            path="/user/booking"
+            element={
+              <PrivateRoute>
+                <Appointment />
+              </PrivateRoute>
+            }
             exact
           />
           <Route
-            path="/admin/appointment/:id/view"
-            element={<AppointmentViewScreen />}
+            path="/user/booking/:id/view"
+            element={
+              <PrivateRoute>
+                <AppointmentViewScreen />
+              </PrivateRoute>
+            }
+            exact
           />
-          <Route path="/admin/service" element={<Service />} />
-          <Route path="/admin/booking" element={<Booking />} />
         </Route>
 
         <Route path="*" element={<Error404 />}></Route>

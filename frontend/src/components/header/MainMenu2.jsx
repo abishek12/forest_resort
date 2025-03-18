@@ -1,9 +1,13 @@
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { HashLink as Link } from "react-router-hash-link";
 
 const MainMenu2 = ({ isOpen, closeMenu }) => {
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    const info = localStorage.getItem("userInfo");
+    setUserInfo(info);
+  }, []);
 
   return (
     <div
@@ -53,9 +57,9 @@ const MainMenu2 = ({ isOpen, closeMenu }) => {
             <Link to="/login">Login</Link>
           </li>
         )}
-        {userInfo && userInfo.isAdmin && (
+        {userInfo && (
           <li>
-            <Link to="/admin/dashboard">Dashboard</Link>
+            <Link to="/user/dashboard">Dashboard</Link>
           </li>
         )}
       </ul>

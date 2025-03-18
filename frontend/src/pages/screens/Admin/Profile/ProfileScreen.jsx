@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Table, Form, Row, Col, Tabs, Tab } from "react-bootstrap";
+import { useSelector } from "react-redux";
+
 import { getUserDetails } from "../../../../actions/authentication/userDetails";
 import Message from "../../../../components/Message";
 import Loader from "../../../../components/Loader";
@@ -11,7 +13,10 @@ const ProfileScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const historyData = [
     { id: 1, action: "Login", date: "2025-02-18", status: "Successful" },
@@ -24,15 +29,15 @@ const ProfileScreen = () => {
     { id: 3, action: "Login", date: "2025-02-16", status: "Failed" },
   ];
 
-  // Fetching user details when the component is mounted
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const data = await getUserDetails();
+        const data = await getUserDetails(userInfo.userId);
         if (data && data.item) {
-          const { fullname, email } = data.item;
+          const { fullname, email, password } = data.item;
           setName(fullname);
           setEmail(email);
+          setPassword(password);
         }
         setLoading(false);
       } catch (error) {
@@ -51,11 +56,10 @@ const ProfileScreen = () => {
       setMessage("Passwords do not match");
       return;
     }
-    // Add your form submission logic here, for example calling an update API
   };
 
   if (loading) {
-    return <Loader />; // You can display a loader while fetching user data
+    return <Loader />;
   }
 
   return (

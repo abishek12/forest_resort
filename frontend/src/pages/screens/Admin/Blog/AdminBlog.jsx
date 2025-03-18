@@ -8,11 +8,11 @@ import { listBlogs, removeBlog } from "../../../../actions/blogActions";
 import Loader from "../../../../components/Loader";
 import Message from "../../../../components/Message";
 import { dateTimeFormat } from "../../../../utils/date-time";
+import { toast } from "react-toastify";
 
 const TABLE_HEADS = ["S.N", "Title", "Author", "Date", "Status", "Actions"];
 
 const AdminBlog = () => {
-
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -37,8 +37,11 @@ const AdminBlog = () => {
   const handleRemoveBlog = async (id) => {
     if (window.confirm("Are you sure you want to delete this blog?")) {
       try {
-        await removeBlog(id, userInfo);
+        setLoading(true);
+        await removeBlog(id);
         setBlogs(blogs.filter((blog) => blog._id !== id));
+        toast("Deleted Successfully");
+        setLoading(false);
       } catch (err) {
         setError(err.message);
       }
@@ -51,7 +54,7 @@ const AdminBlog = () => {
       {loading && <Loader />}
       {error && <Message variant="danger">{error}</Message>}
 
-      <Link to="/admin/blog/create" className="btn">
+      <Link to="/user/blog/create" className="btn">
         Add Blogs
       </Link>
       <div className="data-table-diagram">
@@ -68,12 +71,12 @@ const AdminBlog = () => {
               <tr key={uuid()}>
                 <td>{index + 1}</td>
                 <td>{blog.title}</td>
-                <td>{blog.user.fullname}</td>
+                <td>{blog.user == null ? "N/A" : blog.user.fullname}</td>
                 <td>{dateTimeFormat(blog.createdAt)}</td>
                 <td>{blog.status}</td>
                 <td className="dt-cell-action">
                   <div className="d-flex align-items-center">
-                    <Link to={`/admin/blogs/${blog._id}/view`} className="me-2">
+                    <Link to={`/blog-single/${blog._id}`} className="me-2">
                       <FaEye />
                     </Link>
                     <Link
@@ -82,7 +85,7 @@ const AdminBlog = () => {
                     >
                       <MdDeleteOutline />
                     </Link>
-                    <Link to="#" className="">
+                    <Link to={`/user/blog/${blog._id}/edit`} className="me-2">
                       <FaEdit />
                     </Link>
                   </div>

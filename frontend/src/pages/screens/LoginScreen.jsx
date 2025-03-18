@@ -26,7 +26,7 @@ const LoginScreen = ({ location }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
   
-  const redirect = "/admin/dashboard";
+  const redirect = "/user/dashboard";
 
   useEffect(() => {
     if (userInfo) {

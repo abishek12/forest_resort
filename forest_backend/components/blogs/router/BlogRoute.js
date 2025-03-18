@@ -13,12 +13,14 @@ import { updateBlogController } from "../controllers/UpdateBlogController.js";
 // import { authenticateToken } from "../../../middleware/authenticateToken.js";
 // import { authorizeRole } from "../../../middleware/authorize_role.js";
 
+import { upload } from "../../../utils/MulterConfig.js";
+
 const route = express.Router();
 
 route
   .get("/", listBlogs)
   .get("/:id", listSingleBlog)
-  .post("/", createBlog)
+  .post("/", upload.single("featured_image"), createBlog)
   .delete("/:id", deleteBlog)
   .put("/:id", updateBlogController);
 

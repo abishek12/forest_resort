@@ -9,7 +9,7 @@ export const listContacts = async (
   status
 ) => {
   try {
-    const { data } = await axios.get(`http://localhost:8888/api/contact-us`, {
+    const { data } = await axios.get(`/contact-us`, {
       params: {
         page,
         limit,
@@ -34,7 +34,7 @@ export const removeContact = async (id, userInfo) => {
     //     Authorization: `Bearer ${userInfo.token}`,
     //   },
     // };
-    await axios.delete(`http://localhost:8888/api/contact-us/${id}`);
+    await axios.delete(`/contact-us/${id}`);
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -56,7 +56,7 @@ export const createContact = async (contactData) => {
     //   },
     // };
     const { data } = await axios.post(
-      `http://localhost:8888/api/contact-us`,
+      `/contact-us`,
       contactData
     );
     return data;
@@ -81,7 +81,7 @@ export const updateContact = async (id, status, userInfo) => {
     //   },
     // };
     const { data } = await axios.put(
-      `http://localhost:8888/api/contact-us/${id}`,
+      `/contact-us/${id}`,
       { status }
       // config
     );
@@ -98,40 +98,3 @@ export const updateContact = async (id, status, userInfo) => {
   }
 };
 
-export const createBlogReview = async (blogId, review, userInfo) => {
-  try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-    await axios.post(
-      `http://localhost:8888/api/blogs/${blogId}/reviews`,
-      review,
-      config
-    );
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    if (message === "Not authorized, token failed") {
-      logout();
-    }
-    throw new Error(message);
-  }
-};
-
-export const listTopBlogs = async () => {
-  try {
-    const { data } = await axios.get(`http://localhost:8888/api/blogs/top`);
-    return data;
-  } catch (error) {
-    throw new Error(
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message
-    );
-  }
-};

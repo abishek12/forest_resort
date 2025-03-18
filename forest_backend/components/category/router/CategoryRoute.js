@@ -20,7 +20,7 @@ route
     // authorizeRole(["super-admin", "admin", "editor"]),
     createCategoryController
   )
-  .delete("/", deleteCategoryController)
+  .delete("/:id", deleteCategoryController)
   .put("/:catId", updateCategoryController);
 
 export default route;

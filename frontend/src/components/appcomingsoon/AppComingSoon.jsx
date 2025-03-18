@@ -13,9 +13,9 @@ const AppComingSoon = () => {
           <div className="row">
             <div className="col-lg-8 offset-lg-2">
               <div className=" text-center">
-                <h5 className="sub-title">
+                {/* <h5 className="sub-title">
                   <BoxReveal>Coming Soon</BoxReveal>
-                </h5>
+                </h5> */}
                 <h3 class="tw-text-2xl md:tw-text-5xl">
                   <Highlight>Forest Arena App</Highlight>
                 </h3>

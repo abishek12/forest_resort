@@ -7,15 +7,20 @@ export const listAllUsers = async (req, res) => {
     let page = Math.max(Number(req.query.page) || 1, 1);
 
     // Sorting
-    let sort = req.query.sort || "asc";
-    sort = { name: sort === "asc" ? 1 : -1 };
+    let sort = req.query.sort || "desc";
+    sort = { createdAt: sort === "asc" ? 1 : -1 };
 
     // Offset calculation
     let offset = (page - 1) * limit;
 
-    let totalRecords = await User.countDocuments();
+    let filter = {};
+    if (req.query.role) {
+      filter[`roles.${req.query.role}`] = true;
+    }
 
-    const items = await User.find({}, { __v: 0, token: 0, password: 0 })
+    let totalRecords = await User.countDocuments(filter);
+
+    const items = await User.find(filter, { __v: 0, token: 0, password: 0 })
       .sort(sort)
       .skip(offset)
       .limit(limit);

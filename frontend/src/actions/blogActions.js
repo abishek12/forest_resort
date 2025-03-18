@@ -5,14 +5,42 @@ export const listBlogs = async (
   keyword = "",
   page = 1,
   limit = 10,
-  sort = "desc"
+  sort = "desc",
+  q = ""
 ) => {
   try {
-    const { data } = await axios.get(`http://localhost:8888/api/blog`, {
+    const { data } = await axios.get(`/blog`, {
       params: {
         page,
         limit,
         sort,
+        q,
+      },
+    });
+    return data.items;
+  } catch (error) {
+    throw new Error(
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    );
+  }
+};
+
+export const listHomeBlogs = async (
+  keyword = "",
+  page = 1,
+  limit = 3,
+  sort = "desc",
+  q = ""
+) => {
+  try {
+    const { data } = await axios.get(`/blog`, {
+      params: {
+        page,
+        limit,
+        sort,
+        q,
       },
     });
     return data.items;
@@ -27,7 +55,7 @@ export const listBlogs = async (
 
 export const listBlogInfo = async (id) => {
   try {
-    const { data } = await axios.get(`http://localhost:8888/api/blogs/${id}`);
+    const { data } = await axios.get(`/blog/${id}`);
     return data;
   } catch (error) {
     throw new Error(
@@ -38,14 +66,14 @@ export const listBlogInfo = async (id) => {
   }
 };
 
-export const removeBlog = async (id, userInfo) => {
+export const removeBlog = async (id) => {
   try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-    await axios.delete(`http://localhost:8888/api/blogs/${id}`, config);
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${userInfo.token}`,
+    //   },
+    // };
+    await axios.delete(`/blog/${id}`);
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -66,10 +94,7 @@ export const createBlog = async (blogData) => {
     //     Authorization: `Bearer ${userInfo.token}`,
     //   },
     // };
-    const { data } = await axios.post(
-      `http://localhost:8888/api/blog`,
-      blogData
-    );
+    const { data } = await axios.post(`/blog`, blogData);
     return data;
   } catch (error) {
     const message =
@@ -92,7 +117,7 @@ export const updateBlog = async (blog, userInfo) => {
       },
     };
     const { data } = await axios.put(
-      `http://localhost:8888/api/blogs/${blog._id}`,
+      `/blogs/${blog._id}`,
       blog,
       config
     );
@@ -106,43 +131,5 @@ export const updateBlog = async (blog, userInfo) => {
       logout();
     }
     throw new Error(message);
-  }
-};
-
-export const createBlogReview = async (blogId, review, userInfo) => {
-  try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-    await axios.post(
-      `http://localhost:8888/api/blogs/${blogId}/reviews`,
-      review,
-      config
-    );
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    if (message === "Not authorized, token failed") {
-      logout();
-    }
-    throw new Error(message);
-  }
-};
-
-export const listTopBlogs = async () => {
-  try {
-    const { data } = await axios.get(`http://localhost:8888/api/blogs/top`);
-    return data;
-  } catch (error) {
-    throw new Error(
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message
-    );
   }
 };

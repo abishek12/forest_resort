@@ -10,9 +10,7 @@ import {
 import { APPOINTMENT_CREATE_RESET } from "../../../../constants/appointmentConstants";
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  MdEditSquare,
   MdOutlineDelete,
-  MdOutlinePanoramaFishEye,
   MdPreview
 } from "react-icons/md";
 
@@ -76,39 +74,6 @@ const AppointmentViewed = () => {
       dispatch(removeAppointment(id));
     }
   };
-
-  const createAppointmentHandler = () => {
-    dispatch(createAppointment());
-  };
-
-  // const [showDropdown, setShowDropdown] = useState(false);
-  // const handleDropdown = () => {
-  //   setShowDropdown(!showDropdown);
-  // };
-
-  // const dropdownRef = useRef(null);
-
-  // const handleClickOutside = (event) => {
-  //   if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-  //     setShowDropdown(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.addEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
-
-  // const userDelete = useSelector((state) => state.userDelete);
-  // const { success: successDelete } = userDelete;
-
-  // const deleteHandler = (id) => {
-  //   if (window.confirm("Are you sure")) {
-  //     dispatch(deleteUser(id));
-  //   }
-  // };
 
   const filteredAppointments = appointments?.filter(appointment => appointment.viewed === "Yes");
 

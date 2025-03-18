@@ -19,7 +19,7 @@ export const usersDelete = (id) => async(dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.token}`,
             },
         };
-        const {data} = await axios.delete(`http://localhost:8888/api/users/${id}`,
+        const {data} = await axios.delete(`/users/${id}`,
             config
         );
         dispatch({
