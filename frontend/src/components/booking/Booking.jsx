@@ -49,6 +49,9 @@ const Booking = () => {
   const [unavailableSlots, setUnavailableSlots] = useState([]);
   const [servicesData, setServicesData] = useState([]);
 
+  const [amSlot, setAmSlot] = useState([]);
+  const [pmSlot, setPmSlot] = useState([]);
+
   const [showButton, setShowButton] = useState(false);
   const [transactionId, setTransactionId] = useState("");
 
@@ -203,14 +206,34 @@ const Booking = () => {
     fetchServicesData();
   }, []);
 
-  // Fetch unavailable time slots
+  // // Fetch unavailable time slots
+  // const fetchUnavailableSlots = async (bookingDate) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `/booking/unavailable-times?date=${bookingDate}&service=${selectedServiceId}&period=${selectedPeriod}`
+  //     );
+  //     if (response.data.message === "success") {
+  //       setUnavailableSlots(response.data.unavailableSlots);
+  //     } else {
+  //       console.error("Unable to fetch slots!");
+  //     }
+  //   } catch (error) {
+  //     console.error("Unable to fetch unavailable slots: ", error);
+  //   }
+  // };
   const fetchUnavailableSlots = async (bookingDate) => {
     try {
       const response = await axios.get(
-        `/booking/unavailable-times?date=${bookingDate}&service=${selectedServiceId}&period=${selectedPeriod}`
+        `/booking/unavailable-times?date=${bookingDate}&service=${selectedServiceId}`
       );
       if (response.data.message === "success") {
-        setUnavailableSlots(response.data.unavailableSlots);
+        const data = response.data.unavailableSlots;
+  
+        // Separate AM and PM slots
+        const amSlots = data.filter((slot) => slot.period === "AM").map((slot) => slot.slot);
+        const pmSlots = data.filter((slot) => slot.period === "PM").map((slot) => slot.slot);
+        setAmSlot(amSlots);
+        setPmSlot(pmSlots);
       } else {
         console.error("Unable to fetch slots!");
       }
@@ -220,14 +243,23 @@ const Booking = () => {
   };
 
   const isTimeUnavailable = (time) => {
-    if (selectedService === "futsal" && selectedPeriod !== "pool") {
-      return unavailableSlots.some((slot) => {
-        const unavailableSlot = slot.slot;
-        const unavailablePeriod = slot.period;
-        return time === unavailableSlot && selectedPeriod === unavailablePeriod;
-      });
+    if (selectedService === "futsal") {
+      return selectedPeriod === "AM"
+        ? amSlot.includes(time) : pmSlot.includes(time);
     }
+    return false;
   };
+  
+
+  // const isTimeUnavailable = (time) => {
+  //   if (selectedService === "futsal" && selectedPeriod !== "pool") {
+  //     return unavailableSlots.some((slot) => {
+  //       const unavailableSlot = slot.slot;
+  //       const unavailablePeriod = slot.period;
+  //       return time === unavailableSlot && selectedPeriod === unavailablePeriod;
+  //     });
+  //   }
+  // };
 
   const handleTransactionDetail = () => {
     if (selectedService === "futsal" && selectedService !== "pool") {

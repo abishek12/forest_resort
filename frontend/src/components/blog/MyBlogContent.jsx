@@ -20,7 +20,10 @@ const MyBlogContent = () => {
 
   useEffect(() => {
     fetchBlogs();
-  }, []);
+    if(search){
+    fetchBlogs();
+    }
+  }, [search]);
 
   const fetchBlogs = async () => {
     try {
