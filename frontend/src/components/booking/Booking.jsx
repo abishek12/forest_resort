@@ -49,9 +49,6 @@ const Booking = () => {
   const [unavailableSlots, setUnavailableSlots] = useState([]);
   const [servicesData, setServicesData] = useState([]);
 
-  const [amSlot, setAmSlot] = useState([]);
-  const [pmSlot, setPmSlot] = useState([]);
-
   const [showButton, setShowButton] = useState(false);
   const [transactionId, setTransactionId] = useState("");
 
@@ -206,34 +203,17 @@ const Booking = () => {
     fetchServicesData();
   }, []);
 
-  // // Fetch unavailable time slots
-  // const fetchUnavailableSlots = async (bookingDate) => {
-  //   try {
-  //     const response = await axios.get(
-  //       `/booking/unavailable-times?date=${bookingDate}&service=${selectedServiceId}&period=${selectedPeriod}`
-  //     );
-  //     if (response.data.message === "success") {
-  //       setUnavailableSlots(response.data.unavailableSlots);
-  //     } else {
-  //       console.error("Unable to fetch slots!");
-  //     }
-  //   } catch (error) {
-  //     console.error("Unable to fetch unavailable slots: ", error);
-  //   }
-  // };
+  // Fetch unavailable time slots
+
   const fetchUnavailableSlots = async (bookingDate) => {
     try {
+      console.log("API IS CALLING");
       const response = await axios.get(
         `/booking/unavailable-times?date=${bookingDate}&service=${selectedServiceId}`
       );
       if (response.data.message === "success") {
         const data = response.data.unavailableSlots;
-  
-        // Separate AM and PM slots
-        const amSlots = data.filter((slot) => slot.period === "AM").map((slot) => slot.slot);
-        const pmSlots = data.filter((slot) => slot.period === "PM").map((slot) => slot.slot);
-        setAmSlot(amSlots);
-        setPmSlot(pmSlots);
+        setUnavailableSlots(data);
       } else {
         console.error("Unable to fetch slots!");
       }
@@ -242,24 +222,16 @@ const Booking = () => {
     }
   };
 
-  const isTimeUnavailable = (time) => {
-    if (selectedService === "futsal") {
-      return selectedPeriod === "AM"
-        ? amSlot.includes(time) : pmSlot.includes(time);
-    }
-    return false;
-  };
-  
-
-  // const isTimeUnavailable = (time) => {
-  //   if (selectedService === "futsal" && selectedPeriod !== "pool") {
-  //     return unavailableSlots.some((slot) => {
-  //       const unavailableSlot = slot.slot;
-  //       const unavailablePeriod = slot.period;
-  //       return time === unavailableSlot && selectedPeriod === unavailablePeriod;
-  //     });
-  //   }
-  // };
+  /**
+   *
+   * Filters the slots from the api and remaining
+   */
+  function findMatchingRecords(unavailableSlots, timeSlots) {
+    return unavailableSlots.filter((item) => {
+      // Check if the slot exists in the corresponding period array
+      return timeSlots[item.period].includes(item.slot);
+    });
+  }
 
   const handleTransactionDetail = () => {
     if (selectedService === "futsal" && selectedService !== "pool") {
@@ -304,22 +276,22 @@ const Booking = () => {
         adult: adults,
       },
     };
-      console.log(bookingData);
+    console.log(bookingData);
 
-    try {
-      const response = await axios.post("/booking", bookingData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    // try {
+    //   const response = await axios.post("/booking", bookingData, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
 
-      if (response.data.message) {
-        toast("Booking successful!");
-      }
-    } catch (error) {
-      console.error("Error creating booking:", error);
-      toast("Something went wrong, please try again.");
-    }
+    //   if (response.data.message) {
+    //     toast("Booking successful!");
+    //   }
+    // } catch (error) {
+    //   console.error("Error creating booking:", error);
+    //   toast("Something went wrong, please try again.");
+    // }
   };
 
   const handlePeriodToggle = (period) => {
@@ -341,10 +313,10 @@ const Booking = () => {
 
     if (selectedServiceId) {
       setSelectedServiceId(selectedServiceId._id);
-      console.log("selected Service ID:", selectedServiceId._id)
+      console.log("selected Service ID:", selectedServiceId._id);
       setIsServiceSelected(true);
     } else {
-      console.log("no matching service found")
+      console.log("no matching service found");
       setIsServiceSelected(false);
       setSelectedServiceId(null);
     }
@@ -565,14 +537,15 @@ const Booking = () => {
                   fontFamily: "Poppins",
                 }}
               >
-               <h3>Select Time</h3>
-                                <div className="mb-4 tw-space-x-2 tw-col-auto row-lg-1 row-md-1 col-sm-1 lg:tw-w-[2560px] md:tw-w-[768px] max-sm:tw-w-[425px] max-sm:tw-ml-[-15px]">
+                <h3>Select Time</h3>
+                <div className="mb-4 tw-space-x-2 tw-col-auto row-lg-1 row-md-1 col-sm-1 lg:tw-w-[2560px] md:tw-w-[768px] max-sm:tw-w-[425px] max-sm:tw-ml-[-15px]">
                   <motion.button
-                    className={`btn ${
-                      selectedPeriod === "AM" ? "btn-primary" : "btn-secondary"
-                    } hover:tw-scale-105 hover:tw-bg-yellow-400 active:tw-scale-110`}
+                    className={`btn hover:tw-scale-105 hover:tw-bg-yellow-400 active:tw-scale-110`}
                     onClick={() => handlePeriodToggle("AM")}
-                    style={{ cursor: "pointer" }}
+                    style={{
+                      cursor: "pointer",
+                      background: selectedPeriod === "AM" ? "green" : "red",
+                    }}
                     initial="initial"
                     animate="animate"
                     whileHover="hover"
@@ -586,7 +559,10 @@ const Booking = () => {
                       selectedPeriod === "PM" ? "btn-primary" : "btn-secondary"
                     } hover:tw-scale-105 hover:tw-bg-yellow-400 active:tw-scale-110`}
                     onClick={() => handlePeriodToggle("PM")}
-                    style={{ cursor: "pointer" }}
+                    style={{
+                      cursor: "pointer",
+                      background: selectedPeriod === "PM" ? "green" : "red",
+                    }}
                     initial="initial"
                     animate="animate"
                     whileHover="hover"
@@ -598,8 +574,15 @@ const Booking = () => {
                 </div>
                 <div className="row mb-2">
                   {timeSlots[selectedPeriod].map((time, index) => {
-                    const isUnavailable = isTimeUnavailable(time);
+                    // const isUnavailable = isTimeUnavailable(time);
                     const isSelected = selectedTime === time;
+                    const isUnavailable = findMatchingRecords(
+                      unavailableSlots,
+                      timeSlots
+                    ).some(
+                      (record) =>
+                        record.slot === time && record.period === selectedPeriod
+                    );
                     return (
                       <div
                         className="col-lg-2 col-md-3 col-sm-4 m-2 mb-0 mx-2 border tw-rounded-lg"
