@@ -278,20 +278,20 @@ const Booking = () => {
     };
     console.log(bookingData);
 
-    // try {
-    //   const response = await axios.post("/booking", bookingData, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
+    try {
+      const response = await axios.post("/booking", bookingData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    //   if (response.data.message) {
-    //     toast("Booking successful!");
-    //   }
-    // } catch (error) {
-    //   console.error("Error creating booking:", error);
-    //   toast("Something went wrong, please try again.");
-    // }
+      if (response.data.message) {
+        toast("Booking successful!");
+      }
+    } catch (error) {
+      console.error("Error creating booking:", error);
+      toast("Something went wrong, please try again.");
+    }
   };
 
   const handlePeriodToggle = (period) => {
