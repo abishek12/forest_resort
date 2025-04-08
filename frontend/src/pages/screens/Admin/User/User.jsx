@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuid } from "uuid";
 import { MdDeleteOutline } from "react-icons/md";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
-import {
-  listUsers,
-} from "../../../../actions/authentication/userList";
+import { listUsers } from "../../../../actions/authentication/userList";
 import { deleteUser } from "../../../../actions/userActionsOrg";
 import { updateUserRole } from "../../../../actions/authentication/userProfile";
 import Loader from "../../../../components/Loader";
@@ -17,16 +15,21 @@ const TABLE_HEADS = [
   "Fullname",
   "Email",
   "Contact No.",
+  "Roles",
   "Joined Date",
   "Actions",
 ];
 
 const User = () => {
   const dispatch = useDispatch();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  console.log(userInfo.accessToken);
 
   useEffect(() => {
     fetchUsers();
@@ -35,7 +38,7 @@ const User = () => {
   const fetchUsers = async (role = "") => {
     try {
       setLoading(true);
-      const data = await listUsers("", "", 1, 10, "desc", role);
+      const data = await listUsers(userInfo.accessToken, "", 1, 10, "desc", role);
       if (data.error) {
         setError(data.error);
       } else {
@@ -115,6 +118,7 @@ const User = () => {
                 <td>{user.fullname}</td>
                 <td>{user.email}</td>
                 <td>{user.phone_no}</td>
+                <td>{user.roles.admin ? "Admin" : "Subscriber"}</td>
                 <td>{dateTimeFormat(user.createdAt)}</td>
                 <td className="dt-cell-action">
                   {/* Delete User */}

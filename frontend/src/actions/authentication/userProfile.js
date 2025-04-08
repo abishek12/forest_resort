@@ -51,7 +51,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
   }
 };
 
-export const updateUserRole = async (userId) => {
+export const updateUserRole = async (userId, token) => {
   try {
     const { data } = await axios.put(
       `/users/${userId}/role`,

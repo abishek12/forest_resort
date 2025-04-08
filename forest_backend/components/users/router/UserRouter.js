@@ -12,10 +12,10 @@ import { authorizeRole } from "../../../middleware/UserRole.js";
 const route = express.Router();
 
 route
-  .get("/", listAllUsers)
-  .get("/:userId", userProfile)
-  .delete("/:id", deleteUser)
+  .get("/", authMiddleware, authorizeRole(["admin"]), listAllUsers)
+  .get("/:userId", authMiddleware, userProfile)
+  .delete("/:id", authMiddleware, authorizeRole(["admin"]), deleteUser)
   .put("/:id/profile", updateProfile)
-  .put("/:id/role", updateRole);
+  .put("/:id/role", authMiddleware, authorizeRole(["admin"]), updateRole);
 
 export default route;

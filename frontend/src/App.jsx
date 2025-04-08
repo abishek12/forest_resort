@@ -25,7 +25,8 @@ import axios from "axios";
 import { myApi } from "./config/api";
 
 function App() {
-  axios.defaults.baseURL = "https://backend.forestsportsandrecreation.com/api";
+  axios.defaults.baseURL = "http://localhost:8888/api";
+  // axios.defaults.baseURL = "https://backend.forestsportsandrecreation.com/api";
   //  Preloader
   const [isLoading, setIsLoading] = useState(true);
 

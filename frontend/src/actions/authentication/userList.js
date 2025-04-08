@@ -1,7 +1,4 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
-
-import { logout } from "./userLogout";
 
 export const listUsers = async (
   token,
@@ -12,9 +9,9 @@ export const listUsers = async (
   role = ""
 ) => {
   try {
-    // let config = {
-    //   Authorization: `Bearer ${token}`,
-    // };
+    let config = {
+      Authorization: `Bearer ${token}`,
+    };
 
     const { data } = await axios.get(`/users`, {
       params: {
@@ -23,6 +20,7 @@ export const listUsers = async (
         sort,
         role,
       },
+      headers: config,
     });
 
     return data.items;
