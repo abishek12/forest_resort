@@ -111,13 +111,14 @@ const Appointment = () => {
             <tbody>
               {appointments?.map((appointment, index) => (
                 <tr key={uuid()}>
+                  {console.log({appointment})}
                   <td>{index + 1}</td>
                   <td>{appointment.user.fullname}</td>
                   <td>{appointment.user.phone_no}</td>
                   <td>{appointment.service.name}</td>
                   <td>{dateTimeFormat(appointment.date)}</td>
                   <td>
-                    {appointment.timeSlot.start} - {appointment.timeSlot.end}
+                    {appointment.timeSlot.slot} {appointment.timeSlot.period}
                   </td>
                   <td>
                     <Badge

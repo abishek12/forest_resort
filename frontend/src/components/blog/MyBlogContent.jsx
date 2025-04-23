@@ -17,19 +17,20 @@ const MyBlogContent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const LIMIT = 12;
 
   useEffect(() => {
     fetchBlogs();
-    if(search){
-    fetchBlogs();
-    }
-  }, [search]);
+  }, [search, page]);
 
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const data = await listBlogs("", 1, 10, "desc", search);
-      setBlogs(data);
+      const data = await listBlogs("", page, LIMIT, "desc", search);
+      setBlogs(data.items);
+      setTotalPages(Math.ceil(data.pagination.totalRecords / LIMIT));
     } catch (error) {
       toast.error("Error fetching blogs");
       setError(error.message);
@@ -67,67 +68,100 @@ const MyBlogContent = () => {
                   <BlogComponentShimmer key={index} />
                 ))
               : blogs.map((item, index) => (
-                <Link to={`/blog-single/${item._id}`} className="tw-block tw-no-underline">
-                  <motion.div
-                    className="tw-rounded-lg tw-bg-white tw-shadow-md tw-overflow-hidden"
-                    key={index}
-                    initial="initial"
-                      whileHover={{scale: 1.07,
-                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.4)"}}
-                    whileTap={{ scale: 0.75 }} >
-                    <div className="tw-p-4">
-                      <img
-                        src={item.featured_image}
-                        alt="Blog"
-                        className="tw-w-full tw-h-48 sm:tw-h-56 lg:tw-h-64 tw-object-cover"
-                      />
-                      <h3 className="tw-mt-4 tw-text-xl tw-font-bold">
-                        {item.title.length > 59 ? item.title.slice(0, 59) + "..." : item.title}
-                      </h3>
-                      <div className="tw-relative tw-mb-4">
-                        <p className="tw-text-sm tw-text-black tw-font-bold">
-                          {dateTimeFormat(item.createdAt)}
+                  <Link
+                    to={`/blog-single/${item._id}`}
+                    className="tw-block tw-no-underline"
+                    key={item._id}
+                  >
+                    <motion.div
+                      className="tw-rounded-lg tw-bg-white tw-shadow-md tw-overflow-hidden"
+                      initial="initial"
+                      whileHover={{
+                        scale: 1.07,
+                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.4)",
+                      }}
+                      whileTap={{ scale: 0.75 }}
+                    >
+                      <div className="tw-p-4">
+                        <img
+                          src={item.featured_image}
+                          alt="Blog"
+                          className="tw-w-full tw-h-48 sm:tw-h-56 lg:tw-h-64 tw-object-cover"
+                        />
+                        <h3 className="tw-mt-4 tw-text-xl tw-font-bold">
+                          {item.title.length > 59
+                            ? item.title.slice(0, 59) + "..."
+                            : item.title}
+                        </h3>
+                        <div className="tw-relative tw-mb-4">
+                          <p className="tw-text-sm tw-text-black tw-font-bold">
+                            {dateTimeFormat(item.createdAt)}
+                          </p>
+                          <svg
+                            width="100%"
+                            height="2"
+                            className="tw-absolute tw-bottom-0 tw-left-0"
+                          >
+                            <line
+                              x2="100%"
+                              y2="100%"
+                              stroke="#1A7218F2"
+                              strokeWidth="2"
+                            />
+                          </svg>
+                        </div>
+                        <p className="tw-text-black tw-line-clamp-3">
+                          {item.content}
                         </p>
-                        <svg
-                          width="100%"
-                          height="2"
-                          className="tw-absolute tw-bottom-0 tw-left-0"
+                        <Link
+                          to={`/blog-single/${item._id}`}
+                          className="tw-flex tw-items-center tw-text-[#1A7218F2] tw-mt-4 hover:tw-underline"
                         >
-                          <line
-                            x2="100%"
-                            y2="100%"
-                            stroke="#1A7218F2"
-                            strokeWidth="2"
-                          />
-                        </svg>
+                          Read More
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            className="tw-ml-1"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M1 8a.5.5 0 0 1 .5-.5h10.793L8.146 3.354a.5.5 0 1 1 .708-.708l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 1 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
+                            />
+                          </svg>
+                        </Link>
                       </div>
-                      <p className="tw-text-black tw-line-clamp-3">
-                        {item.content}
-                      </p>
-                      <Link
-                        to={`/blog-single/${item._id}`}
-                        className="tw-flex tw-items-center tw-text-[#1A7218F2] tw-mt-4 hover:tw-underline"
-                      >
-                        Read More
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="tw-ml-1"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M1 8a.5.5 0 0 1 .5-.5h10.793L8.146 3.354a.5.5 0 1 1 .708-.708l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 1 1-.708-.708L12.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                          />
-                        </svg>
-                      </Link>
-                    </div>
-                  </motion.div>
+                    </motion.div>
                   </Link>
                 ))}
           </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="tw-flex tw-justify-center tw-items-center tw-gap-4 tw-mt-8">
+              <button
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                className="tw-bg-gray-200 tw-px-4 tw-py-2 tw-rounded hover:tw-bg-gray-300"
+                disabled={page === 1}
+              >
+                Prev
+              </button>
+              <span className="tw-font-medium">
+                Page {page} of {totalPages}
+              </span>
+              <button
+                onClick={() =>
+                  setPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                className="tw-bg-gray-200 tw-px-4 tw-py-2 tw-rounded hover:tw-bg-gray-300"
+                disabled={page === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className="tw-mt-8">

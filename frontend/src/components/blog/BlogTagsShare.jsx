@@ -6,13 +6,15 @@ const BlogTagsShare = ({ blogInfo }) => {
   if (!blogInfo) {
     return <div>Loading...</div>;
   }
-  const { category } = blogInfo;
+  const { tags } = blogInfo;
   return (
     <>
       <div className="post-tags share">
         <div className="tags">
           <h4>Tag: </h4>
-          <Link to={"/blogs"}>{category.title}</Link>
+          {tags.map((item) => (
+            <p>{item.title}</p>
+          ))}
         </div>
         <div className="social">
           <h4>Share:</h4>

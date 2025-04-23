@@ -22,6 +22,6 @@ route
   .get("/:id", listSingleBlog)
   .post("/", upload.single("featured_image"), createBlog)
   .delete("/:id", deleteBlog)
-  .put("/:id", updateBlogController);
+  .put("/:id", upload.single("featured_image"), updateBlogController);
 
 export default route;

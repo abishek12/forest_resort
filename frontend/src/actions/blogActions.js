@@ -17,7 +17,7 @@ export const listBlogs = async (
         q,
       },
     });
-    return data.items;
+    return data;
   } catch (error) {
     throw new Error(
       error.response && error.response.data.message
@@ -108,19 +108,15 @@ export const createBlog = async (blogData) => {
   }
 };
 
-export const updateBlog = async (blog, userInfo) => {
+export const updateBlog = async (id, items) => {
   try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-    const { data } = await axios.put(
-      `/blogs/${blog._id}`,
-      blog,
-      config
-    );
+    // const config = {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${userInfo.token}`,
+    //   },
+    // };
+    const { data } = await axios.put(`/blog/${id}`, items);
     return data;
   } catch (error) {
     const message =

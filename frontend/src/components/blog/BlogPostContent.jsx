@@ -4,7 +4,7 @@ import ImageGrid2 from "./ImageGrid2";
 import { dateTimeFormat } from "../../utils/date-time";
 
 const BlogPostContent = ({ blogInfo }) => {
-  const { description, content, featured_image, user, createdAt, tags } =
+  const { description, category, user, createdAt, tags } =
     blogInfo;
 
   return (
@@ -27,7 +27,7 @@ const BlogPostContent = ({ blogInfo }) => {
                 </li>
               </ul>
               {tags.map((tag, index) => (
-                <p className="badge text-bg-success me-2">{tag.title}</p>
+                <p className="badge text-bg-success me-2">{category.title}</p>
               ))}
             </div>
             <div

@@ -112,7 +112,7 @@ const AppointmentViewScreen = () => {
                 <div className="col">
                   <h4>Time Slot:</h4>
                   <p>
-                    {appointment.timeSlot.start} - {appointment.timeSlot.end}
+                    {appointment.timeSlot.slot} {appointment.timeSlot.period}
                   </p>
                 </div>
                 <div className="col">
