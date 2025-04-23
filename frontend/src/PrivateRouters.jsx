@@ -1,12 +1,10 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
-const PrivateRoute = ({ children, requiredRole }) => {
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
 
-  // Check if userInfo or accessToken is missing
+const PrivateRoute = ({ children, requiredRole }) => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
   if (!userInfo || !userInfo.accessToken) {
     return <Navigate to="/login" />;
   }
@@ -14,18 +12,20 @@ const PrivateRoute = ({ children, requiredRole }) => {
   try {
     const decodedToken = jwtDecode(userInfo.accessToken);
 
+    // Token expired
     if (decodedToken.exp * 1000 < Date.now()) {
+      localStorage.removeItem("userInfo"); // Clear expired token
       return <Navigate to="/login" />;
     }
 
     // Role check
-    if (requiredRole && !userInfo.role?.[requiredRole]) {
+    if (requiredRole && !userInfo.roles?.[requiredRole]) {
       return <Navigate to="/" />;
     }
 
     return children;
-
   } catch (err) {
+    localStorage.removeItem("userInfo"); // Clear on token decode error too
     return <Navigate to="/login" />;
   }
 };

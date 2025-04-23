@@ -10,7 +10,7 @@ export const tokenGenerator = async (data) => {
       phoneNo: data.phone_no,
     },
     process.env.JWT_TOKEN,
-    { expiresIn: "12h" }
+    { expiresIn: "1m" }
   );
 
   return token;
