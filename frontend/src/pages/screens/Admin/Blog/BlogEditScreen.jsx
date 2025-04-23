@@ -15,6 +15,7 @@ const BlogEditScreen = () => {
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
+  const [userId, setUserId] = useState("");
   const [image, setImage] = useState(null);
   const [content, setContent] = useState("");
   const [description, setDescription] = useState("");
@@ -48,9 +49,10 @@ const BlogEditScreen = () => {
 
         // Then fetch blog details
         const { data: blogData } = await axios.get(`/blog/${blogId}`);
-        setTitle(blogData.item.title || "");
-        setAuthor(blogData.item.user?.fullname || "");
-        setImage(blogData.item.featured_image || null);
+        setTitle(blogData?.item?.title || "");
+        setAuthor(blogData?.item.user?.fullname || "");
+        setUserId(blogData?.item?.user?._id);
+        setImage(blogData?.item.featured_image || null);
         setContent(blogData.item.content || "");
         setDescription(blogData.item.description || "");
         setStatus(blogData.item.status || "draft");
@@ -126,14 +128,14 @@ const BlogEditScreen = () => {
 
       const formData = new FormData();
       formData.append("title", title);
-      formData.append("title", title);
-      formData.append("user", author);
+      formData.append("user", userId);
       formData.append("content", content);
       formData.append("description", description);
       formData.append("status", status);
       formData.append("category", selectedCategory);
-      formData.append("tags", JSON.stringify(selectedTags));
-
+      selectedTags.forEach((tagId) => {
+        formData.append("tags[]", tagId); 
+      });
       if (image) {
         formData.append("featured_image", image);
       }
