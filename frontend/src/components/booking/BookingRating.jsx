@@ -38,7 +38,7 @@ const BookingRating = () => {
   };
   return (
     <>
-      <div className="col-lg-6 col-md-6 col-sm-12">
+      <div className=" col-lg-6 col-md-6 col-sm-12">
         <div className="card p-4">
           <h4>Rate Your Experience</h4>
           <div className="rating">
