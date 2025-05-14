@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
-import { LIGHT_THEME } from "../../constants/themeConstants";
 import {
   MdOutlineClose,
   MdOutlineLogout,

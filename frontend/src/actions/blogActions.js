@@ -86,15 +86,15 @@ export const removeBlog = async (id) => {
   }
 };
 
-export const createBlog = async (blogData) => {
+export const createBlog = async (blogData, userInfo) => {
   try {
     // pass userInfo in params in function
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${userInfo.token}`,
-    //   },
-    // };
-    const { data } = await axios.post(`/blog`, blogData);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.accessToken}`,
+      },
+    };
+    const { data } = await axios.post(`/blog`, blogData, config);
     return data;
   } catch (error) {
     const message =

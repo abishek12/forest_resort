@@ -96,7 +96,7 @@ const BlogCreateScreen = () => {
         formData.append("featured_image", image);
       }
 
-      await createBlog(formData);
+      await createBlog(formData, userInfo);
 
       toast.success("Blog created successfully!");
       navigate("/user/blogs");

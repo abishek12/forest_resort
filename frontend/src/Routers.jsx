@@ -175,8 +175,8 @@ const Routers = () => {
           <Route
             path="/user/blog/create"
             element={
-              <PrivateRoute>
-                <BlogCreateScreen />
+              <PrivateRoute requiredRole='admin'>
+                <BlogCreateScreen/>
               </PrivateRoute>
             }
           />
