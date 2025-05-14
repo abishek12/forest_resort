@@ -23,6 +23,8 @@ import { convertDateTimeSlot } from '../../utils/date-time'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 
+import QrCode from "../../assets/ForestQrCode.jpg"
+
 const Booking = () => {
   const navigate = useNavigate()
   // fetcsh user data from redux store
@@ -820,23 +822,23 @@ const Booking = () => {
                 <p className='tw-text-gray-600 tw-text-center'>
                   Hello! Please scan the QR code below to complete your payment.
                 </p>
+                                {/* pricing notes */}
+                <div className='text-center mt-0 p-3 border rounded-2' style={{background:"#e6f4ea"}}>
+                  <h5 className='mb-2 text-muted' style={{ fontWeight: 600 }}>
+                    *NOTE*
+                  </h5>
+                  <p className='mb-0' style={{ fontSize: '14px', fontFamily:"Poppins" }}>
+                    Price for Futsal on every Saturday will be Rs. 1500 only.
+                  </p>
+                </div>
                 <div className='tw-mt-4 tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-inner'>
                   <img
-                    src='https://placehold.co/600x400'
+                    src={QrCode}
                     alt='QR Code'
                     className='tw-w-48 tw-h-48 tw-object-contain'
                   />
                 </div>
 
-                {/* pricing notes */}
-                {/* <div className='fw-bold text-center mt-2 border shadow-sm px-3 py-2 rounded-3'>
-                  <h4 className='fw-bold mb-4 fs-4 w-50 tw-justify-self-center tw-text-white tw-bg-green-700 px-2 py-2 rounded-4'>
-                    ** NOTE **
-                  </h4>
-                  <p className=' fw-bold fs-5 tw-text-black'>
-                    Price for Futsal on every Saturdays will be Rs. 1500 only!
-                  </p>
-                </div> */}
               </div>
             </motion.div>
 
