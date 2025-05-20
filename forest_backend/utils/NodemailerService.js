@@ -1,8 +1,8 @@
 import nodemailer from "nodemailer";
 
-export const sendActivationEmail = async (email, activationUrl) => {
+export const sendEmail = async (email, subject, message) => {
   const transporter = nodemailer.createTransport({
-    host: "mail.chiyagallery.com",
+    host: "mail.forestsportsandrecreation.com",
     port: 465,
     secure: true,
     auth: {
@@ -14,10 +14,8 @@ export const sendActivationEmail = async (email, activationUrl) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "Account Activation",
-    text: `Thank you for registering! Please click on the following link to activate your account:\n\n
-           ${activationUrl}\n\n
-           If you did not request this, please ignore this email.\n`,
+    subject,
+    text: message,
   };
 
   await transporter.sendMail(mailOptions);

@@ -2,7 +2,7 @@ import crypto from "crypto";
 
 import { User } from "../../users/model/UserModel.js";
 import { registerHelper } from "../helper/AuthHelper.js";
-import { sendActivationEmail } from "../../../utils/NodemailerService.js";
+import { sendEmail } from "../../../utils/NodemailerService.js";
 
 /**
  *
@@ -41,7 +41,13 @@ export const registerUser = async (req, res) => {
     await newUser.save();
 
     const activationUrl = `https://forestsportsandrecreation.com/activate-account?token=${activationToken}`;
-    sendActivationEmail(value.email, activationUrl);
+    sendEmail(
+      value.email,
+      "Account Activation",
+      `Thank you for registering! Please click on the following link to activate your account:\n\n
+           ${activationUrl}\n\n
+           If you did not request this, please ignore this email.\n`
+    );
 
     return res
       .status(201)
