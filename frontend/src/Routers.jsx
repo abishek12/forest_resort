@@ -126,7 +126,7 @@ const Routers = () => {
             path="/user/dashboard"
             element={
               <PrivateRoute>
-                <Dashboard />
+                <Dashboard requiredRole="admin" />
               </PrivateRoute>
             }
           />

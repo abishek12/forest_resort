@@ -23,11 +23,21 @@ const PrivateRoute = ({ children, requiredRole }) => {
       return <Navigate to="/" />;
     }
 
+    // checking user roles
+    if ( requiredRole && userInfo?.roles?.[requiredRole] === true) {
+      return <Navigate to="/user/dashboard" />
+    } 
+      if ( requiredRole && userInfo?.roles?.[requiredRole] !== "admin") {
+      return <Navigate to="/user/profile" />
+    } 
+   
+
     return children;
   } catch (err) {
     localStorage.removeItem("userInfo"); // Clear on token decode error too
     return <Navigate to="/login" />;
   }
+  
 };
 
 export default PrivateRoute;

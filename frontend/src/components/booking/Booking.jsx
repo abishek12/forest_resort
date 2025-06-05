@@ -823,12 +823,12 @@ const Booking = () => {
                   Hello! Please scan the QR code below to complete your payment.
                 </p>
                                 {/* pricing notes */}
-                <div className='text-center mt-0 p-3 border rounded-2' style={{background:"#e6f4ea"}}>
-                  <h5 className='mb-2 text-muted' style={{ fontWeight: 600 }}>
+                <div className='text-center mt-0 p-3 border rounded-2 tw-shadow-sm' style={{background:"white"}}>
+                  <h5 className='mb-2  tw-text-red-600' style={{ fontWeight: 600,  }}>
                     *NOTE*
                   </h5>
-                  <p className='mb-0' style={{ fontSize: '14px', fontFamily:"Poppins" }}>
-                    Price for Futsal on every Saturday will be Rs. 1500 only.
+                  <p className='mb-0 tw-text-red-600 tw-font-bold' style={{ fontSize: '14px', fontFamily:"Poppins" }}>
+                    "Saturday extra charges Rs. 300 will be added"
                   </p>
                 </div>
                 <div className='tw-mt-4 tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-inner'>
